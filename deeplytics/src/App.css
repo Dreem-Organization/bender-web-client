@@ -1,24 +1,93 @@
 .App {
-  text-align: center;
+  color: rgb(72, 72, 82);
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+  margin-top: 20px;
+  height: 45px;
 }
 
 .App-header {
-  background-color: #222;
-  height: 150px;
+  height: 130px;
   padding: 20px;
-  color: white;
+  text-align: center;
 }
 
-.App-intro {
-  font-size: large;
+h1 {
+  font-size: 20px;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.main-container {
+  margin: 0px auto;
+  max-width: 1100px;
+  width: 80%;
+  margin: 0px auto;
+}
+
+.item-list {
+  background: #fff;
+  border-radius: 5px;
+  /*overflow: hidden;*/
+  margin: 0px;
+  padding: 0px;
+  box-shadow: 0px 5px 10px -3px rgba(0,0,0, 0.1);
+}
+
+.item-list ul {
+  list-style: none;
+  padding-left: 0px;
+  position: relative;
+}
+
+.item-list li {
+  background: #fff;
+  height: 40px;
+  padding-left: 20px;
+  padding-top: 14px;
+  border-bottom: 2px solid #F7F7F7;
+  position: relative;
+}
+
+.item-list li:hover {
+  background: #F7F7F7;
+  height: 40px;
+  cursor: pointer;
+  position: relative;
+}
+
+.item-list li:first-child{
+  border-top-left-radius: 5px !important;
+  border-top-right-radius: 5px !important;
+}
+
+.item-list li:last-child{
+  border-bottom-left-radius: 5px !important;
+  border-bottom-right-radius: 5px !important;
+  border-bottom: 0px;
+}
+
+.item-list li h3 {
+  font-size: 17px;
+  padding: 0px;
+  margin: 0px;
+}
+
+.item-list li .author {
+  font-size: 11px;
+  padding: 0px;
+  margin: 0px;
+}
+
+.item-list li .score {
+  position: absolute;
+  /*display: block;*/
+  right: 10px;
+  top: 0px;
+  font-size: 20px;
+  padding: 10px;
+  padding-top: 15px;
+}
+
+.item-expanded {
+  min-height: 500px;
 }

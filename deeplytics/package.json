@@ -6,8 +6,11 @@
     "react-scripts": "0.7.0"
   },
   "dependencies": {
+    "d3": "^4.3.0",
+    "lodash": "^4.17.1",
     "react": "^15.3.2",
-    "react-dom": "^15.3.2"
+    "react-dom": "^15.3.2",
+    "recharts": "^0.18.0"
   },
   "scripts": {
     "start": "react-scripts start",
