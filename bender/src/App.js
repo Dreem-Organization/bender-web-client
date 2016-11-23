@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import logo from './images/bender-logo.svg'
+import logo from './images/logo.svg'
 import TrialList from './components/trial-list'
 import ExperimentList from './components/experiment-list'
 import 'whatwg-fetch'
@@ -65,11 +65,13 @@ export default class App extends Component {
     })
   }
 
-  // <img src={logo} className='App-logo' alt='logo' />
   render () {
     return (
       <div className='App'>
         <div className='App-header'>
+          <a href='/'>
+            <img src={logo} className='App-logo' alt='logo' />
+          </a>
           <h1 className='logo'>BENDER</h1>
         </div>
         {this._renderMainView()}

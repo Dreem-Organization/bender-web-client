@@ -140,7 +140,9 @@ export default class TrialList extends Component {
   render () {
     return (
       <div className='main-container'>
-        <h1 className='main'>{this.props.experiment.name}</h1>
+        <h1 className='main'>Experiments > {this.props.experiment.name}</h1>
+        <p className='author'>{this.props.experiment.author}</p>
+        <p className='experiment-description'>{this.props.experiment.description}</p>
         <HomeChart items={this.state.trials} />
         Latest Trials:
         <div className='trial-list'>
