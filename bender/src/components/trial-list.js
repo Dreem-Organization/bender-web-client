@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import HomeChart from './home-chart'
-import Item from './item'
+import Trial from './trial'
 
-export default class ItemList extends Component {
+export default class TrialList extends Component {
   constructor (props) {
     super(props)
 
     this.state = {
-      items: [
+      trials: [
         {
           'id': 1,
           'name': 'Neural Network',
@@ -128,22 +128,23 @@ export default class ItemList extends Component {
       ]
     }
 
-    this._getListItems = this._getListItems.bind(this)
+    this._getTrialList = this._getTrialList.bind(this)
   }
 
-  _getListItems () {
-    return this.state.items.map((item, i) => {
-      return <Item key={i} item={item} />
+  _getTrialList () {
+    return this.state.trials.map((trial, i) => {
+      return <Trial key={i} trial={trial} />
     })
   }
 
   render () {
     return (
       <div className='main-container'>
-        <HomeChart items={this.state.items} />
-        Latest Experiments
-        <div className='item-list'>
-          <ul>{this._getListItems()}</ul>
+        <h1 className='main'>{this.props.experiment.name}</h1>
+        <HomeChart items={this.state.trials} />
+        Latest Trials:
+        <div className='trial-list'>
+          <ul>{this._getTrialList()}</ul>
         </div>
       </div>
       )

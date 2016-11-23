@@ -4,7 +4,7 @@
 
 .App-logo {
   margin-top: 20px;
-  height: 45px;
+  height: 55px;
 }
 
 .App-header {
@@ -13,8 +13,14 @@
   text-align: center;
 }
 
-h1 {
-  font-size: 20px;
+h1.logo {
+  font-size: 19px;
+  letter-spacing: 1px;
+}
+
+h1.main {
+  font-size: 23px;
+  letter-spacing: 1px;
 }
 
 .main-container {
@@ -24,7 +30,11 @@ h1 {
   margin: 0px auto;
 }
 
-.item-list {
+/*********************************/
+/********** EXPERIMENT ***********/
+/*********************************/
+
+.experiment-list {
   background: #fff;
   border-radius: 5px;
   /*overflow: hidden;*/
@@ -33,13 +43,13 @@ h1 {
   box-shadow: 0px 5px 10px -3px rgba(0,0,0, 0.1);
 }
 
-.item-list ul {
+.experiment-list ul {
   list-style: none;
   padding-left: 0px;
   position: relative;
 }
 
-.item-list li {
+.experiment-list li {
   background: #fff;
   height: 40px;
   padding-left: 20px;
@@ -48,37 +58,79 @@ h1 {
   position: relative;
 }
 
-.item-list li:hover {
+.experiment-list li:hover {
   background: #F7F7F7;
   height: 40px;
   cursor: pointer;
   position: relative;
 }
 
-.item-list li:first-child{
-  border-top-left-radius: 5px !important;
-  border-top-right-radius: 5px !important;
-}
-
-.item-list li:last-child{
-  border-bottom-left-radius: 5px !important;
-  border-bottom-right-radius: 5px !important;
-  border-bottom: 0px;
-}
-
-.item-list li h3 {
+.experiment-list  li h3 {
   font-size: 17px;
   padding: 0px;
   margin: 0px;
 }
 
-.item-list li .author {
+
+/**********************************/
+/************* TRIAL **************/
+/**********************************/
+
+.trial-list {
+  background: #fff;
+  border-radius: 5px;
+  /*overflow: hidden;*/
+  margin: 0px;
+  padding: 0px;
+  box-shadow: 0px 5px 10px -3px rgba(0,0,0, 0.1);
+}
+
+.trial-list ul {
+  list-style: none;
+  padding-left: 0px;
+  position: relative;
+}
+
+.trial-list li {
+  background: #fff;
+  height: 40px;
+  padding-left: 20px;
+  padding-top: 14px;
+  border-bottom: 2px solid #F7F7F7;
+  position: relative;
+}
+
+.trial-list li:hover {
+  background: #F7F7F7;
+  height: 40px;
+  cursor: pointer;
+  position: relative;
+}
+
+.trial-list li:first-child{
+  border-top-left-radius: 5px !important;
+  border-top-right-radius: 5px !important;
+}
+
+.trial-list li:last-child{
+  border-bottom-left-radius: 5px !important;
+  border-bottom-right-radius: 5px !important;
+  border-bottom: 0px;
+}
+
+.trial-list li h3 {
+  font-size: 17px;
+  padding: 0px;
+  margin: 0px;
+}
+
+.trial-list li .author {
   font-size: 11px;
   padding: 0px;
   margin: 0px;
 }
 
-.item-list li .score {
+.trial-list li .score {
   position: absolute;
   /*display: block;*/
   right: 10px;
@@ -88,9 +140,13 @@ h1 {
   padding-top: 15px;
 }
 
-.item-expanded {
+.trial-expanded {
   min-height: 300px;
 }
+
+/**********************************/
+/************* CHART **************/
+/**********************************/
 
 .home-chart {
   background-color: #FFF;
