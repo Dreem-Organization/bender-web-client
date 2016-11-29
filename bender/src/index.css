@@ -5,6 +5,7 @@ body {
   background: #f4f1f1;
   color: rgb(51, 50, 59);
   font-family: 'Inconsolata', monospace;
+  font-size: 14px;
 }
 
 h1, h2, h3, h4 {

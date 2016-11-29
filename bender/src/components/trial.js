@@ -21,8 +21,8 @@ export default class Trial extends Component {
     if (this.state.isExpanded) {
       trial = (
         <li className='trial trial-expanded' onClick={this.handleClick}>
-          <h2>{this.props.trial.name}</h2>
-          <div className='date'>{this.props.trial.date}</div>
+          <h2>{this.props.trial.algo_name}</h2>
+          <div className='date'>{this.props.trial.created}</div>
           <div className='score'><span>Loss:</span>{this.props.trial.score}</div>
           <h4>Parameters</h4>
           <table>
@@ -59,8 +59,8 @@ export default class Trial extends Component {
     } else {
       trial = (
         <li className='trial' onClick={this.handleClick}>
-          <h3>{this.props.trial.name}</h3>
-          <div className='date'>{this.props.trial.date}</div>
+          <h3>{this.props.trial.algo_name}</h3>
+          <div className='date'>{this.props.trial.created}</div>
           <div className='score'>{this.props.trial.score}</div>
         </li>
       )

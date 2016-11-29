@@ -75,6 +75,7 @@ export default class App extends Component {
           <h1 className='logo'>BENDER</h1>
         </div>
         {this._renderMainView()}
+        <br/><br/>
       </div>
     )
   }
