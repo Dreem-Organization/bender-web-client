@@ -8,7 +8,7 @@ export default class Experiment extends Component {
   }
 
   handleExperimentClick () {
-    this.props.moveToView('trial-list', this.props.experiment.id)
+    this.props.moveToView('experiment', this.props.experiment.id)
   }
 
   render () {
@@ -17,8 +17,8 @@ export default class Experiment extends Component {
         <h3>{this.props.experiment.name}</h3>
         <p className='author'>{this.props.experiment.author}</p>
         <div className='trial-count'>
-            <span>{this.props.experiment.trial_count}</span>
-            <br />trials
+          <span>{this.props.experiment.trial_count}</span>
+          <br />trials
         </div>
       </li>
     )

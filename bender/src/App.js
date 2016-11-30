@@ -1,14 +1,16 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import logo from './images/logo.svg'
-import TrialList from './components/trial-list'
+import Experiment from './components/experiment'
 import ExperimentList from './components/experiment-list'
+import LeftMenu from './components/left-menu.js'
+
 import 'whatwg-fetch'
+import 'antd/dist/antd.css'
 import './App.css'
 
 const mainViews = [
   'experiment-list',
-  'trial-list'
+  'experiment'
 ]
 
 export default class App extends Component {
@@ -50,7 +52,7 @@ export default class App extends Component {
         )
     } else if (this.state.mainView === mainViews[1]) {
       return (
-        <TrialList
+        <Experiment
           experiment={this._getSelectedExperiment()}
           moveToView={this.moveToView}
         />
@@ -68,14 +70,10 @@ export default class App extends Component {
   render () {
     return (
       <div className='App'>
-        <div className='App-header'>
-          <a href='/'>
-            <img src={logo} className='App-logo' alt='logo' />
-          </a>
-          <h1 className='logo'>BENDER</h1>
-        </div>
+        <LeftMenu />
+        <br />
         {this._renderMainView()}
-        <br/><br/>
+        <br />
       </div>
     )
   }

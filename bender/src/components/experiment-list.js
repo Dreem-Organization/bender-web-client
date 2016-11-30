@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import ExperimentListItem from './experiment-list-item'
+import ExperimentForm from './experiment-form'
+import { Button } from 'antd'
+import { Row, Col } from 'antd'
 
 export default class ExperimentList extends Component {
   constructor (props) {
@@ -23,7 +26,12 @@ export default class ExperimentList extends Component {
   render () {
     return (
       <div className='main-container'>
-        <h1 className='main'>Experiments</h1>
+        <Row>
+          <Col span={12}><h1 className='main'>Experiments</h1></Col>
+          <Col span={12} style={{paddingTop: '15px'}}>
+            <ExperimentForm />
+          </Col>
+        </Row>
         <div className='experiment-list'>
           <ul>{this._getExperimentList()}</ul>
         </div>

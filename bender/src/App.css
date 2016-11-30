@@ -1,13 +1,15 @@
 .App {
   color: rgb(72, 72, 82);
+  padding: 10px;
 }
 
 div {
 }
 
 .App-logo {
-  margin-top: 20px;
   height: 45px;
+  margin: 12px;
+  margin-top: 20px;
 }
 
 .App-header {
@@ -16,14 +18,34 @@ div {
   text-align: center;
 }
 
+.left-menu {
+  width: 70px;
+  height: 100%;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  background: #fff;
+  border-right: 1px solid rgb(233, 233, 233);
+  box-shadow: 2px 5px 3px px rgba(0,0,0, 0.08);
+  z-index: 100;
+}
+
+.menu-bottom-button {
+  position: absolute;
+  bottom: 20px;
+  padding: 10px 15px;
+}
+
+
 h1.logo {
   font-size: 19px;
   letter-spacing: 1px;
 }
 
 h1.main {
-  font-size: 20px;
+  font-size: 22px;
   letter-spacing: 1px;
+  margin: 15px 0px;
 }
 
 .main-container {
@@ -163,7 +185,6 @@ p.author {
 .trial-list li .date {
   font-size: 13px;
   padding: 0px;
-  margin-top: 2px;
   color: #919197;
   font-weight: 600;
 }
@@ -179,9 +200,10 @@ p.author {
 }
 
 li.trial-expanded {
-  min-height: 300px;
+  min-height: 100px;
   max-height: none;
-  padding-bottom: 25px;
+  height: auto;
+  position: relative;
   /*box-shadow: inset 0px 0px 2px rgba(0, 0, 0, 0.1);*/
   background-color: #F7F7F7 !important;
   border-top: 1px solid #dfdfdf;
@@ -194,10 +216,13 @@ li.trial-expanded .score {
   top: 10px;
 }
 .trial-list li .score span {
-  font-size: 13px;
+  font-size: 11.5px;
   text-transform: uppercase;
   margin-right: 5px;
   position: relative;
+  font-weight: 800;
+  opacity: 0.7;
+  letter-spacing: 1px;
   top: -1px;
 }
 
@@ -209,7 +234,9 @@ table {
   position: relative;
   background: #dfdfdf;
   min-width: 100%;
-  margin-top: 20px;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  border-radius: 2px;
 }
 table, th, td {
     /*border: 1px solid #dfdfdf;*/
