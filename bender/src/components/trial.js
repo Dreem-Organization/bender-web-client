@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import TimeAgo from 'react-timeago'
+import _ from 'lodash'
 
 
 export default class Trial extends Component {
@@ -11,7 +12,7 @@ export default class Trial extends Component {
       isExpanded: false,
       main_metric: {
         name: Object.keys(this.props.trial.results)[0],
-        value: this.props.trial.results[Object.keys(this.props.trial.results)[0]]
+        value: _.round(this.props.trial.results[Object.keys(this.props.trial.results)[0]], 3)
       }
     }
   }
@@ -22,9 +23,25 @@ export default class Trial extends Component {
     })
   }
 
+  _renderTableFromObject (obj, title) {
+      if (Object.values(obj).length >= 1) {
+          return (
+            <div>
+              <h4>{title}</h4>
+              <table>
+                <tbody>
+                  <tr>{Object.keys(obj).map((e) => <td><b>{e}</b></td>)}</tr>
+                  <tr>{Object.values(obj).map((e) => <td>{e}</td>)}</tr>
+                </tbody>
+              </table>
+            </div>
+          )
+      }
+      return null
+  }
+
   render () {
     let trial
-    debugger
     if (this.state.isExpanded) {
       trial = (
         <li className='trial trial-expanded' onClick={this.handleClick}>
@@ -34,20 +51,8 @@ export default class Trial extends Component {
           </div>
           <div className='score'><span>{this.state.main_metric.name}:</span>{this.state.main_metric.value}</div>
           <br />
-          <h4>Parameters</h4>
-          <table>
-            <tbody>
-              <tr>{Object.keys(this.props.trial.parameters).map((e) => <td>{e}</td>)}</tr>
-              <tr>{Object.values(this.props.trial.parameters).map((e) => <td>{e}</td>)}</tr>
-            </tbody>
-          </table>
-          <h4>Metrics</h4>
-          <table>
-            <tbody>
-              <tr>{Object.keys(this.props.trial.results).map((e) => <td>{e}</td>)}</tr>
-              <tr>{Object.values(this.props.trial.results).map((e) => <td>{e}</td>)}</tr>
-            </tbody>
-          </table>
+          {this._renderTableFromObject(this.props.trial.parameters, 'Parameters')}
+          {this._renderTableFromObject(this.props.trial.results, 'Metrics')}
         </li>
       )
     } else {

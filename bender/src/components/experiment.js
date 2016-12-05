@@ -3,6 +3,11 @@ import HomeChart from './home-chart'
 import Trial from './trial'
 import { Button, Icon, Row, Col, Tooltip } from 'antd'
 
+import { Tabs, Select } from 'antd';
+const TabPane = Tabs.TabPane;
+const Option = Select.Option;
+
+
 const ButtonGroup = Button.Group;
 
 export default class Experiment extends Component {
@@ -10,7 +15,8 @@ export default class Experiment extends Component {
     super(props)
 
     this.state = {
-      trials: []
+      trials: [],
+      algos: []
     }
     this._getTrialList = this._getTrialList.bind(this)
     this._getHomeChart = this._getHomeChart.bind(this)
@@ -24,6 +30,13 @@ export default class Experiment extends Component {
     .then((json) => {
       this.setState({trials: json})
     })
+    fetch('http://127.0.0.1:8000/algos_for_experiment/' + this.props.experiment.id + '/', {
+      headers: {'Content-type': 'application/json'}
+    })
+    .then((res) => res.json())
+    .then((json) => {
+      this.setState({algos: json})
+    })
   }
 
   _getTrialList () {
@@ -33,11 +46,11 @@ export default class Experiment extends Component {
   }
 
   _getHomeChart () {
-      if (this.state.trials.length > 0) {
-          return (<HomeChart items={this.state.trials} />)
-      } else {
-          return (null)
-      }
+    if (this.state.trials.length > 0) {
+      return (<HomeChart trials={this.state.trials} algos={this.state.algos} />)
+    } else {
+      return null
+    }
   }
 
   render () {
@@ -47,21 +60,27 @@ export default class Experiment extends Component {
           <a onClick={() => this.props.moveToView('experiment-list')}>Experiments</a> > {this.props.experiment.name}
         </h1>
         <Row>
-            <Col span={12}>
-                <i>by {this.props.experiment.author}</i>
-            </Col>
-            <Col span={12}>
-                <Tooltip title='Click to copy'>
-                    <Button style={{float: 'right'}} type='dashed'>67T8EZ6TZ8ED675Z4DRFE</Button>
-                </Tooltip>
-            </Col>
+          <Col span={12}>
+            <i>by {this.props.experiment.author}</i>
+            <span className='dataset-label'>{this.props.experiment.dataset}</span>
+          </Col>
+          <Col span={12}>
+            <Tooltip title='Click to copy'>
+              <Button style={{float: 'right'}} type='dashed'>67T8EZ6TZ8ED675Z4DRFE</Button>
+            </Tooltip>
+          </Col>
         </Row>
         <p className='experiment-description'>{this.props.experiment.description}</p>
         {this._getHomeChart()}
-        <h3 style={{marginBottom: 5}}>Latest Trials:</h3>
-        <div className='trial-list'>
-          <ul>{this._getTrialList()}</ul>
-        </div>
+        <Tabs tabPosition={'top'} animated={false}>
+          <TabPane tab={<h4>Latest Trials</h4>} key='1'>
+            <div className='trial-list'>
+              <ul>{this._getTrialList()}</ul>
+            </div>
+          </TabPane>
+          <TabPane tab={<h4>Dashboard</h4>} key='2'>Content of Tab 2</TabPane>
+          <TabPane tab={<h4>Infos</h4>} key='3'>Content of Tab 2</TabPane>
+        </Tabs>
       </div>
       )
   }

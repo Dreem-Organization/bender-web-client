@@ -248,3 +248,17 @@ th, td {
   font-weight: 500;
   font-size: 14px;
 }
+
+
+.dataset-label {
+    /*background: rgb(240, 240, 240);*/
+    background-color: #F7F7F7;
+    border: 2px solid #dfdfdf;
+    color: rgb(131, 16, 68);
+    border-radius: 3px;
+    /*display: inline-block;*/
+    margin-left: 15px;
+    padding: 1px 4px;
+    font-size: 13px;
+
+}
