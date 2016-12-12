@@ -1,14 +1,9 @@
 import React, { Component } from 'react'
 import HomeChart from './home-chart'
 import Trial from './trial'
-import { Button, Icon, Row, Col, Tooltip } from 'antd'
+import { Button, Row, Col, Tooltip, Tabs } from 'antd'
 
-import { Tabs, Select } from 'antd';
-const TabPane = Tabs.TabPane;
-const Option = Select.Option;
-
-
-const ButtonGroup = Button.Group;
+const TabPane = Tabs.TabPane
 
 export default class Experiment extends Component {
   constructor (props) {
@@ -78,8 +73,8 @@ export default class Experiment extends Component {
               <ul>{this._getTrialList()}</ul>
             </div>
           </TabPane>
-          <TabPane tab={<h4>Dashboard</h4>} key='2'>Content of Tab 2</TabPane>
-          <TabPane tab={<h4>Infos</h4>} key='3'>Content of Tab 2</TabPane>
+          <TabPane tab={<h4>Algos</h4>} key='3'>Content of Tab 2</TabPane>
+          <TabPane tab={<h4>Infos</h4>} key='4'>Content of Tab 2</TabPane>
         </Tabs>
       </div>
       )

@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import ExperimentListItem from './experiment-list-item'
 import ExperimentForm from './experiment-form'
-import { Button } from 'antd'
 import { Row, Col } from 'antd'
 
 export default class ExperimentList extends Component {

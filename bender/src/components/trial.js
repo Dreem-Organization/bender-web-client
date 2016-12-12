@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import TimeAgo from 'react-timeago'
 import _ from 'lodash'
 
-
 export default class Trial extends Component {
   constructor (props) {
     super(props)
@@ -24,20 +23,20 @@ export default class Trial extends Component {
   }
 
   _renderTableFromObject (obj, title) {
-      if (Object.values(obj).length >= 1) {
-          return (
-            <div>
-              <h4>{title}</h4>
-              <table>
-                <tbody>
-                  <tr>{Object.keys(obj).map((e) => <td><b>{e}</b></td>)}</tr>
-                  <tr>{Object.values(obj).map((e) => <td>{e}</td>)}</tr>
-                </tbody>
-              </table>
-            </div>
-          )
-      }
-      return null
+    if (Object.values(obj).length >= 1) {
+      return (
+        <div>
+          <h4>{title}</h4>
+          <table>
+            <tbody>
+              <tr>{Object.keys(obj).map((e, i) => <td key={i}><b>{e}</b></td>)}</tr>
+              <tr>{Object.values(obj).map((e, i) => <td key={i}>{_.isNumber(e) ? _.round(e, 3) : e}</td>)}</tr>
+            </tbody>
+          </table>
+        </div>
+      )
+    }
+    return null
   }
 
   render () {
@@ -49,7 +48,10 @@ export default class Trial extends Component {
           <div className='date'>
             <TimeAgo date={this.props.trial.created} />
           </div>
-          <div className='score'><span>{this.state.main_metric.name}:</span>{this.state.main_metric.value}</div>
+          <div className='score'>
+            <span>{this.state.main_metric.name}:</span>
+            {this.state.main_metric.value}
+          </div>
           <br />
           {this._renderTableFromObject(this.props.trial.parameters, 'Parameters')}
           {this._renderTableFromObject(this.props.trial.results, 'Metrics')}
@@ -60,7 +62,7 @@ export default class Trial extends Component {
         <li className='trial' onClick={this.handleClick}>
           <h3>{this.props.trial.algo_name}</h3>
           <div className='date'>
-          <TimeAgo date={this.props.trial.created} />
+            <TimeAgo date={this.props.trial.created} />
           </div>
           <div className='score'><span>{this.state.main_metric.name}:</span>{this.state.main_metric.value}</div>
         </li>
