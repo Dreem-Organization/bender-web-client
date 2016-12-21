@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import TimeAgo from 'react-timeago'
+import { Row, Col } from 'antd'
 import _ from 'lodash'
 
 export default class Trial extends Component {
@@ -25,7 +26,7 @@ export default class Trial extends Component {
   _renderTableFromObject (obj, title) {
     if (Object.values(obj).length >= 1) {
       return (
-        <div>
+        <div style={{margin: '5px'}}>
           <h4>{title}</h4>
           <table>
             <tbody>
@@ -43,18 +44,28 @@ export default class Trial extends Component {
     let trial
     if (this.state.isExpanded) {
       trial = (
-        <li className='trial trial-expanded' onClick={this.handleClick}>
-          <h2>{this.props.trial.algo_name}</h2>
-          <div className='date'>
-            <TimeAgo date={this.props.trial.created} />
+        <li className='trial-expanded'>
+          <div className='trial trial-expanded-header' onClick={this.handleClick}>
+            <h2>{this.props.trial.algo_name}</h2>
+            <div className='date'>
+              <TimeAgo date={this.props.trial.created} />
+            </div>
+            <div className='score'>
+              <span>{this.state.main_metric.name}:</span>
+              {this.state.main_metric.value}
+            </div>
           </div>
-          <div className='score'>
-            <span>{this.state.main_metric.name}:</span>
-            {this.state.main_metric.value}
+          <div className='trial-expanded-content'>
+            <q>{this.props.trial.comment}</q>
+            <Row>
+              <Col span={12}>
+                {this._renderTableFromObject(this.props.trial.parameters, 'Parameters')}
+              </Col>
+              <Col span={12}>
+                {this._renderTableFromObject(this.props.trial.results, 'Metrics')}
+              </Col>
+            </Row>
           </div>
-          <br />
-          {this._renderTableFromObject(this.props.trial.parameters, 'Parameters')}
-          {this._renderTableFromObject(this.props.trial.results, 'Metrics')}
         </li>
       )
     } else {

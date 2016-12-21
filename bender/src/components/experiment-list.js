@@ -35,6 +35,6 @@ export default class ExperimentList extends Component {
           <ul>{this._getExperimentList()}</ul>
         </div>
       </div>
-      )
+    )
   }
 }

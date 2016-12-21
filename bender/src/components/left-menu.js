@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Tooltip } from 'antd'
+import { Switch } from 'antd'
 import logo from '../images/bender-logo.svg'
 
 export default class LeftMenu extends Component {
@@ -16,6 +17,12 @@ export default class LeftMenu extends Component {
           <Tooltip placement='right' title={'Settings'}>
             <Button type='ghost' size='large' shape='circle-outline' icon='setting' />
           </Tooltip>
+          <Switch
+            style={{marginTop: '20px'}}
+            checkedChildren=''
+            unCheckedChildren=''
+            size='small'
+            />
         </div>
       </div>
     )

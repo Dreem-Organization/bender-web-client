@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import HomeChart from './home-chart'
 import Trial from './trial'
+import AlgoList from './algo-list'
 import { Button, Row, Col, Tooltip, Tabs } from 'antd'
+import Clipboard from 'clipboard'
+import Dashboard from './dashboard'
 
 const TabPane = Tabs.TabPane
 
@@ -11,22 +14,45 @@ export default class Experiment extends Component {
 
     this.state = {
       trials: [],
-      algos: []
+      algos: [],
+      animateChart: true
     }
     this._getTrialList = this._getTrialList.bind(this)
     this._getHomeChart = this._getHomeChart.bind(this)
+    this.fetchData = this.fetchData.bind(this)
   }
 
   componentDidMount () {
-    fetch('http://127.0.0.1:8000/trials_for_experiment/' + this.props.experiment.id + '/', {
-      headers: {'Content-type': 'application/json'}
+    this.fetchData()
+    this.interval = setInterval(this.fetchData, 5000)
+    this.clipboard = new Clipboard(
+      '#buttonId', {
+        target: () => document.getElementById('inputId')
+      }
+    )
+  }
+
+  fetchData () {
+    if (this.state.animateChart) {
+      setTimeout(() => {
+        this.setState({animateChart: false})
+      }, 3000)
+    }
+    fetch('https://api.rythm.co/v1/dreem/bender/trials_for_experiment/' + this.props.experiment.id + '/', {
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2ZDExNTY0YzczM2U0MDhkYTRiYzVlZWYxNjE5NTMxZiIsImV4cCI6MTQ3MTQ2MDE4NiwicGVybWlzc2lvbnMiOiJoZWFkYmFuZD10ZWFtO25vY3Rpcz1hZG1pbjtkcmVlbWVyPXRlYW07Y3VzdG9tZXI9dGVhbTtkYXRhc2V0PXRlYW07bmlnaHRyZXBvcnQ9dGVhbTtkYXRhdXBsb2FkPWFkbWluO2RhdGFzYW1wbGU9dGVhbTthbGdvcnl0aG09dGVhbTtwcm9kdWN0X3Rlc3Rpbmc9dGVhbSJ9.JRDPQVQGZWvd9C6UMNtG2Q0tDxbMgqSk21r6UI8C38w'
+      }
     })
     .then((res) => res.json())
     .then((json) => {
       this.setState({trials: json})
     })
-    fetch('http://127.0.0.1:8000/algos_for_experiment/' + this.props.experiment.id + '/', {
-      headers: {'Content-type': 'application/json'}
+    fetch('https://api.rythm.co/v1/dreem/bender/algos_for_experiment/' + this.props.experiment.id + '/', {
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2ZDExNTY0YzczM2U0MDhkYTRiYzVlZWYxNjE5NTMxZiIsImV4cCI6MTQ3MTQ2MDE4NiwicGVybWlzc2lvbnMiOiJoZWFkYmFuZD10ZWFtO25vY3Rpcz1hZG1pbjtkcmVlbWVyPXRlYW07Y3VzdG9tZXI9dGVhbTtkYXRhc2V0PXRlYW07bmlnaHRyZXBvcnQ9dGVhbTtkYXRhdXBsb2FkPWFkbWluO2RhdGFzYW1wbGU9dGVhbTthbGdvcnl0aG09dGVhbTtwcm9kdWN0X3Rlc3Rpbmc9dGVhbSJ9.JRDPQVQGZWvd9C6UMNtG2Q0tDxbMgqSk21r6UI8C38w'
+      }
     })
     .then((res) => res.json())
     .then((json) => {
@@ -42,7 +68,13 @@ export default class Experiment extends Component {
 
   _getHomeChart () {
     if (this.state.trials.length > 0) {
-      return (<HomeChart trials={this.state.trials} algos={this.state.algos} />)
+      return (
+        <HomeChart
+          trials={this.state.trials}
+          algos={this.state.algos}
+          isAnimationActive={this.state.animateChart}
+        />
+     )
     } else {
       return null
     }
@@ -60,8 +92,20 @@ export default class Experiment extends Component {
             <span className='dataset-label'>{this.props.experiment.dataset}</span>
           </Col>
           <Col span={12}>
+            <input
+              id={'inputId'}
+              type={'text'}
+              value={this.props.experiment.id}
+              style={{opacity: 0}}
+              readOnly
+            />
             <Tooltip title='Click to copy'>
-              <Button style={{float: 'right'}} type='dashed'>67T8EZ6TZ8ED675Z4DRFE</Button>
+              <Button
+                style={{float: 'right'}}
+                id={'buttonId'}
+                type='dashed'>
+                {this.props.experiment.id}
+              </Button>
             </Tooltip>
           </Col>
         </Row>
@@ -73,10 +117,18 @@ export default class Experiment extends Component {
               <ul>{this._getTrialList()}</ul>
             </div>
           </TabPane>
-          <TabPane tab={<h4>Algos</h4>} key='3'>Content of Tab 2</TabPane>
-          <TabPane tab={<h4>Infos</h4>} key='4'>Content of Tab 2</TabPane>
+          <TabPane tab={<h4>Algos</h4>} key='3'>
+            <AlgoList algos={this.state.algos} />
+          </TabPane>
+          <TabPane tab={<h4>Dashboard</h4>} key='4'>
+            <Dashboard
+              algos={this.state.algos}
+              trials={this.state.trials}
+              experiment={this.props.experiment}
+            />
+          </TabPane>
         </Tabs>
       </div>
-      )
+    )
   }
 }
