@@ -7,10 +7,10 @@ node ('frontend-slave') {
     stage('Build Container Image') {
       print("Starting build pipeline on branch ${env.BRANCH_NAME}")
       checkout scm
-      sh 'cd bender'
-      sh 'npm install && npm run build'
-      sh 'docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASSWORD" registry.rythm.co'
-      sh 'docker build -t registry.rythm.co/bender-front:latest . '
+      sh '''cd bender
+      npm install && npm run build
+      docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASSWORD" registry.rythm.co
+      docker build -t registry.rythm.co/bender-front:latest . '''
     }
 
     if(env.BRANCH_NAME == "staging" || env.BRANCH_NAME == "master") {
