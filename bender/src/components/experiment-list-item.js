@@ -8,7 +8,9 @@ export default class Experiment extends Component {
   }
 
   handleExperimentClick () {
-    this.props.moveToView('experiment', this.props.experiment.id)
+    this.props.moveToView('experiment')
+    this.props.fetchData(this.props.experiment.id)
+    this.props.setSelectedExperiment(this.props.experiment.id)
   }
 
   render () {

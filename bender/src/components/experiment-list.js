@@ -17,6 +17,8 @@ export default class ExperimentList extends Component {
           key={i}
           experiment={experiment}
           moveToView={this.props.moveToView}
+          fetchData={this.props.fetchData}
+          setSelectedExperiment={this.props.setSelectedExperiment}
         />
       )
     })

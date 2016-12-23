@@ -4,7 +4,6 @@ import Trial from './trial'
 import AlgoList from './algo-list'
 import { Button, Row, Col, Tooltip, Tabs, Icon } from 'antd'
 import Clipboard from 'clipboard'
-import Dashboard from './dashboard'
 
 const TabPane = Tabs.TabPane
 
@@ -13,18 +12,12 @@ export default class Experiment extends Component {
     super(props)
 
     this.state = {
-      trials: [],
-      algos: [],
       animateChart: true
     }
     this._getTrialList = this._getTrialList.bind(this)
-    this._getHomeChart = this._getHomeChart.bind(this)
-    this.fetchData = this.fetchData.bind(this)
   }
 
   componentDidMount () {
-    this.fetchData()
-    this.interval = setInterval(this.fetchData, 5000)
     this.clipboard = new Clipboard(
       '#buttonId', {
         target: () => document.getElementById('inputId')
@@ -32,31 +25,9 @@ export default class Experiment extends Component {
     )
   }
 
-  fetchData () {
-    if (this.state.animateChart) {
-      setTimeout(() => {
-        this.setState({animateChart: false})
-      }, 3000)
-    }
-    fetch('http://127.0.0.1:8000/trials_for_experiment/' + this.props.experiment.id + '/', {
-      headers: {'Content-type': 'application/json'}
-    })
-    .then((res) => res.json())
-    .then((json) => {
-      this.setState({trials: json})
-    })
-    fetch('http://127.0.0.1:8000/algos_for_experiment/' + this.props.experiment.id + '/', {
-      headers: {'Content-type': 'application/json'}
-    })
-    .then((res) => res.json())
-    .then((json) => {
-      this.setState({algos: json})
-    })
-  }
-
   _getTrialList () {
-    if (this.state.trials.length >= 1) {
-      const trialList = this.state.trials.map((trial, i) => {
+    if (this.props.trials.length >= 1) {
+      const trialList = this.props.trials.map((trial, i) => {
         return <Trial key={i} trial={trial} />
       })
       return (
@@ -74,11 +45,11 @@ export default class Experiment extends Component {
   }
 
   _getHomeChart () {
-    if (this.state.trials.length > 0) {
+    if (this.props.trials.length > 0) {
       return (
         <HomeChart
-          trials={this.state.trials}
-          algos={this.state.algos}
+          trials={this.props.trials}
+          algos={this.props.algos}
           isAnimationActive={this.state.animateChart}
         />
      )
@@ -100,6 +71,7 @@ export default class Experiment extends Component {
           <Button
             style={{float: 'right', marginTop: '15px', fontSize: '13px'}}
             id={'buttonId'}
+            onClick={() => this.props.moveToView('experimentDashboard')}
             type='primary'>
             Dashboard
           </Button>
@@ -135,14 +107,9 @@ export default class Experiment extends Component {
             {this._getTrialList()}
           </TabPane>
           <TabPane tab={<h4>Algos</h4>} key='3'>
-            <AlgoList algos={this.state.algos} />
+            <AlgoList algos={this.props.algos} />
           </TabPane>
           <TabPane tab={<h4>Infos</h4>} key='4'>
-            <Dashboard
-              algos={this.state.algos}
-              trials={this.state.trials}
-              experiment={this.props.experiment}
-            />
           </TabPane>
         </Tabs>
       </div>

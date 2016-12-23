@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import { ComposedChart, ResponsiveContainer, AreaChart, Area, Line, YAxis, CartesianGrid, Tooltip } from 'recharts'
+import { ComposedChart, ResponsiveContainer, Area, Line, YAxis, CartesianGrid, Tooltip } from 'recharts'
 import { Card, Select, Button, Tooltip as AntdTooltip } from 'antd'
 import TimeAgo from 'react-timeago'
 import 'antd/lib/card/style/css'
