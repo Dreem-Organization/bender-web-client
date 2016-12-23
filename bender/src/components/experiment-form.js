@@ -33,7 +33,7 @@ export default class ExperimentForm extends Component {
     return (
       <div>
         <Button style={{'float': 'right'}} type='primary' size='large' onClick={this.showModal}>
-          CREATE EXPERIMENT
+          Create Experiment
         </Button>
         <Modal
           visible={this.state.visible}

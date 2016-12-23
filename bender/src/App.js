@@ -6,7 +6,7 @@ import LeftMenu from './components/left-menu.js'
 
 import 'whatwg-fetch'
 import 'antd/dist/antd.css'
-import './App.css'
+import './App.scss'
 
 const mainViews = [
   'experiment-list',

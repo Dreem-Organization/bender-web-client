@@ -1,0 +1,331 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background: #f4f1f1;
+  color: rgb(51, 50, 59);
+  font-family: 'Inconsolata', monospace;
+  font-size: 14px;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Lekton', sans-serif;
+}
+
+.App {
+  color: #46474b !important;
+  padding: 10px;
+  .App-logo {
+    height: 43px;
+    margin: 14px;
+    margin-top: 20px;
+  }
+  .App-header {
+    height: 130px;
+    padding: 20px;
+    text-align: center;
+  }
+}
+
+.left-menu {
+  width: 70px;
+  height: 100%;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  background: #fff;
+  border-right: 1px solid rgb(233, 233, 233);
+  box-shadow: 2px 5px 3px px rgba(0,0,0, 0.08);
+  z-index: 100;
+}
+
+.menu-bottom-button {
+  position: absolute;
+  bottom: 20px;
+  padding: 10px 15px;
+}
+
+h1 {
+  &.logo {
+    font-size: 19px;
+    letter-spacing: 1px;
+  }
+  &.main {
+    font-size: 20px;
+    letter-spacing: 1px;
+    margin: 15px 0px;
+  }
+  &.no-trials {
+    font-size: px;
+    margin: 30px 0px;
+  }
+}
+
+
+.main-container {
+  margin: 0px auto;
+  max-width: 1050px;
+  width: 75%;
+  margin: 0px auto;
+}
+
+i.author {
+  display: inline-block;
+  margin: 8px 0px;
+  font-size: 13px;
+}
+
+/*********************************/
+/********** EXPERIMENT ***********/
+/*********************************/
+
+.experiment-list {
+  background: #fff;
+  border-radius: 5px;
+  margin: 0px;
+  padding: 0px;
+  box-shadow: 0px 3px 5px -3px rgba(0,0,0, 0.1);
+  ul {
+    list-style: none;
+    padding-left: 0px;
+    position: relative;
+    li {
+      background: #fff;
+      height: 80px;
+      padding: 13px;
+      padding-left: 20px;
+      border-bottom: 2px solid #F7F7F7;
+      position: relative;
+      border: 1px solid #e9e9e9;
+      &:hover {
+        background: #F7F7F7;
+        cursor: pointer;
+        position: relative;
+      }
+      h3 {
+        font-size: 16px;
+        padding: 0px;
+        margin: 0px;
+      }
+      &:first-child {
+        border-top-left-radius: 5px !important;
+        border-top-right-radius: 5px !important;
+      }
+      &:last-child{
+        border-bottom-left-radius: 5px !important;
+        border-bottom-right-radius: 5px !important;
+        border-bottom: 0px;
+      }
+      .trial-count {
+        text-align: center;
+        position: absolute;
+        right: 10px;
+        top: 0px;
+        font-size: 12px;
+        padding: 13px;
+      }
+      .algo-count {
+        text-align: center;
+        position: absolute;
+        right: 80px;
+        top: 0px;
+        font-size: 12px;
+        padding: 13px;
+      }
+      span {
+        font-size: 25px;
+      }
+    }
+  }
+}
+
+.experiment-description {
+  margin: 20px 0px;
+}
+
+/**********************************/
+/************* TRIAL **************/
+/**********************************/
+
+.trial-list {
+  background: #fff;
+  border-radius: 5px;
+  /*overflow: hidden;*/
+  margin: 0px;
+  padding: 0px;
+  box-shadow: 0px 5px 10px -3px rgba(0,0,0, 0.1);
+  border: 1px solid #e9e9e9;
+
+  ul {
+    list-style: none;
+    padding-left: 0px;
+    position: relative;
+    li {
+      &.trial {
+        background: #fff;
+        height: 60px;
+        padding: 10px;
+        padding-left: 20px;
+        border-bottom: 2px solid #F7F7F7;
+        position: relative;
+
+        &:hover {
+          background: #F7F7F7;
+          cursor: pointer;
+          position: relative;
+        }
+        &:first-child{
+          border-top-left-radius: 5px !important;
+          border-top-right-radius: 5px !important;
+        }
+        &:last-child{
+          border-bottom-left-radius: 5px !important;
+          border-bottom-right-radius: 5px !important;
+          border-bottom: 0px;
+        }
+        h3 {
+          font-size: 15px;
+          padding: 0px;
+          margin: 0px;
+        }
+        .date {
+          font-size: 12px;
+          padding: 0px;
+          color: #919197;
+          font-weight: 600;
+        }
+      }
+      &.trial-expanded {
+        min-height: 100px;
+        max-height: none;
+        height: auto;
+        position: relative;
+        box-shadow: 0px -1px 2px rgba(0, 0, 0, 0.05),
+                    0px 3px 6px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+        z-index: 100;
+        width: 101%;
+        right: .5%;
+        border-radius: 5px;
+
+        div.trial-expanded-header {
+          background-color: #F7F7F7;
+          padding: 15px;
+          border-bottom: 1px solid #e9e9e9;
+          cursor: pointer;
+          border-top-left-radius: 5px !important;
+          border-top-right-radius: 5px !important;
+          box-shadow: inset 0px 20px 50px -10px rgba(#fff, 1);
+          h2 {
+            font-size: 18px;
+          }
+        }
+        div.trial-expanded-content {
+          padding: 15px;
+        }
+        .score {
+          top: 10px;
+        }
+      }
+      .score {
+        position: absolute;
+        right: 10px;
+        top: 0px;
+        font-size: 18px;
+        padding: 10px;
+        padding-top: 15px;
+      }
+    }
+  }
+}
+
+.trial-list li .score span {
+  font-size: 11.5px;
+  text-transform: uppercase;
+  margin-right: 5px;
+  position: relative;
+  font-weight: 800;
+  opacity: 0.7;
+  letter-spacing: 1px;
+  top: -1px;
+}
+
+
+/**********************************/
+/************* TABLE **************/
+/**********************************/
+table {
+  position: relative;
+  background: #dfdfdf;
+  min-width: 100%;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  border-radius: 2px;
+}
+table, th, td {
+    /*border: 1px solid #dfdfdf;*/
+}
+
+th, td {
+  /*border: 1px solid;*/
+  padding: 5px;
+  background: #fff;
+  font-weight: 500;
+  font-size: 13px;
+}
+
+
+.dataset-label {
+  background-color: #F7F7F7;
+  border: 1px solid #dfdfdf;
+  color: rgb(129, 70, 96);
+  border-radius: 3px;
+  margin-left: 15px;
+  padding: 2px 5px;
+  font-size: 13px;
+}
+
+.ant-tabs {
+  overflow: visible !important;
+}
+
+div.algolist-wrapper {
+  margin: 15px 0px;
+  border-radius: 5px;
+  background: #F7F7F7;
+  border: 1px solid #e9e9e9;
+  background: #fff;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+div.algolist-header {
+  background: #F7F7F7;
+  width: 100%;
+  top: 0px;
+  padding: 10px;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  border-bottom: 1px solid #e9e9e9;
+}
+
+div.algolist-content {
+  padding: 15px 15px;
+}
+
+
+/**********************************/
+/************* DASHBOARD **************/
+/**********************************/
+
+.dashboard-number {
+  text-align: center;
+  padding: 20px 0px;
+  border-radius: 5px;
+  border: 1px solid #e9e9e9;
+  margin: 10px;
+  h1{
+    font-size: 30px;
+    font-weight: lighter;
+    text-transform: uppercase;
+  }
+}

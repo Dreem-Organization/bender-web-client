@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import HomeChart from './home-chart'
 import Trial from './trial'
 import AlgoList from './algo-list'
-import { Button, Row, Col, Tooltip, Tabs } from 'antd'
+import { Button, Row, Col, Tooltip, Tabs, Icon } from 'antd'
 import Clipboard from 'clipboard'
 import Dashboard from './dashboard'
 
@@ -55,9 +55,22 @@ export default class Experiment extends Component {
   }
 
   _getTrialList () {
-    return this.state.trials.map((trial, i) => {
-      return <Trial key={i} trial={trial} />
-    })
+    if (this.state.trials.length >= 1) {
+      const trialList = this.state.trials.map((trial, i) => {
+        return <Trial key={i} trial={trial} />
+      })
+      return (
+        <div className='trial-list'>
+          <ul>{trialList}</ul>
+        </div>
+      )
+    } else {
+      return (
+        <h2 className='no-trials'>
+          No trials send yet.
+        </h2>
+      )
+    }
   }
 
   _getHomeChart () {
@@ -77,9 +90,21 @@ export default class Experiment extends Component {
   render () {
     return (
       <div className='main-container'>
-        <h1 className='main'>
-          <a onClick={() => this.props.moveToView('experiment-list')}>Experiments</a> > {this.props.experiment.name}
-        </h1>
+        <Row>
+          <Col span={12}>
+            <h1 className='main'>
+              <a onClick={() => this.props.moveToView('experiment-list')}>Experiments</a> > {this.props.experiment.name}
+            </h1>
+          </Col>
+          <Col span={12}>
+          <Button
+            style={{float: 'right', marginTop: '15px', fontSize: '13px'}}
+            id={'buttonId'}
+            type='primary'>
+            Dashboard
+          </Button>
+          </Col>
+        </Row>
         <Row>
           <Col span={12}>
             <i>by {this.props.experiment.author}</i>
@@ -107,14 +132,12 @@ export default class Experiment extends Component {
         {this._getHomeChart()}
         <Tabs tabPosition={'top'} animated={false}>
           <TabPane tab={<h4>Latest Trials</h4>} key='1'>
-            <div className='trial-list'>
-              <ul>{this._getTrialList()}</ul>
-            </div>
+            {this._getTrialList()}
           </TabPane>
           <TabPane tab={<h4>Algos</h4>} key='3'>
             <AlgoList algos={this.state.algos} />
           </TabPane>
-          <TabPane tab={<h4>Dashboard</h4>} key='4'>
+          <TabPane tab={<h4>Infos</h4>} key='4'>
             <Dashboard
               algos={this.state.algos}
               trials={this.state.trials}
