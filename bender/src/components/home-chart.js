@@ -34,7 +34,7 @@ export default class HomeChart extends Component {
     super(props)
 
     this.state = {
-      selectedVar: Object.keys(this.props.trials[0].results)[0],
+      selectedVar: this.props.mainMetric, 
       isFilteringAlgos: false,
       selectedAlgos: this.props.algos.map((k) => k.id)
     }

@@ -4,6 +4,7 @@ import { Row, Col, Card, Button } from 'antd'
 import LineChartWidget from './widgets/line-chart-widget'
 import RadarChartWidget from './widgets/radar-chart-widget'
 import ScatterChartWidget from './widgets/scatter-chart-widget'
+import TrialFilterer from './trial-filterer'
 
 export default class Dashboard extends Component {
   constructor (props) {
@@ -52,15 +53,21 @@ export default class Dashboard extends Component {
               <a onClick={() => this.props.moveToView('experiment')}>{this.props.experiment.name}</a>
               &nbsp;>&nbsp;Dashboard
             </h1>
+            <TrialFilterer
+              experiment={this.props.experiment}
+              algos={this.props.algos}
+              setFilters={this.props.setFilters}
+              filters={this.props.filters}
+            />
           </Col>
           <Col span={4}>
-          <Button
-            style={{float: 'right', marginTop: '15px', fontSize: '13px'}}
-            id={'buttonId'}
-            onClick={() => this.props.moveToView('experiment')}
-            type='default'>
-            Close Dashboard
-          </Button>
+            <Button
+              style={{float: 'right', marginTop: '15px', fontSize: '13px'}}
+              id={'buttonId'}
+              onClick={() => this.props.moveToView('experiment')}
+              type='default'>
+              Close Dashboard
+            </Button>
           </Col>
         </Row>
         <Row>
@@ -78,12 +85,13 @@ export default class Dashboard extends Component {
           </Col>
           {this._getBestMetrics()}
           {this._getMetricsLineCharts()}
-          <RadarChartWidget />
+
           <ScatterChartWidget
             trials={this.props.trials}
             experiment={this.props.experiment}
             algos={this.props.algos}
           />
+        <RadarChartWidget />
         </Row>
       </div>
     )

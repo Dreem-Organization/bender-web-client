@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import HomeChart from './home-chart'
 import Trial from './trial'
 import AlgoList from './algo-list'
-import { Button, Row, Col, Tooltip, Tabs, Icon } from 'antd'
+import TrialFilterer from './trial-filterer'
+import { Button, Row, Col, Tooltip, Tabs } from 'antd'
 import Clipboard from 'clipboard'
 
 const TabPane = Tabs.TabPane
@@ -15,6 +16,7 @@ export default class Experiment extends Component {
       animateChart: true
     }
     this._getTrialList = this._getTrialList.bind(this)
+    this._renderDatasetLabel = this._renderDatasetLabel.bind(this)
   }
 
   componentDidMount () {
@@ -28,7 +30,13 @@ export default class Experiment extends Component {
   _getTrialList () {
     if (this.props.trials.length >= 1) {
       const trialList = this.props.trials.map((trial, i) => {
-        return <Trial key={i} trial={trial} />
+        return (
+          <Trial
+            key={i}
+            trial={trial}
+            mainMetric={this.props.experiment.main_metric}
+          />
+        )
       })
       return (
         <div className='trial-list'>
@@ -44,12 +52,21 @@ export default class Experiment extends Component {
     }
   }
 
+  _renderDatasetLabel () {
+    if (this.props.experiment.dataset !== null && this.props.experiment.dataset.length >= 1) {
+      return (
+        <span className='dataset-label'>{this.props.experiment.dataset}</span>
+      )
+    }
+  }
+
   _getHomeChart () {
     if (this.props.trials.length > 0) {
       return (
         <HomeChart
           trials={this.props.trials}
           algos={this.props.algos}
+          mainMetric={this.props.experiment.main_metric}
           isAnimationActive={this.state.animateChart}
         />
      )
@@ -68,19 +85,19 @@ export default class Experiment extends Component {
             </h1>
           </Col>
           <Col span={12}>
-          <Button
-            style={{float: 'right', marginTop: '15px', fontSize: '13px'}}
-            id={'buttonId'}
-            onClick={() => this.props.moveToView('experimentDashboard')}
-            type='primary'>
-            Dashboard
-          </Button>
+            <Button
+              style={{float: 'right', marginTop: '15px', fontSize: '13px'}}
+              id={'buttonId'}
+              onClick={() => this.props.moveToView('experimentDashboard')}
+              type='primary'>
+              Dashboard
+            </Button>
           </Col>
         </Row>
         <Row>
           <Col span={12}>
             <i>by {this.props.experiment.author}</i>
-            <span className='dataset-label'>{this.props.experiment.dataset}</span>
+            {this._renderDatasetLabel()}
           </Col>
           <Col span={12}>
             <input
@@ -100,17 +117,33 @@ export default class Experiment extends Component {
             </Tooltip>
           </Col>
         </Row>
-        <p className='experiment-description'>{this.props.experiment.description}</p>
-        {this._getHomeChart()}
-        <Tabs tabPosition={'top'} animated={false}>
+        <Row>
+          <Col span={12}>
+            <p className='experiment-description'>
+              {this.props.experiment.description}
+            </p>
+          </Col>
+        </Row>
+        <Tabs
+          tabPosition={'top'}
+          animated={false}
+          tabBarExtraContent={
+            <TrialFilterer
+              experiment={this.props.experiment}
+              algos={this.props.algos}
+              setFilters={this.props.setFilters}
+              filters={this.props.filters}
+            />
+          }
+        >
           <TabPane tab={<h4>Latest Trials</h4>} key='1'>
+            {this._getHomeChart()}
             {this._getTrialList()}
           </TabPane>
           <TabPane tab={<h4>Algos</h4>} key='3'>
             <AlgoList algos={this.props.algos} />
           </TabPane>
-          <TabPane tab={<h4>Infos</h4>} key='4'>
-          </TabPane>
+          <TabPane tab={<h4>Infos</h4>} key='4'></TabPane>
         </Tabs>
       </div>
     )

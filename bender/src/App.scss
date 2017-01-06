@@ -336,3 +336,35 @@ div.algolist-content {
     text-transform: uppercase;
   }
 }
+
+.filterer {
+  border-radius: 5px;
+  width: 482px;
+  overflow: hidden;
+
+  .sort-button {
+    margin:0px;
+    border: 0px solid;
+    min-width: 100px;
+    width: auto;
+
+    > div {
+      border: 1px solid #e9e9e9;
+      border-radius: 0px;
+      border-right: 0px;
+    }
+  }
+  .sort-button:first-child > div {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+  .sort-button:last-child {
+    border-right: 0px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+
+  .sort-button.apply {
+    max-width: 80px;
+  }
+}

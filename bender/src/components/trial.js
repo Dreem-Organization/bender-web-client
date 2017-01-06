@@ -1,7 +1,13 @@
 import React, { Component } from 'react'
 import TimeAgo from 'react-timeago'
-import { Row, Col } from 'antd'
+import { Row, Col, Button } from 'antd'
 import _ from 'lodash'
+
+
+const deleteButtonStyle = {
+  float: 'right',
+  margin: '5px'
+}
 
 export default class Trial extends Component {
   constructor (props) {
@@ -11,8 +17,8 @@ export default class Trial extends Component {
     this.state = {
       isExpanded: false,
       main_metric: {
-        name: Object.keys(this.props.trial.results)[0],
-        value: _.round(this.props.trial.results[Object.keys(this.props.trial.results)[0]], 3)
+        name: this.props.mainMetric,
+        value: _.round(this.props.trial.results[this.props.mainMetric], 3)
       }
     }
   }
@@ -30,8 +36,7 @@ export default class Trial extends Component {
           <h4>{title}</h4>
           <table>
             <tbody>
-              <tr>{Object.keys(obj).map((e, i) => <td key={i}><b>{e}</b></td>)}</tr>
-              <tr>{Object.values(obj).map((e, i) => <td key={i}>{_.isNumber(e) ? _.round(e, 3) : e}</td>)}</tr>
+              {Object.keys(obj).map((e, i) => <tr key={i}><td>{e}</td><td>{obj[e]}</td></tr>)}
             </tbody>
           </table>
         </div>
@@ -64,6 +69,7 @@ export default class Trial extends Component {
               <Col span={12}>
                 {this._renderTableFromObject(this.props.trial.results, 'Metrics')}
               </Col>
+              <Button style={deleteButtonStyle} type='default'>Delete</Button>
             </Row>
           </div>
         </li>
