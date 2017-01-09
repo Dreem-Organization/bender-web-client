@@ -8,7 +8,8 @@ node ('frontend-slave') {
       print("Starting build pipeline on branch ${env.BRANCH_NAME}")
       checkout scm
       sh '''cd bender
-      npm install && npm run build
+      npm install
+      npm run build
       docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASSWORD" registry.rythm.co
       docker build -t registry.rythm.co/bender-front:latest . '''
     }
