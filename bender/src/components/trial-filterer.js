@@ -26,6 +26,7 @@ export default class TrialFilterer extends Component {
 
     this._renderOrderMenu = this._renderOrderMenu.bind(this)
     this._getOrderOptions = this._getOrderOptions.bind(this)
+    this._getAlgoOptions = this._getAlgoOptions.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleSetFilters = this.handleSetFilters.bind(this)
 
@@ -56,7 +57,12 @@ export default class TrialFilterer extends Component {
   }
 
   _getLimitOptions () {
-    return _.map([20, 30, 60, 100], (k, i) => <Option key={i} value={k.toString()}>{k}</Option>)
+    return _.map([10, 20, 30, 60, 100], (k, i) => <Option key={i} value={k.toString()}>{k}</Option>)
+  }
+
+  _getAlgoOptions () {
+    const algos = _.map(this.props.algos, (a, i) => <Option key={i} value={a.id}>{a.name}</Option>)
+    return [<Option key={'all'} value={null}>All</Option>].concat(algos)
   }
 
   handleSetFilters () {
@@ -72,6 +78,13 @@ export default class TrialFilterer extends Component {
   render () {
     return (
       <div className='filterer'>
+        <Select
+          defaultValue={this.props.filters.algo}
+          onChange={(v) => this.handleChange('algo', v)}
+          className={'sort-button'}
+         >
+          {this._getAlgoOptions()}
+        </Select>
         <Select
           defaultValue={this.props.filters.order}
           onChange={(v) => this.handleChange('order', v)}

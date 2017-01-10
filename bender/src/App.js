@@ -32,7 +32,8 @@ export default class App extends Component {
       filters: {
         order: 'date',
         desc: 'true',
-        limit: '30'
+        limit: '30',
+        algo: null
       }
     }
 
@@ -103,7 +104,7 @@ export default class App extends Component {
 
   setFilters (filters) {
     this.setState({filters})
-    let urlFilters = `?order=${filters.order}&desc=${filters.desc}&limit=${filters.limit}`
+    let urlFilters = `?order=${filters.order}&algo=${filters.algo}&desc=${filters.desc}&limit=${filters.limit}`
     this.fetchTrials(this.state.selectedExperiment, urlFilters)
   }
 

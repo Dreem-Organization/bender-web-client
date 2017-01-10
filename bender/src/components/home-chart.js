@@ -34,9 +34,9 @@ export default class HomeChart extends Component {
     super(props)
 
     this.state = {
-      selectedVar: this.props.mainMetric, 
-      isFilteringAlgos: false,
-      selectedAlgos: this.props.algos.map((k) => k.id)
+      selectedVar: this.props.mainMetric,
+      // isFilteringAlgos: false,
+      // selectedAlgos: this.props.algos.map((k) => k.id)
     }
 
     this.handleSelectMetric = this.handleSelectMetric.bind(this)
@@ -70,14 +70,6 @@ export default class HomeChart extends Component {
 
     return (
       <div style={{position: 'relative', 'top': '-2px'}}>
-        <AntdTooltip placement='top' title={'Filter Algorithms'}>
-          <Button
-            style={{ top: '-4px' }}
-            type='ghost'
-            shape='circle' icon='filter'
-            onClick={() => this.setState({isFilteringAlgos: !this.state.isFilteringAlgos})}
-          />
-        </AntdTooltip>
         <Select
           defaultValue={this.state.selectedVar}
           style={{top: '-4px', margin: '0px 10px', width: '160px'}}
@@ -97,7 +89,7 @@ export default class HomeChart extends Component {
   _getChartData () {
     return _
       .chain(this.props.trials)
-      .filter((k) => (_.includes(this.state.selectedAlgos, k.algo)))
+      // .filter((k) => (_.includes(this.state.selectedAlgos, k.algo)))
       .map((k) => ({id: k.id, value: _.round(k.results[this.state.selectedVar], 4)}))
       .reverse()
       .value()
@@ -131,27 +123,6 @@ export default class HomeChart extends Component {
   }
 
   _getChartOrFilter () {
-    if (this.state.isFilteringAlgos) {
-      return (
-        <div>
-          <Select
-            multiple
-            size='normal'
-            style={{width: '100%'}}
-            placeholder='Choose Algos'
-            onChange={this.handleSelectAlgo}
-            defaultValue={this.state.selectedAlgos}
-            >
-            {this.props.algos.map((k) => <Option key={k.id} value={k.id}>{k.name}</Option>)}
-          </Select>
-          <br /><br />
-          <Button
-            type='primary'
-            onClick={() => this.setState({isFilteringAlgos: !this.state.isFilteringAlgos})}
-          >Apply</Button>
-        </div>
-      )
-    }
     return (
       <ComposedChart
         style={chartStyles}

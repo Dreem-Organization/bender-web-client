@@ -53,12 +53,6 @@ export default class Dashboard extends Component {
               <a onClick={() => this.props.moveToView('experiment')}>{this.props.experiment.name}</a>
               &nbsp;>&nbsp;Dashboard
             </h1>
-            <TrialFilterer
-              experiment={this.props.experiment}
-              algos={this.props.algos}
-              setFilters={this.props.setFilters}
-              filters={this.props.filters}
-            />
           </Col>
           <Col span={4}>
             <Button
@@ -68,6 +62,14 @@ export default class Dashboard extends Component {
               type='default'>
               Close Dashboard
             </Button>
+          </Col>
+          <Col span={24}>
+            <TrialFilterer
+              experiment={this.props.experiment}
+              algos={this.props.algos}
+              setFilters={this.props.setFilters}
+              filters={this.props.filters}
+            />
           </Col>
         </Row>
         <Row>
@@ -85,7 +87,6 @@ export default class Dashboard extends Component {
           </Col>
           {this._getBestMetrics()}
           {this._getMetricsLineCharts()}
-
           <ScatterChartWidget
             trials={this.props.trials}
             experiment={this.props.experiment}
