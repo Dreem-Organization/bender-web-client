@@ -91,7 +91,6 @@ export default class Dashboard extends Component {
             experiment={this.props.experiment}
             algos={this.props.algos}
           />
-        <RadarChartWidget />
         </Row>
       </div>
     )

@@ -31,8 +31,8 @@ export default class App extends Component {
       algos: [],
       filters: {
         order: 'date',
-        desc: true,
-        limit: 30
+        desc: 'true',
+        limit: '30'
       }
     }
 
@@ -72,6 +72,7 @@ export default class App extends Component {
     if (urlFilters != null) {
       url = url + urlFilters
     }
+    console.log(url)
     fetch(url, {
       headers: {
         'Content-type': 'application/json',
@@ -101,9 +102,9 @@ export default class App extends Component {
   }
 
   setFilters (filters) {
-    let urlFilters = `?order=${filters.order}&desc=${filters.desc}&limit=${filters.limit}`
     this.setState({filters})
-    this.fetchTrials(this.state.experiment.id, urlFilters)
+    let urlFilters = `?order=${filters.order}&desc=${filters.desc}&limit=${filters.limit}`
+    this.fetchTrials(this.state.selectedExperiment, urlFilters)
   }
 
   _renderMainView () {

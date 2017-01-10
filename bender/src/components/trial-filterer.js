@@ -2,10 +2,10 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import { Menu, Select, Button, Icon, message } from 'antd'
 
-function handleButtonClick (e) {
-  message.info('Click on left button.')
-  console.log('click left button', e)
-}
+// function handleButtonClick (e) {
+//   message.info('Click on left button.')
+//   console.log('click left button', e)
+// }
 
 function handleMenuClick (e) {
   message.info('Click on menu item.')
@@ -16,19 +16,9 @@ const SubMenu = Menu.SubMenu
 const Option = Select.Option
 
 const descOptions = [
-  <Option key={1} value={true}>Descending</Option>,
-  <Option key={2} value={false}>Ascending</Option>
+  <Option key={1} value={'true'}>Descending</Option>,
+  <Option key={2} value={'false'}>Ascending</Option>
 ]
-
-const limitMenu = (
-  <Menu onClick={handleMenuClick}>
-    <Menu.Item key='1'>20</Menu.Item>
-    <Menu.Item key='2'>30</Menu.Item>
-    <Menu.Item key='3'>60</Menu.Item>
-    <Menu.Item key='4'>100</Menu.Item>
-    <Menu.Item key='5'>SHOW ALL</Menu.Item>
-  </Menu>
-)
 
 export default class TrialFilterer extends Component {
   constructor (props) {
@@ -37,10 +27,15 @@ export default class TrialFilterer extends Component {
     this._renderOrderMenu = this._renderOrderMenu.bind(this)
     this._getOrderOptions = this._getOrderOptions.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.handleSetFilters = this.handleSetFilters.bind(this)
 
     this.state = {
-      filters: this.props.filters
+      filters: null
     }
+  }
+
+  componentDidMount () {
+    this.setState({filters: this.props.filters})
   }
 
   _renderOrderMenu () {
@@ -61,7 +56,7 @@ export default class TrialFilterer extends Component {
   }
 
   _getLimitOptions () {
-    return _.map([20, 30, 60, 100], (k) => <Option key={k} value={k}>{k}</Option>)
+    return _.map([20, 30, 60, 100], (k, i) => <Option key={i} value={k.toString()}>{k}</Option>)
   }
 
   handleSetFilters () {
@@ -69,8 +64,8 @@ export default class TrialFilterer extends Component {
   }
 
   handleChange (key, val) {
-    const filters = Object.assign(this.state.filters, {})
-    filters.push[key] = val
+    const filters = Object.assign({}, this.state.filters)
+    filters[key] = val
     this.setState({filters})
   }
 
@@ -93,7 +88,7 @@ export default class TrialFilterer extends Component {
         </Select>
         <Select
           defaultValue={this.props.filters.limit}
-          onChange={(v) => this.handleChange('metric', v)}
+          onChange={(v) => this.handleChange('limit', v)}
           className={'sort-button'}
          >
           {this._getLimitOptions()}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
-import { Row, Col, Card, Select } from 'antd'
+import { Col, Card, Select } from 'antd'
 import { ResponsiveContainer, ScatterChart, Scatter, XAxis, YAxis, ZAxis, CartesianGrid, Tooltip } from 'recharts'
 import TimeAgo from 'react-timeago'
 
@@ -100,7 +100,7 @@ export default class ScatterChartWidget extends Component {
 
   render () {
     return (
-      <Col span={16}>
+      <Col span={24}>
         <Card bordered={false} title={this._selectYVar()} extra={this._selectXVar()} bodyStyle={{height: '220px', 'padding': 10}}>
           <ResponsiveContainer>
             <ScatterChart height={200} margin={{top: 20, right: 15, bottom: -10, left: -25}}>
