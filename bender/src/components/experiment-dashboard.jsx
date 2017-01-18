@@ -16,15 +16,17 @@ export default class Dashboard extends Component {
 
   _getBestMetrics () {
     return _.map(this.props.experiment.metrics, (metric, i) => {
-      const best = _.chain(this.props.trials)
-                       .map((k) => k.results[metric])
-                       .max()
-                       .value()
+      let best = _.chain(this.props.trials).map((k) => k.results[metric])
+      if (this.props.filters.desc === 'true') {
+        best = best.min().value()
+      } else {
+        best = best.max().value()
+      }
       return (
         <Col span={6} key={i}>
           <Card bordered={false} className='dashboard-number'>
             <h1>{_.round(best, 2)}</h1>
-            <p>highest {metric}</p>
+            <p>{this.props.filters.desc === 'true' ? 'min' : 'max'} {metric}</p>
           </Card>
         </Col>
       )
@@ -76,13 +78,13 @@ export default class Dashboard extends Component {
           <Col span={6}>
             <Card bordered={false} className='dashboard-number'>
               <h1>{this.props.experiment.trial_count}</h1>
-              <p>TRIALS</p>
+              <p>total trials</p>
             </Card>
           </Col>
           <Col span={6}>
             <Card bordered={false} className='dashboard-number'>
               <h1>{this.props.experiment.algo_count}</h1>
-              <p>ALGOS</p>
+              <p>total algos</p>
             </Card>
           </Col>
           {this._getBestMetrics()}

@@ -41,13 +41,25 @@ export default class App extends Component {
     this._getSelectedExperiment = this._getSelectedExperiment.bind(this)
     this.moveToView = this.moveToView.bind(this)
     this.setSelectedExperiment = this.setSelectedExperiment.bind(this)
-    this.fetchData = this.fetchData.bind(this)
+    this.fetchExperimentData = this.fetchExperimentData.bind(this)
     this.setFilters = this.setFilters.bind(this)
+    this.fetchExperiments = this.fetchExperiments.bind(this)
     this.fetchTrials = this.fetchTrials.bind(this)
     this.fetchAlgos = this.fetchAlgos.bind(this)
   }
 
   componentDidMount () {
+    this.fetchExperiments()
+  }
+
+  fetchExperimentData (experimentId) {
+    this.setState({algos: [], trials: []})
+    this.fetchAlgos(experimentId)
+    this.fetchTrials(experimentId, null)
+    // this.interval = setInterval(this.fetchExperimentData(experimentId), 5000)
+  }
+
+  fetchExperiments () {
     fetch(`${BASE_URL}/experiments/`, {
       headers: {
         'Content-type': 'application/json',
@@ -60,20 +72,11 @@ export default class App extends Component {
     })
   }
 
-  fetchData (experimentId) {
-    this.setState({algos: [], trials: []})
-    this.fetchAlgos(experimentId)
-    this.fetchTrials(experimentId, null)
-
-    // this.interval = setInterval(this.fetchData(experimentId), 5000)
-  }
-
   fetchTrials (experimentId, urlFilters) {
     let url = `${BASE_URL}/experiments/${experimentId}/trials/`
     if (urlFilters != null) {
       url = url + urlFilters
     }
-    console.log(url)
     fetch(url, {
       headers: {
         'Content-type': 'application/json',
@@ -91,11 +94,34 @@ export default class App extends Component {
       headers: {
         'Content-type': 'application/json',
         'Authorization': TOKEN
-    }})
+      }})
     .then((res) => res.json())
     .then((json) => {
       this.setState({algos: json})
     })
+  }
+
+  deleteTrial (trialId) {
+    fetch(`${BASE_URL}/trials/${trialId}/`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': TOKEN
+      }
+    })
+  }
+
+  createExperiment (experimentData) {
+   fetch(`${BASE_URL}/experiments.json`, {
+      method: 'POST',
+      body: JSON.stringify(experimentData),
+      headers: {
+        'Authorization': TOKEN,
+        'Content-Type': 'application/json'
+      }
+    }).then((res) => res.json())
+      .then((json) => {
+        // this.fetchExperiments()
+      })
   }
 
   _getSelectedExperiment () {
@@ -115,7 +141,8 @@ export default class App extends Component {
           experiments={this.state.experiments}
           moveToView={this.moveToView}
           setSelectedExperiment={this.setSelectedExperiment}
-          fetchData={this.fetchData}
+          fetchExperimentData={this.fetchExperimentData}
+          createExperiment={this.createExperiment}
         />
       )
     } else if (this.state.mainView === mainViews[1]) {
@@ -127,6 +154,7 @@ export default class App extends Component {
           algos={this.state.algos}
           filters={this.state.filters}
           setFilters={this.setFilters}
+          deleteTrial={this.deleteTrial}
         />
       )
     } else if (this.state.mainView === mainViews[2]) {

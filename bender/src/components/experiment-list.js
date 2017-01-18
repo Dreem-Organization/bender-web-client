@@ -17,7 +17,7 @@ export default class ExperimentList extends Component {
           key={i}
           experiment={experiment}
           moveToView={this.props.moveToView}
-          fetchData={this.props.fetchData}
+          fetchExperimentData={this.props.fetchExperimentData}
           setSelectedExperiment={this.props.setSelectedExperiment}
         />
       )
@@ -30,7 +30,9 @@ export default class ExperimentList extends Component {
         <Row>
           <Col span={12}><h1 className='main'>Experiments</h1></Col>
           <Col span={12} style={{paddingTop: '15px'}}>
-            <ExperimentForm />
+            <ExperimentForm
+              createExperiment={this.props.createExperiment}
+            />
           </Col>
         </Row>
         <div className='experiment-list'>

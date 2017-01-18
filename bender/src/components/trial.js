@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import TimeAgo from 'react-timeago'
-import { Row, Col, Button } from 'antd'
+import { Row, Col, Button, message, Popconfirm } from 'antd'
 import _ from 'lodash'
 
 
@@ -14,6 +14,7 @@ export default class Trial extends Component {
     super(props)
 
     this.handleClick = this.handleClick.bind(this)
+    this.handleDeleteTrial = this.handleDeleteTrial.bind(this)
     this.state = {
       isExpanded: false,
       main_metric: {
@@ -27,6 +28,11 @@ export default class Trial extends Component {
     this.setState({
       isExpanded: !this.state.isExpanded
     })
+  }
+
+  handleDeleteTrial () {
+    this.props.deleteTrial(this.props.trial.id)
+    message.success('Trial deleted.')
   }
 
   _renderTableFromObject (obj, title) {
@@ -69,7 +75,14 @@ export default class Trial extends Component {
               <Col span={12}>
                 {this._renderTableFromObject(this.props.trial.results, 'Metrics')}
               </Col>
-              <Button style={deleteButtonStyle} type='default'>Delete</Button>
+              <Popconfirm placement='top' title={'Are you sure ?'} onConfirm={this.handleDeleteTrial} okText='Yes' cancelText='No'>
+                <Button
+                  style={deleteButtonStyle}
+                  type='default'
+                  >
+                  Delete
+                </Button>
+              </Popconfirm>
             </Row>
           </div>
         </li>

@@ -1,130 +1,68 @@
 import React from 'react'
-import { Form, Input, Tooltip, Icon, Button } from 'antd'
+import { Form, Input, Button } from 'antd'
 
 const FormItem = Form.Item
 
 const RegistrationForm = Form.create()(React.createClass({
-  getInitialState () {
-    return {
-      passwordDirty: false
-    }
-  },
-
   handleSubmit (e) {
     e.preventDefault()
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values)
+        this.props.handleCreateExperiment(values)
       }
     })
   },
 
-  checkConfirm (rule, value, callback) {
-    const form = this.props.form
-    if (value && this.state.passwordDirty) {
-      form.validateFields(['confirm'], { force: true })
-    }
-    callback()
-  },
   render () {
     const { getFieldDecorator } = this.props.form
-    const formItemLayout = {
-      labelCol: { span: 4 },
-      wrapperCol: { span: 17 }
-    }
     return (
-      <Form horizontal onSubmit={this.handleSubmit} style={{}}>
-        <FormItem
-          {...formItemLayout}
-          label='Name'
-          hasFeedback
-        >
+      <Form vertical onSubmit={this.handleSubmit}>
+        <FormItem label='Name'>
           {getFieldDecorator('name', {
-            rules: [{
-              type: 'name', message: 'Please input a valid name!'
-            }, {
-              required: true, message: 'Please input a name!'
-            }]
+            rules: [{ required: true, message: 'Please provide and experiment name!' }]
           })(
-            <Input />
-          )}
+            <Input placeholder='Name' />
+         )}
         </FormItem>
-
-        <FormItem
-          {...formItemLayout}
-          label='Author'
-          hasFeedback
-        >
+        <FormItem label='Author'>
           {getFieldDecorator('author', {
-            rules: [{
-              type: 'author', message: 'Please input a valid author!'
-            }, {
-              required: true, message: 'Please input a author!'
-            }]
+            rules: [{ required: true, message: 'Please provide your username' }]
           })(
-            <Input />
-          )}
+            <Input placeholder='Author' />
+         )}
         </FormItem>
-
-        <FormItem
-          {...formItemLayout}
-          label={(
-            <span>
-              Description&nbsp;
-              <Tooltip title='Describe your experiment'>
-                <Icon type='question-circle-o' />
-              </Tooltip>
-            </span>
-          )}
-          hasFeedback
-        >
+        <FormItem label='Description'>
           {getFieldDecorator('description', {
-            rules: [{ required: true, message: 'Please input your description!' }]
+            rules: [{ required: true, message: 'Please provide a description' }]
           })(
-            <Input type='textarea' rows={4} />
-          )}
+            <Input type='textarea' rows={3} placeholder='Description' />
+         )}
         </FormItem>
-
-        <FormItem
-          {...formItemLayout}
-          label={(
-            <span>
-              Metrics&nbsp;
-              <Tooltip title='Describe your experiment'>
-                <Icon type='question-circle-o' />
-              </Tooltip>
-            </span>
-          )}
-          hasFeedback
-        >
+        <FormItem label='Metrics (Comma separated list)'>
           {getFieldDecorator('metrics', {
-            rules: [{ required: true, message: 'Please input your metrics!' }]
+            rules: [{ required: true, message: 'Please provide metrics' }]
           })(
-            <Input type='textarea' rows={4} />
-          )}
+            <Input placeholder='Metrics' />
+         )}
         </FormItem>
-
-        <FormItem
-          {...formItemLayout}
-          label={(
-            <span>
-              Dataset Parameters&nbsp;
-              <Tooltip title='Describe your experiment'>
-                <Icon type='question-circle-o' />
-              </Tooltip>
-            </span>
-          )}
-          hasFeedback
-        >
-          {getFieldDecorator('description', {
-            rules: [{ required: true, message: 'Please input your description!' }]
+        <FormItem label='Dataset'>
+          {getFieldDecorator('dataset', {
+            rules: [{ required: true, message: 'Please provide dataset information' }]
           })(
-            <Input type='textarea' rows={4} />
+            <Input placeholder='Dataset' />
           )}
         </FormItem>
-        <FormItem {...formItemLayout}>
-          <Button type='primary' htmlType='submit' size='large'>Submit</Button>
+        <FormItem label='Dataset Parameters (Optional)'>
+          {getFieldDecorator('dataset_parameters', {
+            rules: [{ required: false, message: '(Optional) provide dataset parameters' }]
+          })(
+            <Input placeholder='Dataset Parameters' />
+          )}
         </FormItem>
+        <Button type='primary' htmlType='submit' size='large'>
+          Submit
+        </Button>
       </Form>
     )
   }

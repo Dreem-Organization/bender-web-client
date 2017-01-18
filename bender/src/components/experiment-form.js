@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, { Component } from 'react'
 import { Modal, Button } from 'antd'
 import ExperimentFormContent from './experiment-form-content'
@@ -13,6 +14,7 @@ export default class ExperimentForm extends Component {
     this.showModal = this.showModal.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
+    this.handleCreateExperiment = this.handleCreateExperiment.bind(this)
   }
   showModal () {
     this.setState({visible: true})
@@ -20,13 +22,27 @@ export default class ExperimentForm extends Component {
 
   handleSubmit () {
     this.setState({loading: true})
+    this.handleCreateExperiment()
     setTimeout(() => {
       this.setState({ loading: false, visible: false })
-    }, 3000)
+    }, 1000)
   }
 
   handleCancel () {
     this.setState({ visible: false })
+  }
+
+  handleCreateExperiment (formValue) {
+    const resp = this.props.createExperiment({
+      name: formValue.name,
+      author: formValue.author,
+      description: formValue.description,
+      metrics: _.map(formValue.metrics.split(','), (m) => m.replace(/\s+/g, '')),
+      dataset: formValue.dataset,
+      dataset_parameters: formValue.dataset_parameters
+    })
+    debugger
+    return resp
   }
 
   render () {
@@ -40,15 +56,12 @@ export default class ExperimentForm extends Component {
           title='Create a new experiment'
           onOk={this.handleSubmit}
           onCancel={this.handleCancel}
-          width='800'
-          footer={[
-            <Button key='back' type='ghost' size='large' onClick={this.handleCancel}>Return</Button>,
-            <Button key='submit' type='primary' size='large' loading={this.state.loading} onClick={this.handleSubmit}>
-              Create
-            </Button>
-          ]}
+          width='600px'
+          footer={null}
         >
-          <ExperimentFormContent />
+          <ExperimentFormContent
+            handleCreateExperiment={this.handleCreateExperiment}
+          />
         </Modal>
       </div>
     )

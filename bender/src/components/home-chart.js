@@ -89,7 +89,6 @@ export default class HomeChart extends Component {
   _getChartData () {
     return _
       .chain(this.props.trials)
-      // .filter((k) => (_.includes(this.state.selectedAlgos, k.algo)))
       .map((k) => ({id: k.id, value: _.round(k.results[this.state.selectedVar], 4)}))
       .reverse()
       .value()
@@ -97,18 +96,19 @@ export default class HomeChart extends Component {
 
   generateTableData (obj) {
     const lis = Object.keys(obj).map((k) => {
-      return (
-        <li key={k}>
-          {k}: {_.isNumber(obj[k]) ? _.round(+obj[k], 4) : obj[k]}
-        </li>
-      )
+      if (!_.isNull(obj[k]) || obj[k] === '') {
+        return (
+          <li key={k}>
+            {k}: {_.isNumber(obj[k]) ? _.round(+obj[k], 4) : obj[k]}
+          </li>
+        )
+      }
     })
     return <ul>{lis}</ul>
   }
 
   customTooltip (item) {
     const trial = this.props.trials.filter((k) => k.id === item.payload[0].payload.id)[0]
-
     return (
       <div style={customTooltip}>
         <TimeAgo style={{opacity: 0.6, float: 'right'}} date={trial.created} />

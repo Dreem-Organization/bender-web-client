@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import _ from 'lodash'
 import HomeChart from './home-chart'
 import Trial from './trial'
 import AlgoList from './algo-list'
@@ -29,12 +30,13 @@ export default class Experiment extends Component {
 
   _getTrialList () {
     if (this.props.trials.length >= 1) {
-      const trialList = this.props.trials.map((trial, i) => {
+      const trialList = _.map(this.props.trials, (trial, i) => {
         return (
           <Trial
             key={i}
             trial={trial}
             mainMetric={this.props.experiment.main_metric}
+            deleteTrial={this.props.deleteTrial}
           />
         )
       })
@@ -136,7 +138,7 @@ export default class Experiment extends Component {
             />
           }
         >
-          <TabPane tab={<h4>Latest Trials</h4>} key='1'>
+          <TabPane tab={<h4>Trials</h4>} key='1'>
             {this._getHomeChart()}
             {this._getTrialList()}
           </TabPane>

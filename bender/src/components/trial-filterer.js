@@ -14,10 +14,11 @@ function handleMenuClick (e) {
 
 const SubMenu = Menu.SubMenu
 const Option = Select.Option
+const OptGroup = Select.OptGroup
 
 const descOptions = [
-  <Option key={1} value={'true'}>Descending</Option>,
-  <Option key={2} value={'false'}>Ascending</Option>
+  <Option key={1} value={'true'}>Desc</Option>,
+  <Option key={2} value={'false'}>Asc</Option>
 ]
 
 export default class TrialFilterer extends Component {
@@ -53,16 +54,31 @@ export default class TrialFilterer extends Component {
 
   _getOrderOptions () {
     const metrics = _.map(this.props.experiment.metrics, (m) => <Option key={m}>{m}</Option>)
-    return [<Option key={'date'}>Date</Option>].concat(metrics)
+    const options = [<Option key={'date'}>Date</Option>].concat(metrics)
+    return (
+      <OptGroup label='Order by'>
+        {options}
+      </OptGroup>
+    )
   }
 
   _getLimitOptions () {
-    return _.map([10, 20, 30, 60, 100], (k, i) => <Option key={i} value={k.toString()}>{k}</Option>)
+    const options = _.map([10, 20, 30, 60, 100], (k, i) => <Option key={i} value={k.toString()}>{k}</Option>)
+    return (
+      <OptGroup label='Limit'>
+        {options}
+      </OptGroup>
+    )
   }
 
   _getAlgoOptions () {
     const algos = _.map(this.props.algos, (a, i) => <Option key={i} value={a.id}>{a.name}</Option>)
-    return [<Option key={'all'} value={null}>All</Option>].concat(algos)
+    const options = [<Option key={'all'} value={null}>All</Option>].concat(algos)
+    return (
+      <OptGroup label='Algo'>
+        {options}
+      </OptGroup>
+    )
   }
 
   handleSetFilters () {
