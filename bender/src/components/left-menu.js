@@ -5,15 +5,9 @@ import logo from '../images/bender-logo.svg'
 
 export default class LeftMenu extends Component {
   render () {
-    return (
-      <div className='left-menu'>
-        <img
-          src={logo}
-          className='App-logo'
-          alt='logo'
-          style={{cursor: 'pointer'}}
-          onClick={() => this.props.moveToView('experiment-list')}
-        />
+    let buttons
+    if (this.props.isLoggedIn === true) {
+      buttons = (
         <div className='menu-bottom-button'>
           <Tooltip placement='right' title={'New Experiment'}>
             <Button type='ghost' size='large' shape='circle-outline' icon='plus' style={{marginBottom: '15px'}} />
@@ -28,6 +22,18 @@ export default class LeftMenu extends Component {
             size='small'
             />
         </div>
+      )
+    } else { buttons = null }
+    return (
+      <div className='left-menu'>
+        <img
+          src={logo}
+          className='App-logo'
+          alt='logo'
+          style={{cursor: 'pointer'}}
+          onClick={() => this.props.moveToView('experiment-list')}
+        />
+      {buttons}
       </div>
     )
   }

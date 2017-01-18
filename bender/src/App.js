@@ -2,6 +2,7 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import Experiment from './components/experiment'
 import ExperimentList from './components/experiment-list'
+import LoginForm from './components/login.js'
 import LeftMenu from './components/left-menu.js'
 import ExperimentDashboard from './components/experiment-dashboard'
 
@@ -10,6 +11,7 @@ import 'antd/dist/antd.css'
 import './App.scss'
 
 const mainViews = [
+  'login-form',
   'experiment-list',
   'experiment',
   'experimentDashboard'
@@ -34,7 +36,8 @@ export default class App extends Component {
         desc: 'true',
         limit: '30',
         algo: null
-      }
+      },
+      loggedIn: false
     }
 
     this._renderMainView = this._renderMainView.bind(this)
@@ -46,6 +49,7 @@ export default class App extends Component {
     this.fetchExperiments = this.fetchExperiments.bind(this)
     this.fetchTrials = this.fetchTrials.bind(this)
     this.fetchAlgos = this.fetchAlgos.bind(this)
+    this.handleLogin = this.handleLogin.bind(this)
   }
 
   componentDidMount () {
@@ -134,8 +138,19 @@ export default class App extends Component {
     this.fetchTrials(this.state.selectedExperiment, urlFilters)
   }
 
+  handleLogin () {
+    this.setState({loggedIn: true})
+    this.moveToView('experiment-list')
+  }
+
   _renderMainView () {
     if (this.state.mainView === mainViews[0]) {
+      return (
+        <LoginForm
+          handleLogin={this.handleLogin}
+        />
+      )
+    } else if (this.state.mainView === mainViews[1]) {
       return (
         <ExperimentList
           experiments={this.state.experiments}
@@ -145,7 +160,7 @@ export default class App extends Component {
           createExperiment={this.createExperiment}
         />
       )
-    } else if (this.state.mainView === mainViews[1]) {
+    } else if (this.state.mainView === mainViews[2]) {
       return (
         <Experiment
           experiment={this._getSelectedExperiment()}
@@ -157,7 +172,7 @@ export default class App extends Component {
           deleteTrial={this.deleteTrial}
         />
       )
-    } else if (this.state.mainView === mainViews[2]) {
+    } else if (this.state.mainView === mainViews[3]) {
       return (
         <ExperimentDashboard
           experiment={this._getSelectedExperiment()}
@@ -184,6 +199,7 @@ export default class App extends Component {
       <div className='App'>
         <LeftMenu
           moveToView={this.moveToView}
+          isLoggedIn={this.loggedIn}
         />
         {this._renderMainView()}
       </div>
