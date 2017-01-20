@@ -1,7 +1,44 @@
 import React from 'react'
 import { Form, Icon, Input, Button, Checkbox } from 'antd'
 import logo from '../images/bender-logo.svg'
+import { storageKey, loginURL } from '../constants/globals'
+
 const FormItem = Form.Item
+
+function formatResponseString (resp) {
+  if (resp.status === 401 || resp.status === 403) {
+    return 'Your session has expired. Please reload the page and log in again.'
+  }
+  return `Error during request, URL: ${resp.url}, Status: ${resp.statusText}`
+}
+
+function defaultBodyValue () {
+  return Promise.resolve({})
+}
+
+function throwErrorMessage (r) {
+  throw new Error(JSON.stringify(r))
+}
+
+function responseHandler (resp) {
+  if (!resp.ok) {
+    return resp.json()
+      .then(throwErrorMessage)
+      .catch(function () {
+        throw new Error(formatResponseString(resp))
+      })
+  }
+  return resp.json().catch(defaultBodyValue)
+}
+
+function loginRequest (credentials) {
+  return fetch(loginURL, {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Basic ' + window.btoa(credentials.username + ':' + credentials.password)
+    }
+  }).then(responseHandler)
+}
 
 const NormalLoginForm = Form.create()(React.createClass({
   handleSubmit (e) {
@@ -9,9 +46,26 @@ const NormalLoginForm = Form.create()(React.createClass({
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values)
-        this.props.handleLogin()
+        this.login(values)
       }
     })
+  },
+
+  login (credentials) {
+      return loginRequest(credentials).then((u) => {
+        console.log(u)
+        const user = {
+          username: credentials.username,
+          token: `Bearer ${u.token}`,
+          id: u.user_id
+        }
+        if (credentials.remember === true) {
+          window.localStorage.setItem(storageKey.username, credentials.username)
+          window.localStorage.setItem(storageKey.token, user.token)
+          window.localStorage.setItem(storageKey.user, user.id)
+        }
+        this.props.handleLogin(user)
+      })
   },
 
   render () {
@@ -30,7 +84,7 @@ const NormalLoginForm = Form.create()(React.createClass({
           <p>You can login using your regular internal<br /> Rythm account (same as viewer).</p>
           <br />
           <FormItem>
-            {getFieldDecorator('userName', {
+            {getFieldDecorator('username', {
               rules: [{ required: true, message: 'Please input your username!' }]
             })(
               <Input addonBefore={<Icon type='user' />} placeholder='Username' />
@@ -50,7 +104,6 @@ const NormalLoginForm = Form.create()(React.createClass({
             })(
               <Checkbox>Remember me</Checkbox>
             )}
-            <a className='login-form-forgot'>Forgot password</a>
             <Button type='primary' htmlType='submit' className='login-form-button'>
               Log in
             </Button>

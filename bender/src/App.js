@@ -17,8 +17,6 @@ const mainViews = [
   'experimentDashboard'
 ]
 
-const TOKEN = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIyZTExYmRkYmJhMjQ0MjYxYmQzYzA5NDM2MzhhNDVlYSIsImV4cCI6MTQ4MzAxMDM1NywicGVybWlzc2lvbnMiOiJoZWFkYmFuZD1hZG1pbjtub2N0aXM9YWRtaW47ZHJlZW1lcj1hZG1pbjtjdXN0b21lcj1hZG1pbjtkYXRhc2V0PWFkbWluO25pZ2h0cmVwb3J0PWFkbWluO2RhdGF1cGxvYWQ9YWRtaW47ZGF0YXNhbXBsZT1hZG1pbjthbGdvcnl0aG09YWRtaW47cXVhbGl0eT1kcmVlbWVyIn0.1qgUF_ToYjbxYM-IBjcr4y0xRpnXdPFIZurXSobuRRY'
-
 const BASE_URL = 'https://api.rythm.co/v1/dreem/bender'
 
 export default class App extends Component {
@@ -37,7 +35,8 @@ export default class App extends Component {
         limit: '30',
         algo: null
       },
-      loggedIn: false
+      loggedIn: false,
+      user: null
     }
 
     this._renderMainView = this._renderMainView.bind(this)
@@ -53,7 +52,6 @@ export default class App extends Component {
   }
 
   componentDidMount () {
-    this.fetchExperiments()
   }
 
   fetchExperimentData (experimentId) {
@@ -67,7 +65,7 @@ export default class App extends Component {
     fetch(`${BASE_URL}/experiments/`, {
       headers: {
         'Content-type': 'application/json',
-        'Authorization': TOKEN
+        'Authorization': this.state.user.token
       }
     })
     .then((res) => res.json())
@@ -84,7 +82,7 @@ export default class App extends Component {
     fetch(url, {
       headers: {
         'Content-type': 'application/json',
-        'Authorization': TOKEN
+        'Authorization': this.state.user.token
       }
     })
     .then((res) => res.json())
@@ -97,7 +95,7 @@ export default class App extends Component {
     fetch(`${BASE_URL}/experiments/${experimentId}/algos/`, {
       headers: {
         'Content-type': 'application/json',
-        'Authorization': TOKEN
+        'Authorization': this.state.user.token
       }})
     .then((res) => res.json())
     .then((json) => {
@@ -109,7 +107,7 @@ export default class App extends Component {
     fetch(`${BASE_URL}/trials/${trialId}/`, {
       method: 'DELETE',
       headers: {
-        'Authorization': TOKEN
+        'Authorization': this.state.user.token
       }
     })
   }
@@ -119,7 +117,7 @@ export default class App extends Component {
       method: 'POST',
       body: JSON.stringify(experimentData),
       headers: {
-        'Authorization': TOKEN,
+        'Authorization': this.state.user.token,
         'Content-Type': 'application/json'
       }
     }).then((res) => res.json())
@@ -138,9 +136,10 @@ export default class App extends Component {
     this.fetchTrials(this.state.selectedExperiment, urlFilters)
   }
 
-  handleLogin () {
-    this.setState({loggedIn: true})
+  handleLogin (user) {
+    this.setState({user, loggedIn: true})
     this.moveToView('experiment-list')
+    this.fetchExperiments()
   }
 
   _renderMainView () {
@@ -153,11 +152,13 @@ export default class App extends Component {
     } else if (this.state.mainView === mainViews[1]) {
       return (
         <ExperimentList
+          user={this.state.user}
           experiments={this.state.experiments}
           moveToView={this.moveToView}
           setSelectedExperiment={this.setSelectedExperiment}
           fetchExperimentData={this.fetchExperimentData}
           createExperiment={this.createExperiment}
+
         />
       )
     } else if (this.state.mainView === mainViews[2]) {

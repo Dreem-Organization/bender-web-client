@@ -28,7 +28,7 @@ export default class ExperimentList extends Component {
     return (
       <div className='main-container'>
         <Row>
-          <Col span={12}><h1 className='main'>Experiments</h1></Col>
+          <Col span={12}><h1 className='main'>Experiments - {this.props.user.username}</h1></Col>
           <Col span={12} style={{paddingTop: '15px'}}>
             <ExperimentForm
               createExperiment={this.props.createExperiment}
