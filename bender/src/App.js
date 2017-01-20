@@ -200,7 +200,7 @@ export default class App extends Component {
       <div className='App'>
         <LeftMenu
           moveToView={this.moveToView}
-          isLoggedIn={this.loggedIn}
+          isLoggedIn={this.state.loggedIn}
         />
         {this._renderMainView()}
       </div>

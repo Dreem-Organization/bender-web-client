@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import ExperimentListItem from './experiment-list-item'
 import ExperimentForm from './experiment-form'
-import { Row, Col } from 'antd'
+import { Row, Col, Tabs, Badge } from 'antd'
+
+const TabPane = Tabs.TabPane
 
 export default class ExperimentList extends Component {
   constructor (props) {
@@ -35,10 +37,23 @@ export default class ExperimentList extends Component {
             />
           </Col>
         </Row>
-        <div className='experiment-list'>
-          <ul>{this._getExperimentList()}</ul>
+
+          <Tabs
+            defaultActiveKey='1'
+            animated={false}
+            >
+            <TabPane tab={
+                <h4>Private ({this.props.experiments.length})</h4>
+              } key='1'>
+              <div className='experiment-list'>
+                <ul>{this._getExperimentList()}</ul>
+              </div>
+            </TabPane>
+            <TabPane tab={<h4>Public</h4>} key='2'>
+              Public experiments
+            </TabPane>
+          </Tabs>
         </div>
-      </div>
     )
   }
 }

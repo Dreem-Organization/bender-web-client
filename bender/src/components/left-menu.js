@@ -12,15 +12,17 @@ export default class LeftMenu extends Component {
           <Tooltip placement='right' title={'New Experiment'}>
             <Button type='ghost' size='large' shape='circle-outline' icon='plus' style={{marginBottom: '15px'}} />
           </Tooltip>
-          <Tooltip placement='right' title={'Settings'}>
-            <Button type='ghost' size='large' shape='circle-outline' icon='setting' />
+          <Tooltip placement='right' title={'Log out'}>
+            <Button type='ghost' size='large' shape='circle-outline' icon='logout' />
           </Tooltip>
-          <Switch
-            style={{marginTop: '20px'}}
-            checkedChildren=''
-            unCheckedChildren=''
-            size='small'
-            />
+          <Tooltip placement='right' title={'This will do something, I\'ve yet to decide what...'}>
+            <Switch
+              style={{marginTop: '20px'}}
+              checkedChildren=''
+              unCheckedChildren=''
+              size='small'
+              />
+          </Tooltip>
         </div>
       )
     } else { buttons = null }
