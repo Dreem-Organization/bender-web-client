@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import { ComposedChart, ResponsiveContainer, Area, Line, YAxis, CartesianGrid, Tooltip } from 'recharts'
-import { Card, Select, Button, Tooltip as AntdTooltip } from 'antd'
+import { Card, Select } from 'antd'
 import TimeAgo from 'react-timeago'
 import 'antd/lib/card/style/css'
 import 'antd/lib/select/style/css'
@@ -34,7 +34,7 @@ export default class HomeChart extends Component {
     super(props)
 
     this.state = {
-      selectedVar: this.props.mainMetric,
+      selectedVar: this.props.mainMetric
       // isFilteringAlgos: false,
       // selectedAlgos: this.props.algos.map((k) => k.id)
     }

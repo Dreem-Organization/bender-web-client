@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import _ from 'lodash'
 import { Row, Col, Card, Button } from 'antd'
 import LineChartWidget from './widgets/line-chart-widget'
-import RadarChartWidget from './widgets/radar-chart-widget'
+// import RadarChartWidget from './widgets/radar-chart-widget'
 import ScatterChartWidget from './widgets/scatter-chart-widget'
 import TrialFilterer from './trial-filterer'
+import { Link } from 'react-router'
 
 export default class Dashboard extends Component {
   constructor (props) {
@@ -50,20 +51,23 @@ export default class Dashboard extends Component {
         <Row>
           <Col span={20}>
             <h1 className='main'>
-              <a onClick={() => this.props.moveToView('experiment-list')}>Experiments</a>
+              <Link to={'/'}>Experiments</Link>
               &nbsp;>&nbsp;
-              <a onClick={() => this.props.moveToView('experiment')}>{this.props.experiment.name}</a>
+              <Link to={`/experiment/${this.props.experiment.id}`}>
+                {this.props.experiment.name}
+              </Link>
               &nbsp;>&nbsp;Dashboard
             </h1>
           </Col>
           <Col span={4}>
-            <Button
-              style={{float: 'right', marginTop: '15px', fontSize: '13px'}}
-              id={'buttonId'}
-              onClick={() => this.props.moveToView('experiment')}
-              type='default'>
-              Close Dashboard
-            </Button>
+            <Link to={`/experiment/${this.props.experiment.id}`}>
+              <Button
+                style={{float: 'right', marginTop: '15px', fontSize: '13px'}}
+                id={'buttonId'}
+                type='default'>
+                Close Dashboard
+              </Button>
+            </Link>
           </Col>
           <Col span={24}>
             <TrialFilterer

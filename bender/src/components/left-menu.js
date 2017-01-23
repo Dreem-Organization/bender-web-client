@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Tooltip } from 'antd'
 import { Switch } from 'antd'
+import { Link } from 'react-router'
 import logo from '../images/bender-logo.svg'
 
 export default class LeftMenu extends Component {
@@ -28,13 +29,14 @@ export default class LeftMenu extends Component {
     } else { buttons = null }
     return (
       <div className='left-menu'>
-        <img
-          src={logo}
-          className='App-logo'
-          alt='logo'
-          style={{cursor: 'pointer'}}
-          onClick={() => this.props.moveToView('experiment-list')}
-        />
+        <Link to='/'>
+          <img
+            src={logo}
+            className='App-logo'
+            alt='logo'
+            style={{cursor: 'pointer'}}
+          />
+        </Link>
       {buttons}
       </div>
     )

@@ -6,6 +6,7 @@ import AlgoList from './algo-list'
 import TrialFilterer from './trial-filterer'
 import { Button, Row, Col, Tooltip, Tabs } from 'antd'
 import Clipboard from 'clipboard'
+import { Link } from 'react-router'
 
 const TabPane = Tabs.TabPane
 
@@ -83,17 +84,18 @@ export default class Experiment extends Component {
         <Row>
           <Col span={12}>
             <h1 className='main'>
-              <a onClick={() => this.props.moveToView('experiment-list')}>Experiments</a> > {this.props.experiment.name}
+              <Link to='/'>Experiments</Link> > {this.props.experiment.name}
             </h1>
           </Col>
           <Col span={12}>
-            <Button
-              style={{float: 'right', marginTop: '15px', fontSize: '13px'}}
-              id={'buttonId'}
-              onClick={() => this.props.moveToView('experimentDashboard')}
-              type='primary'>
-              Dashboard
-            </Button>
+            <Link to={`/experiment/${this.props.experiment.id}/dashboard`}>
+              <Button
+                style={{float: 'right', marginTop: '15px', fontSize: '13px'}}
+                id={'buttonId'}
+                type='primary'>
+                Dashboard
+              </Button>
+            </Link>
           </Col>
         </Row>
         <Row>
