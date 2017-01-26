@@ -79,7 +79,6 @@ const NormalLoginForm = Form.create()(React.createClass({
     const { getFieldDecorator } = this.props.form
     return (
       <div className='form-wrapper'>
-
         <Form onSubmit={this.handleSubmit} className='login-form'>
           <h1>Login to Bender</h1>
           <p>You can login using your regular internal<br /> Rythm account (same as viewer).</p>

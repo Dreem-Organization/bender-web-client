@@ -10,7 +10,7 @@ import { Link } from 'react-router'
 
 const TabPane = Tabs.TabPane
 
-export default class Experiment extends Component {
+export default class ExperimentTrials extends Component {
   constructor (props) {
     super(props)
 

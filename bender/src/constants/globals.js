@@ -13,3 +13,5 @@ export const loginURL = (function () {
       return 'https://login.rythm.co/token/'
   }
 })()
+
+export const BASE_URL = 'https://api.rythm.co/v1/dreem/bender'

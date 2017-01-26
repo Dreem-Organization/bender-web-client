@@ -41,7 +41,6 @@ export default class ExperimentForm extends Component {
       dataset: formValue.dataset,
       dataset_parameters: formValue.dataset_parameters
     })
-    debugger
     return resp
   }
 

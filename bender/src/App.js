@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import Experiment from './components/experiment'
+import Experiment from './components/experiment.js'
+import ExperimentTrials from './components/experiment-trials'
 import ExperimentList from './components/experiment-list'
 import LoginForm from './components/login.js'
 import LeftMenu from './components/left-menu.js'
@@ -8,39 +9,38 @@ import ExperimentDashboard from './components/experiment-dashboard'
 import 'whatwg-fetch'
 import 'antd/dist/antd.css'
 import './App.scss'
-
 import enUS from 'antd/lib/locale-provider/en_US'
 import LocaleProvider from 'antd/lib/locale-provider'
 import { storageKey } from './constants/globals'
+import { requireAuth, checkTokenValidity } from './constants/utils'
 import { Router, Route, browserHistory } from 'react-router'
+import { fetchExperiments, fetchTrials, fetchAlgos, deleteTrial, createExperiment } from './constants/requests'
 
-const BASE_URL = 'https://api.rythm.co/v1/dreem/bender'
+class LoggedAppBase extends Component {
+  constructor (props) {
+    super(props)
 
-function checkTokenValidity (token) {
-  if (!token) {
-    return false
-  }
-  const tokenParts = _.split(token, '.')
-  if (tokenParts.length !== 3) {
-    return false
-  }
-  if (process.env.NODE_ENV === 'production') {
-    try {
-      const userInfo = JSON.parse(window.atob(tokenParts[1]))
-      if (userInfo.exp != null) {
-        const expiration = +userInfo.exp
-        if (_.isNaN(expiration)) {
-          return false
-        }
-        if (expiration * 1000 - Date.now() < 3600000) {
-          return false
-        }
-      }
-    } catch (e) {
-      return false
+    this.state = {
+      user: null
     }
   }
-  return true
+
+  componentWillMount () {
+    requireAuth('a', 'b', (user) => this.setState({user}))
+  }
+
+  render () {
+    return (
+      <div className='App'>
+        <LeftMenu
+          isLoggedIn={true}
+        />
+        {this.props.children && React.cloneElement(this.props.children, {
+          user: this.state.user
+        })}
+      </div>
+    )
+  }
 }
 
 export default class App extends Component {
@@ -100,76 +100,36 @@ export default class App extends Component {
     }
   }
 
-  fetchExperimentData (experimentId) {
+  fetchExperimentData (experimentID) {
     this.setState({algos: [], trials: []})
-    this.fetchAlgos(experimentId)
-    this.fetchTrials(experimentId, null)
-    // this.interval = setInterval(this.fetchExperimentData(experimentId), 5000)
+    this.fetchAlgos(experimentID)
+    this.fetchTrials(experimentID, null)
   }
 
   fetchExperiments (token) {
-    fetch(`${BASE_URL}/experiments/`, {
-      headers: {
-        'Content-type': 'application/json',
-        'Authorization': token
-      }
-    })
-    .then((res) => res.json())
-    .then((json) => {
+    fetchExperiments(token, (json) => {
       this.setState({experiments: json})
     })
   }
 
-  fetchTrials (experimentId, urlFilters) {
-    let url = `${BASE_URL}/experiments/${experimentId}/trials/`
-    if (urlFilters != null) {
-      url = url + urlFilters
-    }
-    fetch(url, {
-      headers: {
-        'Content-type': 'application/json',
-        'Authorization': this.state.user.token
-      }
-    })
-    .then((res) => res.json())
-    .then((json) => {
+  fetchTrials (experimentID, urlFilters) {
+    fetchTrials(this.state.user.token, experimentID, urlFilters, (json) => {
       this.setState({trials: json})
     })
   }
 
-  fetchAlgos (experimentId) {
-    fetch(`${BASE_URL}/experiments/${experimentId}/algos/`, {
-      headers: {
-        'Content-type': 'application/json',
-        'Authorization': this.state.user.token
-      }})
-    .then((res) => res.json())
-    .then((json) => {
+  fetchAlgos (experimentID) {
+    fetchAlgos(this.state.user.token, experimentID, (json) => {
       this.setState({algos: json})
     })
   }
 
   deleteTrial (trialId) {
-    fetch(`${BASE_URL}/trials/${trialId}/`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': this.state.user.token
-      }
-    })
+    deleteTrial(this.state.user.token, trialId)
   }
 
   createExperiment (experimentData) {
-    fetch(`${BASE_URL}/experiments.json`, {
-      method: 'POST',
-      body: JSON.stringify(experimentData),
-      headers: {
-        'Authorization': this.state.user.token,
-        'Content-Type': 'application/json'
-      }
-    }).then((res) => res.json())
-      .then((json) => {
-        // this.fetchExperiments()
-      })
+    createExperiment(this.state.user.token, experimentData, (json) => {})
   }
 
   _getSelectedExperiment () {
@@ -198,7 +158,7 @@ export default class App extends Component {
       />
     )
 
-    return this.wrapComponent(loginForm)
+    return loginForm
   }
 
   _renderExperimentList () {
@@ -212,12 +172,12 @@ export default class App extends Component {
       />
     )
 
-    return this.wrapComponent(experimentList)
+    return experimentList
   }
 
   _renderExperiment () {
     const experiment = (
-      <Experiment
+      <ExperimentTrials
         experiment={this._getSelectedExperiment()}
         trials={this.state.trials}
         algos={this.state.algos}
@@ -228,7 +188,7 @@ export default class App extends Component {
       />
     )
 
-    return this.wrapComponent(experiment)
+    return experiment
   }
 
   _renderExperimentDashboard () {
@@ -242,29 +202,19 @@ export default class App extends Component {
       />
     )
 
-    return this.wrapComponent(experimentDashboard)
-  }
-
-  wrapComponent (component) {
-    return (
-      <div className='App'>
-        <LeftMenu
-          isLoggedIn={this.stateloggedIn}
-        />
-        {component}
-      </div>
-    )
+    return experimentDashboard
   }
 
   render () {
     return (
       <LocaleProvider locale={enUS}>
         <Router history={browserHistory}>
-          <Route path='/' component={this._renderExperimentList} onEnter={this.requireAuth} />
-          <Route path='login' component={this._renderLoginForm} />
-          <Route path='experiment' component={this.baseExperiment} />
-          <Route path='experiment/:experimentID' component={this._renderExperiment} />
-          <Route path='experiment/:experimentID/dashboard' component={this._renderExperimentDashboard} />
+          <Route path='login' component={LoginForm} />
+          <Route path='/' component={LoggedAppBase} onEnter={this.requireAuth}>
+            <Route path='/experiments' component={this._renderExperimentList} onEnter={this.requireAuth} />
+            <Route path='experiment/:experimentID' component={Experiment} onEnter={this.requireAuth} />
+            <Route path='experiment/:experimentID/dashboard' component={this._renderExperimentDashboard} onEnter={this.requireAuth} />
+          </Route>
         </Router>
       </LocaleProvider>
     )
