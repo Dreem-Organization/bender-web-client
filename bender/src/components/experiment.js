@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import { fetchAlgos, fetchTrials, fetchExperiment } from '../constants/requests'
 import ExperimentTrials from './experiment-trials'
-import { requireAuth } from '../constants/utils'
+import ExperimentDashboard from './experiment-dashboard'
+import { getUserData } from '../constants/utils'
+import Loader from './loader'
 // import ExperimentDashboard from './experiment-dashboard'
-const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJmZGNkYTIzOTQ2ZmE0OTA2YjZkMjExM2NlYzc3MWM3MCIsImV4cCI6MTQ4MzAwOTI3NywicGVybWlzc2lvbnMiOiJoZWFkYmFuZD1hZG1pbjtub2N0aXM9YWRtaW47ZHJlZW1lcj1hZG1pbjtjdXN0b21lcj1hZG1pbjtkYXRhc2V0PWFkbWluO25pZ2h0cmVwb3J0PWFkbWluO2RhdGF1cGxvYWQ9YWRtaW47ZGF0YXNhbXBsZT1hZG1pbjthbGdvcnl0aG09YWRtaW47cHJvZHVjdF90ZXN0aW5nPWFkbWluO3F1YWxpdHk9YWRtaW4ifQ.HucoCotbZpfs4H_g2noJIS_OzotSpSU4OULvwPfOg8E"
 
 export default class Experiment extends Component {
   constructor (props) {
     super(props)
+
     this.state = {
       experiment: null,
       trials: [],
@@ -19,18 +21,14 @@ export default class Experiment extends Component {
         algo: null
       },
       showDashboard: false,
-      user: null
+      user: getUserData()
     }
-  }
 
-  componentWillMount () {
-    debugger
-    requireAuth('a', 'b', (user) => this.setState({user}))
+    this.handleDashboardButton = this.handleDashboardButton.bind(this)
   }
 
   componentDidMount () {
-    // requireAuth('a', 'b', (user) => this.setState({user}))
-    this.fetchExperimentData(token, this.props.params.experimentID)
+    this.fetchExperimentData(this.state.user.token, this.props.params.experimentID)
   }
 
   fetchExperimentData (token, experimentID) {
@@ -41,19 +39,19 @@ export default class Experiment extends Component {
   }
 
   fetchExperiment (experimentID) {
-    fetchExperiment(token, experimentID, (experiment) => {
+    fetchExperiment(this.state.user.token, experimentID, (experiment) => {
       this.setState({experiment})
     })
   }
 
   fetchTrials (experimentID, urlFilters) {
-    fetchTrials(token, experimentID, urlFilters, (trials) => {
+    fetchTrials(this.state.user.token, experimentID, urlFilters, (trials) => {
       this.setState({trials})
     })
   }
 
   fetchAlgos (experimentID) {
-    fetchAlgos(token, experimentID, (algos) => {
+    fetchAlgos(this.state.user.token, experimentID, (algos) => {
       this.setState({algos})
     })
   }
@@ -63,21 +61,39 @@ export default class Experiment extends Component {
     fetchTrials(this.state.selectedExperiment, urlFilters)
   }
 
+  handleDashboardButton () {
+    this.setState({showDashboard: !this.state.showDashboard})
+  }
+
   render () {
+    console.log(this.state.showDashboard)
     if (this.state.experiment !== null) {
-      return (
-        <ExperimentTrials
-          experiment={this.state.experiment}
-          trials={this.state.trials}
-          algos={this.state.algos}
-          filters={this.state.filters}
-          setFilters={this.setFilters}
-          deleteTrial={this.deleteTrial}
-          fetchExperimentData={this.fetchExperimentData}
-        />
-      )
-    } else {
-      return null
+      if (!this.state.showDashboard) {
+        return (
+          <ExperimentTrials
+            experiment={this.state.experiment}
+            trials={this.state.trials}
+            algos={this.state.algos}
+            filters={this.state.filters}
+            setFilters={this.setFilters}
+            deleteTrial={this.deleteTrial}
+            fetchExperimentData={this.fetchExperimentData}
+            openDashboard={this.handleDashboardButton}
+          />
+        )
+      } else {
+        return (
+          <ExperimentDashboard
+            experiment={this.state.experiment}
+            trials={this.state.trials}
+            algos={this.state.algos}
+            filters={this.state.filters}
+            setFilters={this.setFilters}
+            closeDashboard={() => this.setState({showDashboard: false})}
+          />
+        )
+      }
     }
+    return (<Loader />)
   }
 }

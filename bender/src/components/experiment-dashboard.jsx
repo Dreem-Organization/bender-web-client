@@ -51,23 +51,23 @@ export default class Dashboard extends Component {
         <Row>
           <Col span={20}>
             <h1 className='main'>
-              <Link to={'/'}>Experiments</Link>
+              <Link to={'/experiments'}>Experiments</Link>
               &nbsp;>&nbsp;
-              <Link to={`/experiment/${this.props.experiment.id}`}>
+              <a onClick={this.props.closeDashboard}>
                 {this.props.experiment.name}
-              </Link>
+              </a>
               &nbsp;>&nbsp;Dashboard
             </h1>
           </Col>
           <Col span={4}>
-            <Link to={`/experiment/${this.props.experiment.id}`}>
-              <Button
-                style={{float: 'right', marginTop: '15px', fontSize: '13px'}}
-                id={'buttonId'}
-                type='default'>
-                Close Dashboard
-              </Button>
-            </Link>
+            <Button
+              style={{float: 'right', marginTop: '15px', fontSize: '13px'}}
+              id={'buttonId'}
+              type='default'
+              onClick={this.props.closeDashboard}
+              >
+              Close Dashboard
+            </Button>
           </Col>
           <Col span={24}>
             <TrialFilterer

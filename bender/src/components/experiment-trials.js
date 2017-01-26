@@ -84,18 +84,18 @@ export default class ExperimentTrials extends Component {
         <Row>
           <Col span={12}>
             <h1 className='main'>
-              <Link to='/'>Experiments</Link> > {this.props.experiment.name}
+              <Link to='/experiments'>Experiments</Link> > {this.props.experiment.name}
             </h1>
           </Col>
           <Col span={12}>
-            <Link to={`/experiment/${this.props.experiment.id}/dashboard`}>
-              <Button
-                style={{float: 'right', marginTop: '15px', fontSize: '13px'}}
-                id={'buttonId'}
-                type='primary'>
-                Dashboard
-              </Button>
-            </Link>
+            <Button
+              style={{float: 'right', marginTop: '15px', fontSize: '13px'}}
+              id={'buttonId'}
+              type='primary'
+              onClick={this.props.openDashboard}
+              >
+              Dashboard
+            </Button>
           </Col>
         </Row>
         <Row>

@@ -2,6 +2,7 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import { Modal, Button } from 'antd'
 import ExperimentFormContent from './experiment-form-content'
+import { createExperiment } from '../constants/requests'
 
 export default class ExperimentForm extends Component {
   constructor (props) {
@@ -33,15 +34,14 @@ export default class ExperimentForm extends Component {
   }
 
   handleCreateExperiment (formValue) {
-    const resp = this.props.createExperiment({
+    return createExperiment(this.props.user.token, {
       name: formValue.name,
       author: formValue.author,
       description: formValue.description,
       metrics: _.map(formValue.metrics.split(','), (m) => m.replace(/\s+/g, '')),
       dataset: formValue.dataset,
       dataset_parameters: formValue.dataset_parameters
-    })
-    return resp
+    }, (resp) => resp)
   }
 
   render () {

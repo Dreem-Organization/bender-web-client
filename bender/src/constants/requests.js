@@ -14,7 +14,7 @@ export function fetchExperiments (token, handler) {
 }
 
 export function fetchExperiment (token, experimentID, handler) {
-  fetch(`${BASE_URL}/experiments/${experimentID}`, {
+  fetch(`${BASE_URL}/experiments/${experimentID}/`, {
     headers: {
       'Content-type': 'application/json',
       'Authorization': token

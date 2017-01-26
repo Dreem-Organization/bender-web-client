@@ -12,32 +12,16 @@ import './App.scss'
 import enUS from 'antd/lib/locale-provider/en_US'
 import LocaleProvider from 'antd/lib/locale-provider'
 import { storageKey } from './constants/globals'
-import { requireAuth, checkTokenValidity } from './constants/utils'
+import { checkTokenValidity } from './constants/utils'
 import { Router, Route, browserHistory } from 'react-router'
 import { fetchExperiments, fetchTrials, fetchAlgos, deleteTrial, createExperiment } from './constants/requests'
 
 class LoggedAppBase extends Component {
-  constructor (props) {
-    super(props)
-
-    this.state = {
-      user: null
-    }
-  }
-
-  componentWillMount () {
-    requireAuth('a', 'b', (user) => this.setState({user}))
-  }
-
   render () {
     return (
       <div className='App'>
-        <LeftMenu
-          isLoggedIn={true}
-        />
-        {this.props.children && React.cloneElement(this.props.children, {
-          user: this.state.user
-        })}
+        <LeftMenu />
+        {this.props.children}
       </div>
     )
   }
@@ -70,7 +54,6 @@ export default class App extends Component {
     this.fetchAlgos = this.fetchAlgos.bind(this)
     this.handleLogin = this.handleLogin.bind(this)
 
-    this._renderLoginForm = this._renderLoginForm.bind(this)
     this._renderExperimentList = this._renderExperimentList.bind(this)
     this._renderExperiment = this._renderExperiment.bind(this)
     this._renderExperimentDashboard = this._renderExperimentDashboard.bind(this)
@@ -96,7 +79,7 @@ export default class App extends Component {
         token: window.localStorage.getItem(storageKey.token)
       }
       this.setState({user})
-      this.fetchExperiments(user.token)
+      // this.fetchExperiments(user.token)
     }
   }
 
@@ -145,20 +128,11 @@ export default class App extends Component {
   handleLogin (user) {
     this.setState({user, loggedIn: true})
     this.fetchExperiments(user.token)
+    browserHistory.push('/experiments')
   }
 
   setSelectedExperiment (selectedExperiment) {
     this.setState({selectedExperiment})
-  }
-
-  _renderLoginForm () {
-    const loginForm = (
-      <LoginForm
-        handleLogin={this.handleLogin}
-      />
-    )
-
-    return loginForm
   }
 
   _renderExperimentList () {
@@ -209,11 +183,10 @@ export default class App extends Component {
     return (
       <LocaleProvider locale={enUS}>
         <Router history={browserHistory}>
-          <Route path='login' component={LoginForm} />
+          <Route path='login' component={() => <LoginForm user={this.state.user} handleLogin={this.handleLogin} />} />
           <Route path='/' component={LoggedAppBase} onEnter={this.requireAuth}>
-            <Route path='/experiments' component={this._renderExperimentList} onEnter={this.requireAuth} />
+            <Route path='experiments' component={ExperimentList} onEnter={this.requireAuth} />
             <Route path='experiment/:experimentID' component={Experiment} onEnter={this.requireAuth} />
-            <Route path='experiment/:experimentID/dashboard' component={this._renderExperimentDashboard} onEnter={this.requireAuth} />
           </Route>
         </Router>
       </LocaleProvider>

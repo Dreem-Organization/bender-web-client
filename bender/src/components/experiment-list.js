@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import ExperimentListItem from './experiment-list-item'
 import ExperimentForm from './experiment-form'
 import { Row, Col, Tabs } from 'antd'
+import { getUserData } from '../constants/utils'
+import { fetchExperiments } from '../constants/requests'
 
 const TabPane = Tabs.TabPane
 
@@ -10,10 +12,14 @@ export default class ExperimentList extends Component {
     super(props)
 
     this._getExperimentList = this._getExperimentList.bind(this)
+    this.state = {
+      user: getUserData(),
+      experiments: []
+    }
   }
 
   _getExperimentList () {
-    return this.props.experiments.map((experiment, i) => {
+    return this.state.experiments.map((experiment, i) => {
       return (
         <ExperimentListItem
           key={i}
@@ -25,15 +31,19 @@ export default class ExperimentList extends Component {
     })
   }
 
+  componentDidMount () {
+    fetchExperiments(this.state.user.token, (json) => {
+      this.setState({experiments: json})
+    })
+  }
+
   render () {
     return (
       <div className='main-container'>
         <Row>
           <Col span={12}><h1 className='main'>Experiments</h1></Col>
           <Col span={12} style={{paddingTop: '15px'}}>
-            <ExperimentForm
-              createExperiment={this.props.createExperiment}
-            />
+            <ExperimentForm user={this.state.user} />
           </Col>
         </Row>
         <Tabs
@@ -41,7 +51,7 @@ export default class ExperimentList extends Component {
           animated={false}
           >
           <TabPane tab={
-              <h4>Private ({this.props.experiments.length})</h4>
+              <h4>Private ({this.state.experiments.length})</h4>
             } key='1'>
             <div className='experiment-list'>
               <ul>{this._getExperimentList()}</ul>
