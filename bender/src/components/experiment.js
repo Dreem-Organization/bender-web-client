@@ -4,7 +4,6 @@ import ExperimentTrials from './experiment-trials'
 import ExperimentDashboard from './experiment-dashboard'
 import { getUserData } from '../constants/utils'
 import Loader from './loader'
-// import ExperimentDashboard from './experiment-dashboard'
 
 export default class Experiment extends Component {
   constructor (props) {
@@ -66,7 +65,6 @@ export default class Experiment extends Component {
   }
 
   render () {
-    console.log(this.state.showDashboard)
     if (this.state.experiment !== null) {
       if (!this.state.showDashboard) {
         return (

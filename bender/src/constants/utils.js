@@ -28,22 +28,6 @@ export function checkTokenValidity (token) {
   return true
 }
 
-export function requireAuth (nextState, replace, handler) {
-  const id = window.localStorage.getItem(storageKey.user)
-  const username = window.localStorage.getItem(storageKey.username)
-  const token = window.localStorage.getItem(storageKey.token)
-  if (!id || !checkTokenValidity(token)) {
-    replace({
-      pathname: '/login',
-      state: {
-        nextPathname: nextState.location.pathname
-      }
-    })
-  } else {
-    handler({ id, username, token })
-  }
-}
-
 export function getUserData () {
   const id = window.localStorage.getItem(storageKey.user)
   const username = window.localStorage.getItem(storageKey.username)

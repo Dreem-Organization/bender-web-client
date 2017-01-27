@@ -29,7 +29,7 @@ export function fetchExperiment (token, experimentID, handler) {
 export function fetchTrials (token, experimentID, urlFilters, handler) {
   let url = `${BASE_URL}/experiments/${experimentID}/trials/`
   if (urlFilters != null) {
-    url = url + urlFilters
+    url += urlFilters
   }
   fetch(url, {
     headers: {

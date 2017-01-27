@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import ExperimentListItem from './experiment-list-item'
 import ExperimentForm from './experiment-form'
-import { Row, Col, Tabs } from 'antd'
+import { Row, Col, Tabs, Button } from 'antd'
 import { getUserData } from '../constants/utils'
 import { fetchExperiments } from '../constants/requests'
 
@@ -38,12 +38,17 @@ export default class ExperimentList extends Component {
   }
 
   render () {
-    return (
+    const formButton = (
+      <Button style={{'float': 'right'}} type='primary' size='large'>
+        Create Experiment
+      </Button>
+    )
+      return (
       <div className='main-container'>
         <Row>
           <Col span={12}><h1 className='main'>Experiments</h1></Col>
           <Col span={12} style={{paddingTop: '15px'}}>
-            <ExperimentForm user={this.state.user} />
+            <ExperimentForm user={this.state.user} formButton={formButton} />
           </Col>
         </Row>
         <Tabs

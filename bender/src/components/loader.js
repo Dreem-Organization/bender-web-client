@@ -9,9 +9,8 @@ export default class Loader extends Component {
           src={logo}
           style={{height: '100px'}}
           alt='logo'
-          style={{cursor: 'pointer'}}
         />
-       <h1>Loading...</h1>
+        <h1>Loading...</h1>
       </div>
     )
   }

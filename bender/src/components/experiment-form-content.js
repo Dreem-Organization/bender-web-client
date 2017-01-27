@@ -9,13 +9,18 @@ const RegistrationForm = Form.create()(React.createClass({
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values)
-        this.props.handleCreateExperiment(values)
+        this.props.handleCreateExperiment(
+          Object.assign({}, values, {
+            author: this.props.username
+          })
+        )
       }
     })
   },
 
   render () {
     const { getFieldDecorator } = this.props.form
+
     return (
       <Form vertical onSubmit={this.handleSubmit}>
         <FormItem label='Name'>
@@ -23,13 +28,6 @@ const RegistrationForm = Form.create()(React.createClass({
             rules: [{ required: true, message: 'Please provide and experiment name!' }]
           })(
             <Input placeholder='Name' />
-         )}
-        </FormItem>
-        <FormItem label='Author'>
-          {getFieldDecorator('author', {
-            rules: [{ required: true, message: 'Please provide your username' }]
-          })(
-            <Input placeholder='Author' />
          )}
         </FormItem>
         <FormItem label='Description'>

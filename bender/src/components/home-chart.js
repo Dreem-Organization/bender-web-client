@@ -101,6 +101,7 @@ export default class HomeChart extends Component {
           </li>
         )
       }
+      return null
     })
     return <ul>{lis}</ul>
   }
@@ -129,8 +130,22 @@ export default class HomeChart extends Component {
         <YAxis domain={['auto', 'auto']} tickFormatter={this.tickFormatter} />
         <CartesianGrid strokeDasharray='3 3' style={{opacity: 0.3}} />
         <Tooltip content={this.customTooltip} offset={25} />
-        <Area type='monotone' dataKey={'value'} fill='rgba(24, 131, 255, 0.1)' stroke='#108ee9' activeDot={{ r: 5 }} isAnimationActive={this.props.isAnimationActive} />
-        <Line type='monotone' dataKey={'value'} stroke='#108ee9' activeDot={{ r: 5 }} isAnimationActive={this.props.isAnimationActive} />
+        <Line
+          type='monotone'
+          dataKey={'value'}
+          stroke='#108ee9'
+          strokeWidth={1.5}
+          activeDot={{ r: 5 }}
+          animationDuration={850}
+        />
+        <Area
+          type='monotone'
+          dataKey={'value'}
+          fill='rgba(24, 131, 255, 0.1)'
+          strokeWidth={0}
+          activeDot={{ r: 5 }}
+          animationDuration={850}
+        />
       </ComposedChart>
     )
   }
