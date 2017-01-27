@@ -69,6 +69,7 @@ export default class Experiment extends Component {
       if (!this.state.showDashboard) {
         return (
           <ExperimentTrials
+            user={this.state.user}
             experiment={this.state.experiment}
             trials={this.state.trials}
             algos={this.state.algos}

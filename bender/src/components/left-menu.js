@@ -12,13 +12,15 @@ export default class LeftMenu extends Component {
   }
   render () {
     const formButton = (
-      <Button
-        type='ghost'
-        size='large'
-        shape='circle-outline'
-        icon='plus'
-        style={{marginBottom: '15px'}}
-      />
+      <Tooltip placement='right' title={'New Experiment'}>
+        <Button
+          type='ghost'
+          size='large'
+          shape='circle-outline'
+          icon='plus'
+          style={{marginBottom: '15px'}}
+        />
+    </Tooltip>
     )
     return (
       <div className='left-menu'>
@@ -31,9 +33,7 @@ export default class LeftMenu extends Component {
           />
         </Link>
         <div className='menu-bottom-button'>
-          <Tooltip placement='right' title={'New Experiment'}>
-            <ExperimentForm formButton={formButton} />
-          </Tooltip>
+          <ExperimentForm formButton={formButton} />
           <Tooltip placement='right' title={'Log out'}>
             <Button type='ghost' size='large' shape='circle-outline' icon='logout' onClick={this.logout} />
           </Tooltip>

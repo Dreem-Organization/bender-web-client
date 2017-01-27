@@ -4,6 +4,7 @@ import HomeChart from './home-chart'
 import Trial from './trial'
 import AlgoList from './algo-list'
 import TrialFilterer from './trial-filterer'
+import { deleteTrial } from '../constants/requests'
 import { Button, Row, Col, Tooltip, Tabs } from 'antd'
 import Clipboard from 'clipboard'
 import { Link } from 'react-router'
@@ -19,6 +20,7 @@ export default class ExperimentTrials extends Component {
     }
     this._getTrialList = this._getTrialList.bind(this)
     this._renderDatasetLabel = this._renderDatasetLabel.bind(this)
+    this.deleteTrial = this.deleteTrial.bind(this)
   }
 
   componentDidMount () {
@@ -37,7 +39,7 @@ export default class ExperimentTrials extends Component {
             key={i}
             trial={trial}
             mainMetric={this.props.experiment.main_metric}
-            deleteTrial={this.props.deleteTrial}
+            deleteTrial={this.deleteTrial}
           />
         )
       })
@@ -53,6 +55,10 @@ export default class ExperimentTrials extends Component {
         </h2>
       )
     }
+  }
+
+  deleteTrial (trialID) {
+    deleteTrial(this.props.user.token, trialID)
   }
 
   _renderDatasetLabel () {
