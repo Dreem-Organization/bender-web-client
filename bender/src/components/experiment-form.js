@@ -1,14 +1,17 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import { Modal, Button } from 'antd'
+import { Modal } from 'antd'
 import ExperimentFormContent from './experiment-form-content'
+import { createExperiment } from '../constants/requests'
+import { getUserData } from '../constants/utils'
 
 export default class ExperimentForm extends Component {
   constructor (props) {
     super(props)
     this.state = {
       loading: false,
-      visible: false
+      visible: false,
+      user: getUserData()
     }
 
     this.showModal = this.showModal.bind(this)
@@ -33,24 +36,22 @@ export default class ExperimentForm extends Component {
   }
 
   handleCreateExperiment (formValue) {
-    const resp = this.props.createExperiment({
+    return createExperiment(this.state.user.token, {
       name: formValue.name,
       author: formValue.author,
       description: formValue.description,
       metrics: _.map(formValue.metrics.split(','), (m) => m.replace(/\s+/g, '')),
       dataset: formValue.dataset,
       dataset_parameters: formValue.dataset_parameters
-    })
-    debugger
-    return resp
+    }, (resp) => resp)
   }
 
   render () {
     return (
       <div>
-        <Button style={{'float': 'right'}} type='primary' size='large' onClick={this.showModal}>
-          Create Experiment
-        </Button>
+        <div onClick={this.showModal}>
+          {this.props.formButton}
+        </div>
         <Modal
           visible={this.state.visible}
           title='Create a new experiment'
@@ -61,6 +62,7 @@ export default class ExperimentForm extends Component {
         >
           <ExperimentFormContent
             handleCreateExperiment={this.handleCreateExperiment}
+            username={this.state.user.username}
           />
         </Modal>
       </div>

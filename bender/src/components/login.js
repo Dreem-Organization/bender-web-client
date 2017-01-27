@@ -2,6 +2,8 @@ import React from 'react'
 import { Form, Icon, Input, Button, Checkbox } from 'antd'
 import logo from '../images/bender-logo.svg'
 import { storageKey, loginURL } from '../constants/globals'
+import { browserHistory } from 'react-router'
+
 
 const FormItem = Form.Item
 
@@ -52,20 +54,19 @@ const NormalLoginForm = Form.create()(React.createClass({
   },
 
   login (credentials) {
-      return loginRequest(credentials).then((u) => {
-        console.log(u)
-        const user = {
-          username: credentials.username,
-          token: `Bearer ${u.token}`,
-          id: u.user_id
-        }
-        if (credentials.remember === true) {
-          window.localStorage.setItem(storageKey.username, credentials.username)
-          window.localStorage.setItem(storageKey.token, user.token)
-          window.localStorage.setItem(storageKey.user, user.id)
-        }
-        this.props.handleLogin(user)
-      })
+    return loginRequest(credentials).then((u) => {
+      console.log(u)
+      const user = {
+        username: credentials.username,
+        token: `Bearer ${u.token}`,
+        id: u.user_id
+      }
+
+      window.localStorage.setItem(storageKey.username, credentials.username)
+      window.localStorage.setItem(storageKey.token, user.token)
+      window.localStorage.setItem(storageKey.user, user.id)
+      browserHistory.push('/experiments')
+    })
   },
 
   render () {

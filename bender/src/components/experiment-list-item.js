@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link, browserHistory } from 'react-router'
 
 export default class Experiment extends Component {
   constructor (props) {
@@ -8,9 +9,7 @@ export default class Experiment extends Component {
   }
 
   handleExperimentClick () {
-    this.props.moveToView('experiment')
-    this.props.fetchExperimentData(this.props.experiment.id)
-    this.props.setSelectedExperiment(this.props.experiment.id)
+    browserHistory.push(`/experiment/${this.props.experiment.id}/`)
   }
 
   render () {

@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import _ from 'lodash'
 import { Row, Col, Card, Button } from 'antd'
 import LineChartWidget from './widgets/line-chart-widget'
-import RadarChartWidget from './widgets/radar-chart-widget'
+// import RadarChartWidget from './widgets/radar-chart-widget'
 import ScatterChartWidget from './widgets/scatter-chart-widget'
 import TrialFilterer from './trial-filterer'
+import { Link } from 'react-router'
 
 export default class Dashboard extends Component {
   constructor (props) {
@@ -50,9 +51,11 @@ export default class Dashboard extends Component {
         <Row>
           <Col span={20}>
             <h1 className='main'>
-              <a onClick={() => this.props.moveToView('experiment-list')}>Experiments</a>
+              <Link to={'/experiments'}>Experiments</Link>
               &nbsp;>&nbsp;
-              <a onClick={() => this.props.moveToView('experiment')}>{this.props.experiment.name}</a>
+              <a onClick={this.props.closeDashboard}>
+                {this.props.experiment.name}
+              </a>
               &nbsp;>&nbsp;Dashboard
             </h1>
           </Col>
@@ -60,8 +63,9 @@ export default class Dashboard extends Component {
             <Button
               style={{float: 'right', marginTop: '15px', fontSize: '13px'}}
               id={'buttonId'}
-              onClick={() => this.props.moveToView('experiment')}
-              type='default'>
+              type='default'
+              onClick={this.props.closeDashboard}
+              >
               Close Dashboard
             </Button>
           </Col>
