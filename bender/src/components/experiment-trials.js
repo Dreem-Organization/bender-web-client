@@ -4,6 +4,7 @@ import HomeChart from './home-chart'
 import Trial from './trial'
 import AlgoList from './algo-list'
 import TrialFilterer from './trial-filterer'
+import TrialsGetStarted from './trials-get-started'
 import { deleteTrial } from '../constants/requests'
 import { Button, Row, Col, Tooltip, Tabs } from 'antd'
 import Clipboard from 'clipboard'
@@ -21,6 +22,7 @@ export default class ExperimentTrials extends Component {
     this._getTrialList = this._getTrialList.bind(this)
     this._renderDatasetLabel = this._renderDatasetLabel.bind(this)
     this.deleteTrial = this.deleteTrial.bind(this)
+    this._renderContentOrGetStarted = this._renderContentOrGetStarted.bind(this)
   }
 
   componentDidMount () {
@@ -32,29 +34,21 @@ export default class ExperimentTrials extends Component {
   }
 
   _getTrialList () {
-    if (this.props.trials.length >= 1) {
-      const trialList = _.map(this.props.trials, (trial, i) => {
-        return (
-          <Trial
-            key={i}
-            trial={trial}
-            mainMetric={this.props.experiment.main_metric}
-            deleteTrial={this.deleteTrial}
-          />
-        )
-      })
+    const trialList = _.map(this.props.trials, (trial, i) => {
       return (
-        <div className='trial-list'>
-          <ul>{trialList}</ul>
-        </div>
+        <Trial
+          key={i}
+          trial={trial}
+          mainMetric={this.props.experiment.main_metric}
+          deleteTrial={this.deleteTrial}
+        />
       )
-    } else {
-      return (
-        <h2 className='no-trials'>
-          No trials send yet.
-        </h2>
-      )
-    }
+    })
+    return (
+      <div className='trial-list'>
+        <ul>{trialList}</ul>
+      </div>
+    )
   }
 
   deleteTrial (trialID) {
@@ -81,6 +75,38 @@ export default class ExperimentTrials extends Component {
      )
     } else {
       return null
+    }
+  }
+
+  _renderContentOrGetStarted () {
+    if (this.props.trials.length >= 1) {
+      return (
+        <Tabs
+          tabPosition={'top'}
+          animated={false}
+          tabBarExtraContent={
+            <TrialFilterer
+              experiment={this.props.experiment}
+              algos={this.props.algos}
+              setFilters={this.props.setFilters}
+              filters={this.props.filters}
+            />
+          }
+        >
+          <TabPane tab={<h4>Trials</h4>} key='1'>
+            {this._getHomeChart()}
+            {this._getTrialList()}
+          </TabPane>
+          <TabPane tab={<h4>Algos</h4>} key='3'>
+            <AlgoList algos={this.props.algos} />
+          </TabPane>
+          <TabPane tab={<h4>Infos</h4>} key='4'></TabPane>
+        </Tabs>
+      )
+    } else {
+      return (
+        <TrialsGetStarted />
+      )
     }
   }
 
@@ -134,27 +160,7 @@ export default class ExperimentTrials extends Component {
             </p>
           </Col>
         </Row>
-        <Tabs
-          tabPosition={'top'}
-          animated={false}
-          tabBarExtraContent={
-            <TrialFilterer
-              experiment={this.props.experiment}
-              algos={this.props.algos}
-              setFilters={this.props.setFilters}
-              filters={this.props.filters}
-            />
-          }
-        >
-          <TabPane tab={<h4>Trials</h4>} key='1'>
-            {this._getHomeChart()}
-            {this._getTrialList()}
-          </TabPane>
-          <TabPane tab={<h4>Algos</h4>} key='3'>
-            <AlgoList algos={this.props.algos} />
-          </TabPane>
-          <TabPane tab={<h4>Infos</h4>} key='4'></TabPane>
-        </Tabs>
+        {this._renderContentOrGetStarted()}
       </div>
     )
   }

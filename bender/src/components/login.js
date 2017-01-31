@@ -23,6 +23,8 @@ function throwErrorMessage (r) {
 }
 
 function responseHandler (resp) {
+
+  console.log(resp)
   if (!resp.ok) {
     return resp.json()
       .then(throwErrorMessage)
@@ -82,7 +84,7 @@ const NormalLoginForm = Form.create()(React.createClass({
         />
         <Form onSubmit={this.handleSubmit} className='login-form'>
           <h1>Login to Bender</h1>
-          <p>You can login using your regular internal<br /> Rythm account (same as viewer).</p>
+          <p>You can login using your regular internal Rythm account.<br/>(same as viewer).</p>
           <br />
           <FormItem>
             {getFieldDecorator('username', {

@@ -41,8 +41,8 @@ h1, h2, h3, h4 {
 
 .menu-bottom-button {
   position: absolute;
-  bottom: 20px;
-  padding: 10px 15px;
+  bottom: 0px;
+  padding: 10px 17px;
 }
 
 h1 {
@@ -407,7 +407,7 @@ div.algolist-content {
 }
 
 .form-logo {
-  height: 80px;
+  height: 75px;
   text-align: center;
   position: relative;
   margin: auto;
@@ -416,12 +416,13 @@ div.algolist-content {
 }
 
 .login-form {
-  max-width: 400px;
+  max-width: 370px;
   background: #fff;
   display: block;
   border-radius: 10px;
   margin-top: 20px;
   padding: 50px 30px;
+  padding-bottom: 20px;
   box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.05);
 }
 .login-form h1,
@@ -435,4 +436,27 @@ div.algolist-content {
 }
 .login-form-button {
   width: 100%;
+  margin-top: 20px;
+}
+
+
+
+/**********************************/
+/************ GET STARTED *************/
+/**********************************/
+
+.getstarted {
+  margin: 30px 0px;
+}
+
+.snippet {
+  background-color: #F7F7F7;
+  border: 1px solid #dfdfdf;
+  color: rgb(89, 70, 129);
+  border-radius: 3px;
+  margin: 10px 0px;
+  padding: 8px 10px;
+  font-size: 13px;
+  width: auto;
+  line-height: 20px;
 }

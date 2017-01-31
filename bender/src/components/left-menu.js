@@ -5,6 +5,10 @@ import logo from '../images/bender-logo.svg'
 import { storageKey } from '../constants/globals'
 import ExperimentForm from './experiment-form'
 
+const buttonStyle = {
+  marginBottom: '13px'
+}
+
 export default class LeftMenu extends Component {
   logout () {
     Object.keys(storageKey).forEach((k) => window.localStorage.removeItem(storageKey[k]))
@@ -18,9 +22,9 @@ export default class LeftMenu extends Component {
           size='large'
           shape='circle-outline'
           icon='plus'
-          style={{marginBottom: '15px'}}
+          style={buttonStyle}
         />
-    </Tooltip>
+      </Tooltip>
     )
     return (
       <div className='left-menu'>
@@ -34,8 +38,13 @@ export default class LeftMenu extends Component {
         </Link>
         <div className='menu-bottom-button'>
           <ExperimentForm formButton={formButton} />
+          <Tooltip placement='right' title={'Help'}>
+            <Link to='/help'>
+              <Button type='ghost' size='large' shape='circle-outline' icon='question' onClick={this.logout} style={buttonStyle} />
+            </Link>
+          </Tooltip>
           <Tooltip placement='right' title={'Log out'}>
-            <Button type='ghost' size='large' shape='circle-outline' icon='logout' onClick={this.logout} />
+            <Button type='ghost' size='large' shape='circle-outline' icon='logout' onClick={this.logout} style={buttonStyle} />
           </Tooltip>
         </div>
       </div>

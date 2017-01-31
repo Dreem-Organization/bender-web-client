@@ -7,7 +7,7 @@ export default class Loader extends Component {
       <div style={{textAlign: 'center', marginTop: '200px'}}>
         <img
           src={logo}
-          style={{height: '100px'}}
+          style={{height: '80px'}}
           alt='logo'
         />
         <h1>Loading...</h1>
