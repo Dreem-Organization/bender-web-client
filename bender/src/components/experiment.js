@@ -23,6 +23,7 @@ export default class Experiment extends Component {
       user: getUserData()
     }
 
+    this.setFilters = this.setFilters.bind(this)
     this.handleDashboardButton = this.handleDashboardButton.bind(this)
   }
 
@@ -57,7 +58,9 @@ export default class Experiment extends Component {
   setFilters (filters) {
     this.setState({filters})
     let urlFilters = `?order=${filters.order}&algo=${filters.algo}&desc=${filters.desc}&limit=${filters.limit}`
-    fetchTrials(this.state.selectedExperiment, urlFilters)
+    fetchTrials(this.state.user.token, this.state.experiment.id, urlFilters, (trials) => {
+      this.setState({trials})
+    })
   }
 
   handleDashboardButton () {
