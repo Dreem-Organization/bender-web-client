@@ -5,10 +5,11 @@ import Trial from './trial'
 import AlgoList from './algo-list'
 import TrialFilterer from './trial-filterer'
 import TrialsGetStarted from './trials-get-started'
-import { deleteTrial } from '../constants/requests'
-import { Button, Row, Col, Tooltip, Tabs } from 'antd'
+import { deleteTrial, deleteExperiment } from '../constants/requests'
+import { Button, Row, Col, Tooltip, Tabs, Popconfirm, message} from 'antd'
 import Clipboard from 'clipboard'
 import { Link } from 'react-router'
+import { browserHistory } from 'react-router'
 
 const TabPane = Tabs.TabPane
 
@@ -23,6 +24,7 @@ export default class ExperimentTrials extends Component {
     this._renderDatasetLabel = this._renderDatasetLabel.bind(this)
     this.deleteTrial = this.deleteTrial.bind(this)
     this._renderContentOrGetStarted = this._renderContentOrGetStarted.bind(this)
+    this.handleDeleteExperiment = this.handleDeleteExperiment.bind(this)
   }
 
   componentDidMount () {
@@ -78,6 +80,12 @@ export default class ExperimentTrials extends Component {
     }
   }
 
+  handleDeleteExperiment () {
+    deleteExperiment(this.props.user.token, this.props.experiment.id)
+    message.success('Trial deleted.')
+    browserHistory.push('/experiments')
+  }
+
   _renderContentOrGetStarted () {
     if (this.props.trials.length >= 1) {
       return (
@@ -100,7 +108,11 @@ export default class ExperimentTrials extends Component {
           <TabPane tab={<h4>Algos</h4>} key='3'>
             <AlgoList algos={this.props.algos} />
           </TabPane>
-          <TabPane tab={<h4>Infos</h4>} key='4'></TabPane>
+          <TabPane tab={<h4>Infos</h4>} key='4'>
+            <Popconfirm placement='top' title={'Are you sure ?'} onConfirm={this.handleDeleteExperiment} okText='Yes' cancelText='No'>
+              <Button>Delete Experiment</Button>
+            </ Popconfirm>
+          </TabPane>
         </Tabs>
       )
     } else {

@@ -58,7 +58,7 @@ const RegistrationForm = Form.create()(React.createClass({
             <Input placeholder='Dataset Parameters' />
           )}
         </FormItem>
-        <Button type='primary' htmlType='submit' size='large'>
+        <Button type='primary' htmlType='submit' size='large' loading={this.props.loading}>
           Submit
         </Button>
       </Form>

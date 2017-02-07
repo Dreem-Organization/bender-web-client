@@ -12,6 +12,7 @@ export default class ExperimentList extends Component {
     super(props)
 
     this._getExperimentList = this._getExperimentList.bind(this)
+    this.handleFetchExperiments = this.handleFetchExperiments.bind(this)
     this.state = {
       user: getUserData(),
       experiments: []
@@ -32,6 +33,10 @@ export default class ExperimentList extends Component {
   }
 
   componentDidMount () {
+    this.handleFetchExperiments()
+  }
+
+  handleFetchExperiments () {
     fetchExperiments(this.state.user.token, (json) => {
       this.setState({experiments: json})
     })
@@ -43,12 +48,16 @@ export default class ExperimentList extends Component {
         Create Experiment
       </Button>
     )
-      return (
+    return (
       <div className='main-container'>
         <Row>
           <Col span={12}><h1 className='main'>Experiments</h1></Col>
           <Col span={12} style={{paddingTop: '15px'}}>
-            <ExperimentForm user={this.state.user} formButton={formButton} />
+            <ExperimentForm
+              user={this.state.user}
+              formButton={formButton}
+              handleFetchExperiments={this.handleFetchExperiments}
+            />
           </Col>
         </Row>
         <Tabs

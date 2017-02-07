@@ -64,6 +64,24 @@ export function deleteTrial (token, trialId) {
   })
 }
 
+export function deleteExperiment (token, experimentID) {
+  fetch(`${BASE_URL}/experiments/${experimentID}/`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': token
+    }
+  })
+}
+
+export function deleteAlgo (token, algoID) {
+  fetch(`${BASE_URL}/algo/${algoID}/`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': token
+    }
+  })
+}
+
 export function createExperiment (token, experimentData, handler) {
   fetch(`${BASE_URL}/experiments.json`, {
     method: 'POST',
