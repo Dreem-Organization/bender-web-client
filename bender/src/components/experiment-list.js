@@ -65,7 +65,7 @@ export default class ExperimentList extends Component {
           animated={false}
           >
           <TabPane tab={
-              <h4>Private ({this.state.experiments.length})</h4>
+            <h4>Private ({this.state.experiments.length})</h4>
             } key='1'>
             <div className='experiment-list'>
               <ul>{this._getExperimentList()}</ul>

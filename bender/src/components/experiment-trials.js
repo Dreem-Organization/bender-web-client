@@ -74,7 +74,7 @@ export default class ExperimentTrials extends Component {
           mainMetric={this.props.experiment.main_metric}
           isAnimationActive={this.state.animateChart}
         />
-     )
+    )
     } else {
       return null
     }
@@ -87,39 +87,48 @@ export default class ExperimentTrials extends Component {
   }
 
   _renderContentOrGetStarted () {
-    if (this.props.trials.length >= 1) {
-      return (
-        <Tabs
-          tabPosition={'top'}
-          animated={false}
-          tabBarExtraContent={
-            <TrialFilterer
-              experiment={this.props.experiment}
-              algos={this.props.algos}
-              setFilters={this.props.setFilters}
-              filters={this.props.filters}
-            />
-          }
-        >
-          <TabPane tab={<h4>Trials</h4>} key='1'>
-            {this._getHomeChart()}
-            {this._getTrialList()}
-          </TabPane>
-          <TabPane tab={<h4>Algos</h4>} key='3'>
-            <AlgoList algos={this.props.algos} />
-          </TabPane>
-          <TabPane tab={<h4>Infos</h4>} key='4'>
-            <Popconfirm placement='top' title={'Are you sure ?'} onConfirm={this.handleDeleteExperiment} okText='Yes' cancelText='No'>
-              <Button>Delete Experiment</Button>
-            </ Popconfirm>
-          </TabPane>
-        </Tabs>
+    let trialsOrGetStarted
+    if (this.props.trials.length < 1) {
+     trialsOrGetStarted = (
+        <TabPane tab={<h4>Getting Started</h4>} key='0'>
+         <TrialsGetStarted />
+        </TabPane>
       )
     } else {
-      return (
-        <TrialsGetStarted />
+      trialsOrGetStarted = (
+        <div>
+          {this._getHomeChart()}
+          {this._getTrialList()}
+        </div>
       )
     }
+    return (
+      <Tabs
+        tabPosition={'top'}
+        animated={false}
+        defaultActiveKey={'0'}
+        tabBarExtraContent={
+          <TrialFilterer
+            experiment={this.props.experiment}
+            algos={this.props.algos}
+            setFilters={this.props.setFilters}
+            filters={this.props.filters}
+          />
+        }
+      >
+        <TabPane tab={<h4>Trials</h4>} key='0'>
+
+        </TabPane>
+        <TabPane tab={<h4>Algos</h4>} key='2'>
+          <AlgoList algos={this.props.algos} />
+        </TabPane>
+        <TabPane tab={<h4>Infos</h4>} key='3'>
+          <Popconfirm placement='top' title={'Are you sure ?'} onConfirm={this.handleDeleteExperiment} okText='Yes' cancelText='No'>
+            <Button>Delete Experiment</Button>
+          </ Popconfirm>
+        </TabPane>
+      </Tabs>
+    )
   }
 
   render () {

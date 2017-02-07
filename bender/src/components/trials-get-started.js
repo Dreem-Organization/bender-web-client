@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
-import Highlight from 'react-highlight'
 
 export default class TrialsGetStarted extends Component {
   render () {
@@ -16,7 +15,7 @@ export default class TrialsGetStarted extends Component {
         </div>
         <h4>{"2. Load your experiment"}</h4>
         <div className='snippet'>
-          {"import bender as Bender"}
+          {"from bender import Bender"}
           <br />
           {"bender = Bender(author='yourname@rythm.co', experiment=<EXPERIMENT ID>)"}
         </div>

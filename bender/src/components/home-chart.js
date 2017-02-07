@@ -125,7 +125,7 @@ export default class HomeChart extends Component {
     return (
       <ComposedChart
         style={chartStyles}
-        margin={{top: 0, right: 0, left: 0, bottom: 0}}
+        margin={{top: 5, right: 0, left: 0, bottom: 5}}
         data={this._getChartData()}>
         <YAxis domain={['auto', 'auto']} tickFormatter={this.tickFormatter} />
         <CartesianGrid strokeDasharray='3 3' style={{opacity: 0.3}} />

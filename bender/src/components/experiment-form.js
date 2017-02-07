@@ -47,7 +47,7 @@ export default class ExperimentForm extends Component {
           visible={this.state.visible}
           title={<h3>Create a new experiment</h3>}
           onOk={this.handleSubmit}
-          onCancel={this.handleCancel}
+          onCancel={() => this.setState({visible: false})}
           width='600px'
           footer={null}
         >

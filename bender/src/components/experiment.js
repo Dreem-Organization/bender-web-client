@@ -68,7 +68,7 @@ export default class Experiment extends Component {
   }
 
   render () {
-    if (this.state.experiment !== null) {
+    if (this.state.experiment !== null && this.state.trials !== null && this.state.algos !== null) {
       if (!this.state.showDashboard) {
         return (
           <ExperimentTrials
