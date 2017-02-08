@@ -117,7 +117,7 @@ export default class ExperimentTrials extends Component {
         }
       >
         <TabPane tab={<h4>Trials</h4>} key='0'>
-
+          {trialsOrGetStarted}
         </TabPane>
         <TabPane tab={<h4>Algos</h4>} key='2'>
           <AlgoList algos={this.props.algos} />
