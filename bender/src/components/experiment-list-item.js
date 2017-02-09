@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
+import { Icon } from 'antd'
 
 export default class Experiment extends Component {
   constructor (props) {
@@ -15,7 +16,7 @@ export default class Experiment extends Component {
   render () {
     return (
       <li className='experiment-list-item' onClick={this.handleExperimentClick}>
-        <h3>{this.props.experiment.name}</h3>
+        <h3><Icon type={this.props.experiment.is_private ? 'lock' : 'team'} style={{color: '#b6b5b5'}} /> {this.props.experiment.name}</h3>
         <i className='author'>by {this.props.experiment.author}</i>
         <div className='algo-count'>
           <span>{this.props.experiment.algo_count}</span>

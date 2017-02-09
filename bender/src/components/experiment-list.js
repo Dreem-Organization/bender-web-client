@@ -3,7 +3,7 @@ import ExperimentListItem from './experiment-list-item'
 import ExperimentForm from './experiment-form'
 import { Row, Col, Tabs, Button } from 'antd'
 import { getUserData } from '../constants/utils'
-import { fetchExperiments } from '../constants/requests'
+import { fetchPublicExperiments, fetchUserExperiments } from '../constants/requests'
 
 const TabPane = Tabs.TabPane
 
@@ -15,12 +15,13 @@ export default class ExperimentList extends Component {
     this.handleFetchExperiments = this.handleFetchExperiments.bind(this)
     this.state = {
       user: getUserData(),
-      experiments: []
+      publicExperiments: [],
+      userExperiments: []
     }
   }
 
-  _getExperimentList () {
-    return this.state.experiments.map((experiment, i) => {
+  _getExperimentList (experiments) {
+    return experiments.map((experiment, i) => {
       return (
         <ExperimentListItem
           key={i}
@@ -37,8 +38,11 @@ export default class ExperimentList extends Component {
   }
 
   handleFetchExperiments () {
-    fetchExperiments(this.state.user.token, (json) => {
-      this.setState({experiments: json})
+    fetchPublicExperiments(this.state.user.token, (publicExperiments) => {
+      this.setState({publicExperiments})
+    })
+    fetchUserExperiments(this.state.user.token, this.state.user.username, (userExperiments) => {
+      this.setState({userExperiments})
     })
   }
 
@@ -65,14 +69,18 @@ export default class ExperimentList extends Component {
           animated={false}
           >
           <TabPane tab={
-            <h4>Private ({this.state.experiments.length})</h4>
+            <h4>My Experiments ({this.state.userExperiments.length})</h4>
             } key='1'>
             <div className='experiment-list'>
-              <ul>{this._getExperimentList()}</ul>
+              <ul>{this._getExperimentList(this.state.userExperiments)}</ul>
             </div>
           </TabPane>
-          <TabPane tab={<h4>Public</h4>} key='2'>
-            Public experiments
+          <TabPane tab={
+              <h4>Public ({this.state.publicExperiments.length})</h4>
+            } key='2'>
+            <div className='experiment-list'>
+              <ul>{this._getExperimentList(this.state.publicExperiments)}</ul>
+            </div>
           </TabPane>
         </Tabs>
       </div>

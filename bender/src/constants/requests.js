@@ -1,7 +1,20 @@
 import { BASE_URL } from '../constants/globals'
 
-export function fetchExperiments (token, handler) {
-  fetch(`${BASE_URL}/experiments/`, {
+export function fetchPublicExperiments (token, handler) {
+  fetch(`${BASE_URL}/experiments/public_experiments/`, {
+    headers: {
+      'Content-type': 'application/json',
+      'Authorization': token
+    }
+  })
+  .then((res) => res.json())
+  .then((json) => {
+    handler(json)
+  })
+}
+
+export function fetchUserExperiments (token, author, handler) {
+  fetch(`${BASE_URL}/experiments/user_experiments/?author=${author}`, {
     headers: {
       'Content-type': 'application/json',
       'Authorization': token
