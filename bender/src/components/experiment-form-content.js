@@ -62,7 +62,7 @@ const RegistrationForm = Form.create()(React.createClass({
           label='Private Experiment'
         >
           {getFieldDecorator('is_private')(
-            <Switch />
+            <Switch defaultChecked={true} />
           )}
         </FormItem>
         <Button type='primary' htmlType='submit' size='large' loading={this.props.loading}>

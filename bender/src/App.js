@@ -12,17 +12,6 @@ import 'whatwg-fetch'
 import 'antd/dist/antd.css'
 import './App.scss'
 
-class LoggedAppBase extends Component {
-  render () {
-    return (
-      <div className='App'>
-        <LeftMenu />
-        {this.props.children}
-      </div>
-    )
-  }
-}
-
 export default class App extends Component {
   constructor (props) {
     super(props)
@@ -49,15 +38,23 @@ export default class App extends Component {
     }
   }
 
+  wrapComponent (component) {
+    return (
+      <div className='App'>
+        <LeftMenu />
+        {component}
+      </div>
+    )
+  }
+
   render () {
     return (
       <LocaleProvider locale={enUS}>
         <Router history={browserHistory}>
           <Route path='login' component={LoginForm} />
-          <Route path='/' component={LoggedAppBase} onEnter={this.requireAuth}>
-            <Route path='experiments' component={ExperimentList} onEnter={this.requireAuth} />
-            <Route path='experiment/:experimentID' component={Experiment} onEnter={this.requireAuth} />
-          </Route>
+          <Route path='/' onEnter={() => browserHistory.push('/experiments')} />
+          <Route path='/experiments' component={() => this.wrapComponent(<ExperimentList />)} onEnter={this.requireAuth} />
+          <Route path='/experiment/:experimentID' component={() => this.wrapComponent(<Experiment />)} onEnter={this.requireAuth} />
         </Router>
       </LocaleProvider>
     )
