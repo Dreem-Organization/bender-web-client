@@ -57,7 +57,10 @@ export default class Experiment extends Component {
   }
   setFilters (filters) {
     this.setState({filters})
-    let urlFilters = `?order=${filters.order}&algo=${filters.algo}&desc=${filters.desc}&limit=${filters.limit}`
+    let urlFilters = `?order=${filters.order}&desc=${filters.desc}&limit=${filters.limit}`
+    if (filters.algo !== null) {
+      urlFilters += `&algo=${filters.algo}`
+    }
     fetchTrials(this.state.user.token, this.state.experiment.id, urlFilters, (trials) => {
       this.setState({trials})
     })

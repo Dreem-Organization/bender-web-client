@@ -23,13 +23,15 @@ export default class ExperimentForm extends Component {
 
   handleCreateExperiment (formValue) {
     this.setState({loading: true})
+    debugger
     return createExperiment(this.state.user.token, {
       name: formValue.name,
       author: formValue.author,
       description: formValue.description,
       metrics: _.map(formValue.metrics.split(','), (m) => m.replace(/\s+/g, '')),
       dataset: formValue.dataset,
-      dataset_parameters: formValue.dataset_parameters
+      dataset_parameters: formValue.dataset_parameters,
+      is_private: formValue.is_private
     }, (resp) => {
       this.setState({ loading: false, visible: false })
       message.success('Experiment successfully created!')

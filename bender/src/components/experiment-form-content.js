@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Input, Button } from 'antd'
+import { Form, Input, Button, Switch } from 'antd'
 
 const FormItem = Form.Item
 
@@ -56,6 +56,13 @@ const RegistrationForm = Form.create()(React.createClass({
             rules: [{ required: false, message: '(Optional) provide dataset parameters' }]
           })(
             <Input placeholder='Dataset Parameters' />
+          )}
+        </FormItem>
+        <FormItem
+          label='Private Experiment'
+        >
+          {getFieldDecorator('is_private')(
+            <Switch />
           )}
         </FormItem>
         <Button type='primary' htmlType='submit' size='large' loading={this.props.loading}>
