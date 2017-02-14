@@ -4,7 +4,7 @@ body {
   font-family: sans-serif;
   background: #f4f1f1;
   color: rgb(51, 50, 59);
-  font-family: 'Inconsolata', monospace;
+  font-family: 'Inconsolata', 'Oxygen Mono', monospace;
   font-size: 14px;
 }
 
@@ -25,6 +25,12 @@ h1, h2, h3, h4 {
     padding: 20px;
     text-align: center;
   }
+}
+
+.ant-card-body {
+  padding: 20px 0px;
+  padding-left: 15px;
+  padding-bottom: 5px;
 }
 
 .left-menu {

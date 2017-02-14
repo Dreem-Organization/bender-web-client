@@ -87,7 +87,7 @@ export function deleteExperiment (token, experimentID) {
 }
 
 export function deleteAlgo (token, algoID) {
-  fetch(`${BASE_URL}/algo/${algoID}/`, {
+  fetch(`${BASE_URL}/algos/${algoID}/`, {
     method: 'DELETE',
     headers: {
       'Authorization': token
@@ -99,6 +99,20 @@ export function createExperiment (token, experimentData, handler) {
   fetch(`${BASE_URL}/experiments.json`, {
     method: 'POST',
     body: JSON.stringify(experimentData),
+    headers: {
+      'Authorization': token,
+      'Content-Type': 'application/json'
+    }
+  }).then((res) => res.json())
+    .then((json) => {
+      handler(json)
+  })
+}
+
+export function createAlgo (token, algoData, handler) {
+  fetch(`${BASE_URL}/algos.json`, {
+    method: 'POST',
+    body: JSON.stringify(algoData),
     headers: {
       'Authorization': token,
       'Content-Type': 'application/json'
