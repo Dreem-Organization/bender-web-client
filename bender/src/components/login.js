@@ -23,8 +23,6 @@ function throwErrorMessage (r) {
 }
 
 function responseHandler (resp) {
-
-  console.log(resp)
   if (!resp.ok) {
     return resp.json()
       .then(throwErrorMessage)
@@ -49,7 +47,6 @@ const NormalLoginForm = Form.create()(React.createClass({
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values)
         this.login(values)
       }
     })
@@ -57,7 +54,6 @@ const NormalLoginForm = Form.create()(React.createClass({
 
   login (credentials) {
     return loginRequest(credentials).then((u) => {
-      console.log(u)
       const user = {
         username: credentials.username,
         token: `Bearer ${u.token}`,

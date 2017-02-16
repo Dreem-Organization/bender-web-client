@@ -347,19 +347,18 @@ div.algolist-content {
 
 .filterer {
   min-width: 520px;
-  max-width: 620px;
+  max-width: 1020px;
   overflow: hidden;
   width: auto;
   position: relative;
   float: right;
-  // border: 2px solid;
   text-align: right;
 
   .sort-button {
     margin:0px;
     border: 0px solid;
     min-width: 90px;
-    max-width: 110;
+    // max-width: 150;
     outline: none !important;
 
     > div {
@@ -379,7 +378,7 @@ div.algolist-content {
   }
 
   .sort-button.apply {
-    max-width: 80px;
+    // max-width: 80px;
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
   }
