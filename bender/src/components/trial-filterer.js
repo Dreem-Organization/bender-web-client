@@ -1,18 +1,7 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import { Menu, Select, Button, Icon, message } from 'antd'
+import { Menu, Select, Button, Icon } from 'antd'
 
-// function handleButtonClick (e) {
-//   message.info('Click on left button.')
-//   console.log('click left button', e)
-// }
-
-function handleMenuClick (e) {
-  message.info('Click on menu item.')
-  console.log('click', e)
-}
-
-const SubMenu = Menu.SubMenu
 const Option = Select.Option
 const OptGroup = Select.OptGroup
 
@@ -25,7 +14,6 @@ export default class TrialFilterer extends Component {
   constructor (props) {
     super(props)
 
-    this._renderOrderMenu = this._renderOrderMenu.bind(this)
     this._getOrderOptions = this._getOrderOptions.bind(this)
     this._getAlgoOptions = this._getAlgoOptions.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -38,18 +26,6 @@ export default class TrialFilterer extends Component {
 
   componentDidMount () {
     this.setState({filters: this.props.filters})
-  }
-
-  _renderOrderMenu () {
-    const metrics = this.props.experiment.metrics.map((m, i) => <Menu.Item key={m}>{m}</Menu.Item>)
-    return (
-      <Menu onClick={handleMenuClick}>
-        <Menu.Item key='1'>Date</Menu.Item>
-        <SubMenu title='Metrics'>
-          {metrics}
-        </SubMenu>
-      </Menu>
-    )
   }
 
   _getOrderOptions () {

@@ -6,10 +6,8 @@ import AlgoList from './algo-list'
 import TrialFilterer from './trial-filterer'
 import TrialsGetStarted from './trials-get-started'
 import { deleteTrial, deleteExperiment } from '../constants/requests'
-import { Button, Row, Col, Tooltip, Tabs, Popconfirm, message} from 'antd'
-import Clipboard from 'clipboard'
-import { Link } from 'react-router'
-import { browserHistory } from 'react-router'
+import { Button, Row, Col, Tabs, Popconfirm, message, Input, Icon } from 'antd'
+import { Link, browserHistory } from 'react-router'
 
 const TabPane = Tabs.TabPane
 
@@ -25,14 +23,6 @@ export default class ExperimentTrials extends Component {
     this.deleteTrial = this.deleteTrial.bind(this)
     this._renderContentOrGetStarted = this._renderContentOrGetStarted.bind(this)
     this.handleDeleteExperiment = this.handleDeleteExperiment.bind(this)
-  }
-
-  componentDidMount () {
-    this.clipboard = new Clipboard(
-      '#buttonId', {
-        target: () => document.getElementById('inputId')
-      }
-    )
   }
 
   _getTrialList () {
@@ -74,7 +64,7 @@ export default class ExperimentTrials extends Component {
           mainMetric={this.props.experiment.main_metric}
           isAnimationActive={this.state.animateChart}
         />
-    )
+      )
     } else {
       return null
     }
@@ -120,7 +110,10 @@ export default class ExperimentTrials extends Component {
           {trialsOrGetStarted}
         </TabPane>
         <TabPane tab={<h4>Algos</h4>} key='2'>
-          <AlgoList algos={this.props.algos} />
+          <AlgoList
+            algos={this.props.algos}
+            user={this.props.user}
+          />
         </TabPane>
         <TabPane tab={<h4>Infos</h4>} key='3'>
           <Popconfirm placement='top' title={'Are you sure ?'} onConfirm={this.handleDeleteExperiment} okText='Yes' cancelText='No'>
@@ -152,26 +145,16 @@ export default class ExperimentTrials extends Component {
           </Col>
         </Row>
         <Row>
-          <Col span={12}>
+          <Col span={18}>
             <i>by {this.props.experiment.author}</i>
             {this._renderDatasetLabel()}
           </Col>
-          <Col span={12}>
-            <input
-              id={'inputId'}
-              type={'text'}
+          <Col span={6}>
+            <Input
+              addonAfter={<Icon type='link' />}
+              defaultValue={this.props.experiment.id}
               value={this.props.experiment.id}
-              style={{opacity: 0}}
-              readOnly
             />
-            <Tooltip title='Click to copy'>
-              <Button
-                style={{float: 'right'}}
-                id={'buttonId'}
-                type='dashed'>
-                {this.props.experiment.id}
-              </Button>
-            </Tooltip>
           </Col>
         </Row>
         <Row>

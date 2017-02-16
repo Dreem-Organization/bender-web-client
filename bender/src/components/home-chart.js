@@ -67,16 +67,14 @@ export default class HomeChart extends Component {
     })
 
     return (
-      <div style={{position: 'relative', 'top': '-2px'}}>
-        <Select
-          defaultValue={this.state.selectedVar}
-          style={{top: '-4px', margin: '0px 10px', width: '160px'}}
-          onChange={this.handleSelectMetric}
-          size='large'
-         >
-          {metrics}
-        </Select>
-      </div>
+      <Select
+        defaultValue={this.state.selectedVar}
+        style={{top: '-2px', minWidth: '160px'}}
+        onChange={this.handleSelectMetric}
+        size='large'
+       >
+        {metrics}
+      </Select>
     )
   }
 
