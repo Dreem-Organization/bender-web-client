@@ -8,6 +8,7 @@ import LocaleProvider from 'antd/lib/locale-provider'
 import { storageKey } from './constants/globals'
 import { Router, Route, browserHistory } from 'react-router'
 import { checkTokenValidity } from './constants/utils'
+import SignUpForm from './components/signup'
 import 'whatwg-fetch'
 import 'antd/dist/antd.css'
 import './App.scss'
@@ -53,6 +54,7 @@ export default class App extends Component {
     return (
       <LocaleProvider locale={enUS}>
         <Router history={browserHistory}>
+          <Route path='signup' component={SignUpForm} />
           <Route path='login' component={LoginForm} />
           <Route path='/' component={LoggedAppBase} onEnter={this.requireAuth}>
             <Route path='experiments' component={ExperimentList} onEnter={this.requireAuth} />

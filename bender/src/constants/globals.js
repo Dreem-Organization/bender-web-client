@@ -14,4 +14,7 @@ export const loginURL = (function () {
   }
 })()
 
-export const BASE_URL = 'https://api.rythm.co/v1/dreem/bender'
+//export const API_BASE_URL = 'https://api.rythm.co/v1/dreem/bender/api/'
+export const BASE_URL = 'http://0.0.0.0:8000/'
+export const API_BASE_URL = 'http://0.0.0.0:8000/api/'
+export const signupUrl = `${BASE_URL}registration/`
