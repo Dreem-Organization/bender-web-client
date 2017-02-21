@@ -5,6 +5,7 @@ import Trial from './trial'
 import AlgoList from './algo-list'
 import TrialFilterer from './trial-filterer'
 import TrialsGetStarted from './trials-get-started'
+import AlgoForm from './algo-form'
 import { deleteTrial, deleteExperiment } from '../constants/requests'
 import { Button, Row, Col, Tabs, Popconfirm, message, Input, Icon } from 'antd'
 import { Link, browserHistory } from 'react-router'
@@ -110,9 +111,24 @@ export default class ExperimentTrials extends Component {
           {trialsOrGetStarted}
         </TabPane>
         <TabPane tab={<h4>Algos</h4>} key='2'>
+          <AlgoForm
+            user={this.props.user}
+            experiment={this.props.experiment}
+            fetchExperimentData={this.props.fetchExperimentData}
+            formButton={
+              <Button
+                type='primary'
+                style={{margin: '15px 0px'}}
+                className='custom-primary'>
+                Create algo
+              </Button>
+              }
+            />
           <AlgoList
             algos={this.props.algos}
             user={this.props.user}
+            experimentID={this.props.experiment.id}
+            fetchExperimentData={this.props.fetchExperimentData}
           />
         </TabPane>
         <TabPane tab={<h4>Infos</h4>} key='3'>
@@ -138,6 +154,7 @@ export default class ExperimentTrials extends Component {
               style={{float: 'right', marginTop: '15px', fontSize: '13px'}}
               id={'buttonId'}
               type='primary'
+              className='custom-primary'
               onClick={this.props.openDashboard}
               >
               Dashboard

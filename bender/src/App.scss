@@ -4,8 +4,9 @@ body {
   font-family: sans-serif;
   background: #f4f1f1;
   color: rgb(51, 50, 59);
-  font-family: 'Inconsolata', 'Oxygen Mono', monospace;
+  font-family: 'Inconsolata', 'Titillium Web', 'Oxygen Mono', monospace;
   font-size: 14px;
+  letter-spacing: 0.5px;
 }
 
 h1, h2, h3, h4 {
@@ -464,4 +465,15 @@ div.algolist-content {
   font-size: 13px;
   width: auto;
   line-height: 20px;
+}
+
+
+.ant-btn.ant-btn-primary.custom-primary {
+    border: none;
+    padding: 5px 15px;
+    box-shadow: 3px 3px 10px 0 #a7b5c2;
+}
+
+.ant-btn.ant-btn-primary.custom-primary:hover {
+    box-shadow: 0px 0px 0px 0 #a2b3c2;
 }

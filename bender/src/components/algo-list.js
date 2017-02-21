@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
-import Clipboard from 'clipboard'
 import { Row, Col, Button, Popconfirm, message, Input, Icon } from 'antd'
 import { deleteAlgo } from '../constants/requests'
 
@@ -12,17 +11,11 @@ export default class AlgoList extends Component {
     this.handleDeleteAlgo = this.handleDeleteAlgo.bind(this)
   }
 
-  componentDidMount () {
-    this.clipboard = new Clipboard(
-      '#buttonId', {
-        target: () => document.getElementById('inputId')
-      }
-    )
-  }
-
   handleDeleteAlgo (algoID) {
-    deleteAlgo(this.props.user.token, algoID)
-    message.success('Algo deleted!')
+    deleteAlgo(this.props.user.token, algoID, () => {
+      message.success('Algo deleted!')
+      this.props.fetchExperimentData(this.props.user.token, this.props.experimentID)
+    })
   }
 
   _getAlgoList () {

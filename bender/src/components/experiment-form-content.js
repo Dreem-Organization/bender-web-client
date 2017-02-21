@@ -3,7 +3,7 @@ import { Form, Input, Button, Switch } from 'antd'
 
 const FormItem = Form.Item
 
-const RegistrationForm = Form.create()(React.createClass({
+const ExperimentFormContent = Form.create()(React.createClass({
   handleSubmit (e) {
     e.preventDefault()
     this.props.form.validateFieldsAndScroll((err, values) => {
@@ -24,7 +24,7 @@ const RegistrationForm = Form.create()(React.createClass({
       <Form vertical onSubmit={this.handleSubmit}>
         <FormItem label='Name'>
           {getFieldDecorator('name', {
-            rules: [{ required: true, message: 'Please provide and experiment name!' }]
+            rules: [{ required: true, message: 'Please provide an experiment name' }]
           })(
             <Input placeholder='Name' />
          )}
@@ -72,4 +72,4 @@ const RegistrationForm = Form.create()(React.createClass({
   }
 }))
 
-export default RegistrationForm
+export default ExperimentFormContent

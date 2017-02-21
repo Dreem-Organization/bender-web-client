@@ -86,12 +86,14 @@ export function deleteExperiment (token, experimentID) {
   })
 }
 
-export function deleteAlgo (token, algoID) {
+export function deleteAlgo (token, algoID, handler) {
   fetch(`${BASE_URL}/algos/${algoID}/`, {
     method: 'DELETE',
     headers: {
       'Authorization': token
     }
+  }).then((res) => {
+    handler(res)
   })
 }
 
