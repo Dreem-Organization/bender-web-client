@@ -25,7 +25,7 @@ const AlgoFormContent = Form.create()(React.createClass({
             <Input placeholder='Name' />
          )}
         </FormItem>
-        <FormItem label='Metrics (Comma separated list)'>
+        <FormItem label='Hyper Parameters (Comma separated list)'>
           {getFieldDecorator('parameters', {
             rules: [{ required: true, message: 'Please provide algo parameters' }]
           })(

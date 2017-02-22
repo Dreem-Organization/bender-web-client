@@ -23,7 +23,6 @@ export default class AlgoForm extends Component {
 
   handleCreateAlgo (formValue) {
     this.setState({loading: true})
-    debugger
     return createAlgo(this.state.user.token, {
       name: formValue.name,
       parameters: _.chain(formValue.parameters.split(','))
