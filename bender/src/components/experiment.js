@@ -25,6 +25,7 @@ export default class Experiment extends Component {
 
     this.setFilters = this.setFilters.bind(this)
     this.handleDashboardButton = this.handleDashboardButton.bind(this)
+    this.fetchExperimentData = this.fetchExperimentData.bind(this)
   }
 
   componentDidMount () {

@@ -50,7 +50,11 @@ export default class ExperimentList extends Component {
 
   render () {
     const formButton = (
-      <Button style={{'float': 'right'}} type='primary' size='large'>
+      <Button
+        style={{'float': 'right'}}
+        type='primary'
+        size='large'
+        className='custom-primary'>
         Create Experiment
       </Button>
     )

@@ -4,10 +4,12 @@ import HomeChart from './home-chart'
 import Trial from './trial'
 import AlgoList from './algo-list'
 import TrialFilterer from './trial-filterer'
-import TrialsGetStarted from './trials-get-started'
+import AlgoForm from './algo-form'
 import { deleteTrial, deleteExperiment } from '../constants/requests'
-import { Button, Row, Col, Tabs, Popconfirm, message, Input, Icon } from 'antd'
+import { Button, Row, Col, Tabs, Popconfirm, message, Input, Icon, Steps } from 'antd'
 import { Link, browserHistory } from 'react-router'
+
+const Step = Steps.Step
 
 const TabPane = Tabs.TabPane
 
@@ -79,10 +81,25 @@ export default class ExperimentTrials extends Component {
   _renderContentOrGetStarted () {
     let trialsOrGetStarted
     if (this.props.trials.length < 1) {
-     trialsOrGetStarted = (
-        <TabPane tab={<h4>Getting Started</h4>} key='0'>
-         <TrialsGetStarted />
-        </TabPane>
+      const algoForm = (
+        <AlgoForm
+          user={this.props.user}
+          experiment={this.props.experiment}
+          fetchExperimentData={this.props.fetchExperimentData}
+          formButton={<Button size='small' type='ghost' style={{ marginTop: '10px' }}>Create Algo</Button>}
+        />
+      )
+      trialsOrGetStarted = (
+        <Steps
+          current={this.props.algos.length < 1 ? 1 : 2}
+          style={{ background: '#fff', padding: '30px', margin: '40px 0px', borderRadius: '6px' }}>
+          <Step title='Experiment created' />
+          <Step
+            title={this.props.algos.length < 1 ? 'Create an Algo' : 'Algo Created'}
+            description={<p>Click below to create your first algo. {algoForm}</p>}
+            />
+          <Step title='Send a trial' description='Install the Python client to send your first trial.' />
+        </Steps>
       )
     } else {
       trialsOrGetStarted = (
@@ -110,9 +127,24 @@ export default class ExperimentTrials extends Component {
           {trialsOrGetStarted}
         </TabPane>
         <TabPane tab={<h4>Algos</h4>} key='2'>
+          <AlgoForm
+            user={this.props.user}
+            experiment={this.props.experiment}
+            fetchExperimentData={this.props.fetchExperimentData}
+            formButton={
+              <Button
+                type='primary'
+                style={{margin: '15px 0px'}}
+                className='custom-primary'>
+                Create algo
+              </Button>
+              }
+            />
           <AlgoList
             algos={this.props.algos}
             user={this.props.user}
+            experimentID={this.props.experiment.id}
+            fetchExperimentData={this.props.fetchExperimentData}
           />
         </TabPane>
         <TabPane tab={<h4>Infos</h4>} key='3'>
@@ -138,6 +170,7 @@ export default class ExperimentTrials extends Component {
               style={{float: 'right', marginTop: '15px', fontSize: '13px'}}
               id={'buttonId'}
               type='primary'
+              className='custom-primary'
               onClick={this.props.openDashboard}
               >
               Dashboard

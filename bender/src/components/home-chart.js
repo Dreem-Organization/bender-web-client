@@ -12,13 +12,14 @@ const chartStyles = {
   fontSize: '12px',
   borderRadius: '5px',
   height: '250px',
-  marginLeft: '-25px'
+  marginLeft: '-25px',
 }
 
 const cardStyles = {
   width: '100%',
   margin: '20px 0px',
-  borderRadius: '5px'
+  borderRadius: '5px',
+  overflow: 'visible'
 }
 
 const customTooltip = {

@@ -36,7 +36,7 @@ export default class Trial extends Component {
   }
 
   _renderTableFromObject (obj, title) {
-    if (Object.values(obj).length >= 1) {
+    if (Object.keys(obj).length >= 1) {
       return (
         <div style={{margin: '5px'}}>
           <h4>{title}</h4>
