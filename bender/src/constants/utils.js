@@ -29,8 +29,5 @@ export function checkTokenValidity (token) {
 }
 
 export function getUserData () {
-  const id = window.localStorage.getItem(storageKey.user)
-  const username = window.localStorage.getItem(storageKey.username)
-  const token = window.localStorage.getItem(storageKey.token)
-  return { id, username, token }
+  return JSON.parse(window.localStorage.getItem(storageKey.user))
 }

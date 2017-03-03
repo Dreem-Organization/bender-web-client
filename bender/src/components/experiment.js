@@ -39,19 +39,21 @@ export default class Experiment extends Component {
   }
 
   fetchExperiment (experimentID) {
-    fetchExperiment(this.state.user.token, experimentID, (experiment) => {
+    fetchExperiment(this.state.user.token, this.state.user.username, experimentID, (experiment) => {
       this.setState({experiment})
     })
   }
 
   fetchTrials (experimentID, urlFilters) {
-    fetchTrials(this.state.user.token, experimentID, urlFilters, (trials) => {
+    fetchTrials(this.state.user.token, experimentID, urlFilters, (resp) => {
+      const trials = resp.results
       this.setState({trials})
     })
   }
 
   fetchAlgos (experimentID) {
-    fetchAlgos(this.state.user.token, experimentID, (algos) => {
+    fetchAlgos(this.state.user.token, experimentID, (resp) => {
+      const algos = resp.results
       this.setState({algos})
     })
   }

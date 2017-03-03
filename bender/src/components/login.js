@@ -1,8 +1,8 @@
 import React from 'react'
 import { Form, Icon, Input, Button, Checkbox } from 'antd'
 import logo from '../images/bender-logo.svg'
-import { storageKey, loginURL } from '../constants/globals'
-import { browserHistory } from 'react-router'
+import { storageKey, BASE_URL } from '../constants/globals'
+import { browserHistory, Link } from 'react-router'
 
 
 const FormItem = Form.Item
@@ -34,11 +34,15 @@ function responseHandler (resp) {
 }
 
 function loginRequest (credentials) {
-  return fetch(loginURL, {
+  return fetch(`${BASE_URL}/login/`, {
     method: 'POST',
     headers: {
-      'Authorization': 'Basic ' + window.btoa(credentials.username + ':' + credentials.password)
-    }
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      username: credentials.username,
+      password: credentials.password
+    })
   }).then(responseHandler)
 }
 
@@ -53,16 +57,18 @@ const NormalLoginForm = Form.create()(React.createClass({
   },
 
   login (credentials) {
-    return loginRequest(credentials).then((u) => {
+    return loginRequest(credentials).then((data) => {
       const user = {
-        username: credentials.username,
-        token: `Bearer ${u.token}`,
-        id: u.user_id
+        token: `JWT ${data.token}`,
+        id: data.user.pk,
+        email: data.user.email,
+        username: data.user.username,
+        firstName: data.user.first_name,
+        lastName: data.user.last_name
       }
 
-      window.localStorage.setItem(storageKey.username, credentials.username)
       window.localStorage.setItem(storageKey.token, user.token)
-      window.localStorage.setItem(storageKey.user, user.id)
+      window.localStorage.setItem(storageKey.user, JSON.stringify(user))
       browserHistory.push('/experiments')
     })
   },
@@ -80,7 +86,7 @@ const NormalLoginForm = Form.create()(React.createClass({
         />
         <Form onSubmit={this.handleSubmit} className='login-form'>
           <h1>Login to Bender</h1>
-          <p>You can login using your regular internal Rythm account.<br/>(same as viewer).</p>
+          <p>New around here ? <Link to='signup/'>Signup</Link> instead</p>
           <br />
           <FormItem>
             {getFieldDecorator('username', {

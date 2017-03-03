@@ -1,7 +1,7 @@
 import React from 'react'
 import { Form, Icon, Input, Button, Checkbox } from 'antd'
 import logo from '../images/bender-logo.svg'
-import { storageKey, loginURL, signupUrl } from '../constants/globals'
+import { storageKey, BASE_URL } from '../constants/globals'
 import { browserHistory } from 'react-router'
 
 const FormItem = Form.Item
@@ -22,7 +22,6 @@ function throwErrorMessage (r) {
 }
 
 function responseHandler (resp) {
-  debugger
   if (!resp.ok) {
     return resp.json()
       .then(throwErrorMessage)
@@ -34,11 +33,17 @@ function responseHandler (resp) {
 }
 
 function signupRequest (credentials) {
-  return fetch(signupUrl, {
-    method: 'POST'
-    // headers: {
-    //   'Authorization': 'Basic ' + window.btoa(credentials.username + ':' + credentials.password)
-    // }
+  return fetch(`${BASE_URL}/registration/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      username: credentials.username,
+      email: credentials.email,
+      password1: credentials.password1,
+      password2: credentials.password2
+    })
   }).then(responseHandler)
 }
 
@@ -53,16 +58,18 @@ const SignUpForm = Form.create()(React.createClass({
   },
 
   signup (credentials) {
-    return signupRequest(credentials).then((u) => {
+    return signupRequest(credentials).then((data) => {
       const user = {
-        username: credentials.username,
-        token: `Bearer ${u.token}`,
-        id: u.user_id
+        token: `JWT ${data.token}`,
+        id: data.user.pk,
+        email: data.user.email,
+        username: data.user.username,
+        firstName: data.user.first_name,
+        lastName: data.user.last_name
       }
 
-      window.localStorage.setItem(storageKey.username, credentials.username)
+      window.localStorage.setItem(storageKey.user, JSON.stringify(user))
       window.localStorage.setItem(storageKey.token, user.token)
-      window.localStorage.setItem(storageKey.user, user.id)
       browserHistory.push('/experiments')
     })
   },
@@ -78,7 +85,7 @@ const SignUpForm = Form.create()(React.createClass({
           style={{cursor: 'pointer'}}
         />
         <Form onSubmit={this.handleSubmit} className='login-form'>
-          <h1>Sign Up</h1>
+          <h1>Sign Up to Bender</h1>
           <br />
           <FormItem>
             {getFieldDecorator('username', {
@@ -95,7 +102,7 @@ const SignUpForm = Form.create()(React.createClass({
             )}
           </FormItem>
           <FormItem>
-            {getFieldDecorator('password', {
+            {getFieldDecorator('password1', {
               rules: [{ required: true, message: 'Please input your Password!' }]
             })(
               <Input addonBefore={<Icon type='lock' />} type='password' placeholder='Password' />

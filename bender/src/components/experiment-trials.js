@@ -31,7 +31,7 @@ export default class ExperimentTrials extends Component {
         <Trial
           key={i}
           trial={trial}
-          mainMetric={this.props.experiment.main_metric}
+          mainMetric={this.props.experiment.metrics[0]}
           deleteTrial={this.deleteTrial}
         />
       )
@@ -61,7 +61,7 @@ export default class ExperimentTrials extends Component {
         <HomeChart
           trials={this.props.trials}
           algos={this.props.algos}
-          mainMetric={this.props.experiment.main_metric}
+          metrics={this.props.experiment.metrics}
           isAnimationActive={this.state.animateChart}
         />
       )

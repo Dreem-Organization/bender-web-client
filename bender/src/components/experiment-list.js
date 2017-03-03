@@ -38,10 +38,12 @@ export default class ExperimentList extends Component {
   }
 
   handleFetchExperiments () {
-    fetchPublicExperiments(this.state.user.token, (publicExperiments) => {
+    fetchPublicExperiments(this.state.user.token, this.state.user.username, (resp) => {
+      const publicExperiments = resp.results
       this.setState({publicExperiments})
     })
-    fetchUserExperiments(this.state.user.token, this.state.user.username, (userExperiments) => {
+    fetchUserExperiments(this.state.user.token, this.state.user.username, (resp) => {
+      const userExperiments = resp.results
       this.setState({userExperiments})
     })
   }

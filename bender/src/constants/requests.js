@@ -1,7 +1,7 @@
 import { API_BASE_URL } from '../constants/globals'
 
-export function fetchPublicExperiments (token, handler) {
-  fetch(`${API_BASE_URL}/experiments/public_experiments/`, {
+export function fetchPublicExperiments (token, owner, handler) {
+  fetch(`${API_BASE_URL}/experiments/?shared_with=${owner}`, {
     headers: {
       'Content-type': 'application/json',
       'Authorization': token
@@ -13,8 +13,8 @@ export function fetchPublicExperiments (token, handler) {
   })
 }
 
-export function fetchUserExperiments (token, author, handler) {
-  fetch(`${API_BASE_URL}/experiments/user_experiments/?author=${author}`, {
+export function fetchUserExperiments (token, owner, handler) {
+  fetch(`${API_BASE_URL}/experiments/?owner=${owner}`, {
     headers: {
       'Content-type': 'application/json',
       'Authorization': token
@@ -26,8 +26,8 @@ export function fetchUserExperiments (token, author, handler) {
   })
 }
 
-export function fetchExperiment (token, experimentID, handler) {
-  fetch(`${API_BASE_URL}/experiments/${experimentID}/`, {
+export function fetchExperiment (token, owner, experimentID, handler) {
+  fetch(`${API_BASE_URL}/experiments/${experimentID}/?owner=${owner}`, {
     headers: {
       'Content-type': 'application/json',
       'Authorization': token
@@ -40,7 +40,7 @@ export function fetchExperiment (token, experimentID, handler) {
 }
 
 export function fetchTrials (token, experimentID, urlFilters, handler) {
-  let url = `${API_BASE_URL}/experiments/${experimentID}/trials/`
+  let url = `${API_BASE_URL}/trials/?experiment=${experimentID}`
   if (urlFilters != null) {
     url += urlFilters
   }
@@ -57,7 +57,7 @@ export function fetchTrials (token, experimentID, urlFilters, handler) {
 }
 
 export function fetchAlgos (token, experimentID, handler) {
-  fetch(`${API_BASE_URL}/experiments/${experimentID}/algos/`, {
+  fetch(`${API_BASE_URL}/algos/?experiment=${experimentID}`, {
     headers: {
       'Content-type': 'application/json',
       'Authorization': token

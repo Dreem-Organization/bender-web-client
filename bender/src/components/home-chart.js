@@ -34,7 +34,7 @@ export default class HomeChart extends Component {
     super(props)
 
     this.state = {
-      selectedVar: this.props.mainMetric
+      selectedVar: this.props.metrics[0]
     }
 
     this.handleSelectMetric = this.handleSelectMetric.bind(this)
