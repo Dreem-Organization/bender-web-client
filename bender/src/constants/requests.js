@@ -124,3 +124,17 @@ export function createAlgo (token, algoData, handler) {
       handler(json)
   })
 }
+
+
+export function fetchUsernames (token, q, handler) {
+  fetch(`${API_BASE_URL}/users/?search=${q}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': token,
+      'Content-Type': 'application/json'
+    }
+  }).then((res) => res.json())
+  .then((json) => {
+    handler(json)
+  })
+}

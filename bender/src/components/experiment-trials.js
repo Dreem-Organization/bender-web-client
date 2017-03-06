@@ -6,7 +6,7 @@ import AlgoList from './algo-list'
 import TrialFilterer from './trial-filterer'
 import AlgoForm from './algo-form'
 import { deleteTrial, deleteExperiment } from '../constants/requests'
-import { Button, Row, Col, Tabs, Popconfirm, message, Input, Icon, Steps } from 'antd'
+import { Button, Row, Col, Tag, Tabs, Popconfirm, message, Input, Icon, Steps } from 'antd'
 import { Link, browserHistory } from 'react-router'
 
 const Step = Steps.Step
@@ -52,7 +52,7 @@ export default class ExperimentTrials extends Component {
   _renderDatasetLabel () {
     if (this.props.experiment.dataset !== null && this.props.experiment.dataset.length >= 1) {
       return (
-        <span className='dataset-label'>{this.props.experiment.dataset}</span>
+        <Tag color='blue'>{this.props.experiment.dataset}</Tag>
       )
     }
   }
@@ -179,7 +179,8 @@ export default class ExperimentTrials extends Component {
         </Row>
         <Row>
           <Col span={18}>
-            <i>by {this.props.experiment.author}</i>
+            <Tag color='blue'>{this.props.experiment.owner}</Tag>
+            {_.map(this.props.experiment.shared_with, (k) => <Tag color='blue'>{k}</Tag>)}
             {this._renderDatasetLabel()}
           </Col>
           <Col span={6}>

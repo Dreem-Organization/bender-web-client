@@ -60,11 +60,14 @@ export default class Experiment extends Component {
   }
   setFilters (filters) {
     this.setState({filters})
-    let urlFilters = `?order=${filters.order}&desc=${filters.desc}&limit=${filters.limit}`
+    //let urlFilters = `?order=${filters.order}&desc=${filters.desc}&limit=${filters.limit}`
+    let urlFilters = ''
     if (filters.algo !== null) {
       urlFilters += `&algo=${filters.algo}`
     }
-    fetchTrials(this.state.user.token, this.state.experiment.id, urlFilters, (trials) => {
+    // ?experiment=f4975013-b858-4c7d-b984-79fdb1974abd&algo=&comment=&owner=&o_results=&o_parameters=&o=
+    fetchTrials(this.state.user.token, this.state.experiment.id, urlFilters, (resp) => {
+      const trials = resp.results
       this.setState({trials})
     })
   }

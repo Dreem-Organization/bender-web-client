@@ -11,7 +11,8 @@ export default class ExperimentForm extends Component {
     this.state = {
       loading: false,
       visible: false,
-      user: getUserData()
+      user: getUserData(),
+      loadedUsernames: []
     }
 
     this.showModal = this.showModal.bind(this)
@@ -23,15 +24,15 @@ export default class ExperimentForm extends Component {
 
   handleCreateExperiment (formValue) {
     this.setState({loading: true})
-    debugger
+
     return createExperiment(this.state.user.token, {
       name: formValue.name,
-      author: formValue.author,
+      owner: formValue.owner,
       description: formValue.description,
       metrics: _.map(formValue.metrics.split(','), (m) => m.replace(/\s+/g, '')),
       dataset: formValue.dataset,
       dataset_parameters: formValue.dataset_parameters,
-      is_private: formValue.is_private
+      shared_with: _.map(formValue.shared_with, (k) => k.replace('@', ''))
     }, (resp) => {
       this.setState({ loading: false, visible: false })
       message.success('Experiment successfully created!')
@@ -49,14 +50,17 @@ export default class ExperimentForm extends Component {
           visible={this.state.visible}
           title={<h3>Create a new experiment</h3>}
           onOk={this.handleSubmit}
+          wrapClassName='vertical-center-modal'
           onCancel={() => this.setState({visible: false})}
           width='600px'
           footer={null}
         >
           <ExperimentFormContent
+            user={this.state.user}
             handleCreateExperiment={this.handleCreateExperiment}
             username={this.state.user.username}
             loading={this.state.loading}
+            loadedUsernames={this.state.loadedUsernames}
           />
         </Modal>
       </div>

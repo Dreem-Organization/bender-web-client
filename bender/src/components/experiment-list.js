@@ -82,7 +82,7 @@ export default class ExperimentList extends Component {
             </div>
           </TabPane>
           <TabPane tab={
-              <h4>Public ({this.state.publicExperiments.length})</h4>
+              <h4>Shared With Me ({this.state.publicExperiments.length})</h4>
             } key='2'>
             <div className='experiment-list'>
               <ul>{this._getExperimentList(this.state.publicExperiments)}</ul>

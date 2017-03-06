@@ -38,10 +38,8 @@ export default class LeftMenu extends Component {
         </Link>
         <div className='menu-bottom-button'>
           <ExperimentForm formButton={formButton} />
-          <Tooltip placement='right' title={'Help'}>
-            <Link to='/help'>
-              <Button type='ghost' size='large' shape='circle-outline' icon='question' onClick={this.logout} style={buttonStyle} />
-            </Link>
+          <Tooltip placement='right' title={'User'}>
+            <Button type='ghost' size='large' shape='circle-outline' icon='user' style={buttonStyle} />
           </Tooltip>
           <Tooltip placement='right' title={'Log out'}>
             <Button type='ghost' size='large' shape='circle-outline' icon='logout' onClick={this.logout} style={buttonStyle} />
