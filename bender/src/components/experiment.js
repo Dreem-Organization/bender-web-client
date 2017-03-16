@@ -11,8 +11,8 @@ export default class Experiment extends Component {
 
     this.state = {
       experiment: null,
-      trials: [],
-      algos: [],
+      trials: null,
+      algos: null,
       filters: {
         order: 'date',
         desc: 'true',
@@ -24,7 +24,6 @@ export default class Experiment extends Component {
     }
 
     this.setFilters = this.setFilters.bind(this)
-    this.handleDashboardButton = this.handleDashboardButton.bind(this)
     this.fetchExperimentData = this.fetchExperimentData.bind(this)
   }
 
@@ -33,7 +32,7 @@ export default class Experiment extends Component {
   }
 
   fetchExperimentData (token, experimentID) {
-    this.setState({algos: [], trials: []})
+    this.setState({algos: null, trials: null})
     this.fetchExperiment(experimentID)
     this.fetchAlgos(experimentID)
     this.fetchTrials(experimentID, null)
@@ -58,22 +57,22 @@ export default class Experiment extends Component {
       this.setState({algos})
     })
   }
+
   setFilters (filters) {
-    this.setState({filters})
-    //let urlFilters = `?order=${filters.order}&desc=${filters.desc}&limit=${filters.limit}`
     let urlFilters = ''
+    const desc = filters.desc === 'true' ? '' : '-'
+
+    urlFilters += `&o_results=${desc}${filters.order}`
+    urlFilters += `&limit=${filters.limit}`
+
     if (filters.algo !== null) {
       urlFilters += `&algo=${filters.algo}`
     }
-    // ?experiment=f4975013-b858-4c7d-b984-79fdb1974abd&algo=&comment=&owner=&o_results=&o_parameters=&o=
+
     fetchTrials(this.state.user.token, this.state.experiment.id, urlFilters, (resp) => {
       const trials = resp.results
-      this.setState({trials})
+      this.setState({trials, filters})
     })
-  }
-
-  handleDashboardButton () {
-    this.setState({showDashboard: !this.state.showDashboard})
   }
 
   render () {
@@ -89,7 +88,6 @@ export default class Experiment extends Component {
             setFilters={this.setFilters}
             deleteTrial={this.deleteTrial}
             fetchExperimentData={this.fetchExperimentData}
-            openDashboard={this.handleDashboardButton}
           />
         )
       } else {

@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import { ComposedChart, ResponsiveContainer, Area, Line, YAxis, CartesianGrid, Tooltip } from 'recharts'
+import { ComposedChart, ResponsiveContainer, Area, Line, CartesianGrid, Tooltip, ScatterChart, Scatter, XAxis, YAxis, ZAxis } from 'recharts'
 import { Card, Select } from 'antd'
 import TimeAgo from 'react-timeago'
 import 'antd/lib/card/style/css'
@@ -13,6 +13,7 @@ const chartStyles = {
   borderRadius: '5px',
   height: '250px',
   marginLeft: '-25px',
+  overflow: 'visible'
 }
 
 const cardStyles = {
@@ -35,18 +36,21 @@ export default class HomeChart extends Component {
     super(props)
 
     this.state = {
-      selectedVar: this.props.metrics[0]
+      selectedMetric: this.props.metrics[0],
+      selectedParameter: null
     }
 
     this.handleSelectMetric = this.handleSelectMetric.bind(this)
     this.handleSelectAlgo = this.handleSelectAlgo.bind(this)
-    this._getChartData = this._getChartData.bind(this)
-    this._getChartOrFilter = this._getChartOrFilter.bind(this)
-    this.customTooltip = this.customTooltip.bind(this)
+    this.getLineChartData = this.getLineChartData.bind(this)
+    this.getScatterChartData = this.getScatterChartData.bind(this)
+    this.getChart = this.getChart.bind(this)
+    this.lineCustomTooltip = this.lineCustomTooltip.bind(this)
+    this.scatterCustomTooltip = this.scatterCustomTooltip.bind(this)
   }
 
-  handleSelectMetric (selectedVar) {
-    this.setState({selectedVar})
+  handleSelectMetric (selectedMetric) {
+    this.setState({selectedMetric})
   }
 
   handleSelectAlgo (algo) {
@@ -63,32 +67,55 @@ export default class HomeChart extends Component {
   }
 
   _getMetricSelect () {
-    const metrics = Object.keys(this.props.trials[0].results).map((el) => {
-      return <Option key={el} value={el}>{el}</Option>
+    const metrics = _.map(this.props.experiment.metrics, (metric) => {
+      return <Option key={metric} value={metric}>{metric}</Option>
+    })
+    const parameters = _.flatMap(this.props.algos, (algo) => {
+      return _.map(algo.parameters, (param) => {
+        return <Option key={param} value={param}>{param}</Option>
+      })
     })
 
     return (
-      <Select
-        defaultValue={this.state.selectedVar}
-        style={{top: '-2px', minWidth: '160px'}}
-        onChange={this.handleSelectMetric}
-        size='large'
-       >
-        {metrics}
-      </Select>
+      <div>
+        <Select
+          placeholder={'Parameters'}
+          style={{minWidth: '160px'}}
+          onChange={(p) => this.setState({selectedParameter: p})}
+         >
+          {[...[<Option key='' value={null}> --- </Option>], parameters]}
+        </Select>
+        <Select
+          placeholder={'Metrics'}
+          defaultValue={this.state.selectedMetric}
+          style={{minWidth: '160px', marginLeft: '20px'}}
+          onChange={(m) => this.setState({selectedMetric: m})}
+         >
+          {[...[<Option key='' value={null}> --- </Option>], metrics]}
+        </Select>
+      </div>
     )
   }
 
-  tickFormatter (val) {
-    return _.round(val, 3)
+  getLineChartData () {
+    if (this.state.selectedMetric !== null) {
+      return _
+        .chain(this.props.trials)
+        .map((k) => ({id: k.id, value: _.round(k.results[this.state.selectedMetric], 4)}))
+        .reverse()
+        .value()
+    } else if (this.state.selectedParameter !== null) {
+      return _(this.props.trials).map((k) => ({id: k.id, value: _.round(k.parameters[this.state.selectedParameter], 4)})).reverse().value()
+    }
   }
 
-  _getChartData () {
-    return _
-      .chain(this.props.trials)
-      .map((k) => ({id: k.id, value: _.round(k.results[this.state.selectedVar], 4)}))
-      .reverse()
-      .value()
+  getScatterChartData () {
+    const algos = _.filter(this.props.algos, (a) => _.includes(a.parameters, this.state.selectedParameter)).map((k) => k.id)
+    const data = _.chain(this.props.trials)
+            .filter((k) => (_.includes(algos, k.algo)))
+            .map((k) => ({id: k.id, X: _.round(k.results[this.state.selectedMetric], 4), Y: k.parameters[this.state.selectedParameter]}))
+            .value()
+    return data
   }
 
   generateTableData (obj) {
@@ -105,7 +132,7 @@ export default class HomeChart extends Component {
     return <ul>{lis}</ul>
   }
 
-  customTooltip (item) {
+  lineCustomTooltip (item) {
     const trial = this.props.trials.filter((k) => k.id === item.payload[0].payload.id)[0]
     return (
       <div style={customTooltip}>
@@ -120,40 +147,77 @@ export default class HomeChart extends Component {
     )
   }
 
-  _getChartOrFilter () {
+  scatterCustomTooltip (item) {
+    const trial = this.props.trials.filter((k) => k.id === item.payload[2].value)[0]
+
     return (
-      <ComposedChart
+      <div style={customTooltip}>
+        <TimeAgo style={{opacity: 0.6, float: 'right'}} date={trial.created} />
+        <h3 style={{color: '#1882fd', padding: '0 5'}}>X:{item.payload[0].value} Y:{item.payload[1].value}</h3>
+        <h3>{trial.algo_name}</h3>
+        <h4 style={{marginTop: 3}}>Parameters</h4>
+        <ul>{this.generateTableData(trial.parameters)}</ul>
+        <h4 style={{marginTop: 3}}>Metrics</h4>
+        <ul>{this.generateTableData(trial.results)}</ul>
+      </div>
+    )
+  }
+
+  getChart () {
+    if (this.state.selectedMetric === null || this.state.selectedParameter === null) {
+      return (
+        <ComposedChart
+          style={chartStyles}
+          margin={{top: 5, right: 0, left: -15, bottom: 5}}
+          data={this.getLineChartData()}>
+          <YAxis domain={['auto', 'auto']} tickFormatter={(v) => _.round(v, 3)} />
+          <CartesianGrid strokeDasharray='3 3' style={{opacity: 0.3}} />
+          <Tooltip content={this.lineCustomTooltip} offset={25} />
+            <defs>
+          <linearGradient id='colorUv' x1='0' y1='0' x2='0' y2='1'>
+            <stop offset='5%' stopColor='#0082dc' stopOpacity={0.15} />
+            <stop offset='95%' stopColor='#0082dc' stopOpacity={0.05} />
+          </linearGradient>
+        </defs>
+          <Line
+            type='monotone'
+            dataKey={'value'}
+            stroke='#108ee9'
+            strokeWidth={1.5}
+            activeDot={{ r: 5 }}
+            animationDuration={850}
+          />
+          <Area
+            type='monotone'
+            dataKey={'value'}
+            fillOpacity={1}
+            fill='url(#colorUv)'
+            strokeWidth={0}
+            activeDot={{ r: 5 }}
+            animationDuration={850}
+          />
+        </ComposedChart>
+      )
+    }
+    return (
+      <ScatterChart
         style={chartStyles}
-        margin={{top: 5, right: 0, left: 0, bottom: 5}}
-        data={this._getChartData()}>
-        <YAxis domain={['auto', 'auto']} tickFormatter={this.tickFormatter} />
+        margin={{top: 20, right: 15, bottom: -10, left: -40}}>
+        <Scatter data={this.getScatterChartData()} fill='#008cec' r={2} />
+        <YAxis dataKey={'X'} domain={['auto', 'auto']} name={this.state.X} />
+        <XAxis dataKey={'Y'} domain={['auto', 'auto']} name={this.state.Y} />
+        <ZAxis dataKey={'id'} />
+        <Tooltip content={this.scatterCustomTooltip} offset={25} />
         <CartesianGrid strokeDasharray='3 3' style={{opacity: 0.3}} />
-        <Tooltip content={this.customTooltip} offset={25} />
-        <Line
-          type='monotone'
-          dataKey={'value'}
-          stroke='#108ee9'
-          strokeWidth={1.5}
-          activeDot={{ r: 5 }}
-          animationDuration={850}
-        />
-        <Area
-          type='monotone'
-          dataKey={'value'}
-          fill='rgba(24, 131, 255, 0.1)'
-          strokeWidth={0}
-          activeDot={{ r: 5 }}
-          animationDuration={850}
-        />
-      </ComposedChart>
+      </ScatterChart>
     )
   }
 
   render () {
     return (
-      <Card title={this.state.selectedVar + ' over time'} extra={this._getMetricSelect()} style={cardStyles} bodyStyle={{height: '250px'}}>
+      <Card title={this.state.selectedMetric + ' over time'} extra={this._getMetricSelect()} style={cardStyles} bodyStyle={{height: '250px'}}>
         <ResponsiveContainer>
-          {this._getChartOrFilter()}
+          {this.getChart()}
         </ResponsiveContainer>
       </Card>
     )

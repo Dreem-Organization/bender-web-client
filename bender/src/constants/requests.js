@@ -1,6 +1,6 @@
 import { API_BASE_URL } from '../constants/globals'
 
-export function fetchPublicExperiments (token, owner, handler) {
+export function fetchSharedWithExperiments (token, owner, handler) {
   fetch(`${API_BASE_URL}/experiments/?shared_with=${owner}`, {
     headers: {
       'Content-type': 'application/json',
@@ -27,7 +27,7 @@ export function fetchUserExperiments (token, owner, handler) {
 }
 
 export function fetchExperiment (token, owner, experimentID, handler) {
-  fetch(`${API_BASE_URL}/experiments/${experimentID}/?owner=${owner}`, {
+  fetch(`${API_BASE_URL}/experiments/${experimentID}/`, {
     headers: {
       'Content-type': 'application/json',
       'Authorization': token

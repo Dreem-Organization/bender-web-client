@@ -63,6 +63,7 @@ export default class ExperimentTrials extends Component {
         <HomeChart
           trials={this.props.trials}
           algos={this.props.algos}
+          experiment={this.props.experiment}
           metrics={this.props.experiment.metrics}
           isAnimationActive={this.state.animateChart}
         />
@@ -127,19 +128,6 @@ export default class ExperimentTrials extends Component {
           {trialsOrGetStarted}
         </TabPane>
         <TabPane tab={<h4>Algos</h4>} key='2'>
-          <AlgoForm
-            user={this.props.user}
-            experiment={this.props.experiment}
-            fetchExperimentData={this.props.fetchExperimentData}
-            formButton={
-              <Button
-                type='primary'
-                style={{margin: '15px 0px'}}
-                className='custom-primary'>
-                Create algo
-              </Button>
-              }
-            />
           <AlgoList
             algos={this.props.algos}
             user={this.props.user}
@@ -166,15 +154,20 @@ export default class ExperimentTrials extends Component {
             </h1>
           </Col>
           <Col span={12}>
-            <Button
-              style={{float: 'right', marginTop: '15px', fontSize: '13px'}}
-              id={'buttonId'}
-              type='primary'
-              className='custom-primary'
-              onClick={this.props.openDashboard}
-              >
-              Dashboard
-            </Button>
+            <AlgoForm
+              user={this.props.user}
+              experiment={this.props.experiment}
+              fetchExperimentData={this.props.fetchExperimentData}
+              formButton={
+                <Button
+                  type='primary'
+                  size='small'
+                  style={{float: 'right', marginTop: '15px', fontSize: '12px'}}
+                  className='custom-primary'>
+                  Create algo
+                </Button>
+                }
+              />
           </Col>
         </Row>
         <Row>
@@ -188,6 +181,7 @@ export default class ExperimentTrials extends Component {
               addonAfter={<Icon type='link' />}
               defaultValue={this.props.experiment.id}
               value={this.props.experiment.id}
+              readOnly
             />
           </Col>
         </Row>

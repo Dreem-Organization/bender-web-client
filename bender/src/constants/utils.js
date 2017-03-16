@@ -9,21 +9,19 @@ export function checkTokenValidity (token) {
   if (tokenParts.length !== 3) {
     return false
   }
-  if (process.env.NODE_ENV === 'production') {
-    try {
-      const userInfo = JSON.parse(window.atob(tokenParts[1]))
-      if (userInfo.exp != null) {
-        const expiration = +userInfo.exp
-        if (_.isNaN(expiration)) {
-          return false
-        }
-        if (expiration * 1000 - Date.now() < 3600000) {
-          return false
-        }
+  try {
+    const userInfo = JSON.parse(window.atob(tokenParts[1]))
+    if (userInfo.exp != null) {
+      const expiration = +userInfo.exp
+      if (_.isNaN(expiration)) {
+        return false
       }
-    } catch (e) {
-      return false
+      if (expiration * 1000 - Date.now() < 1800000) {
+        return false
+      }
     }
+  } catch (e) {
+    return false
   }
   return true
 }

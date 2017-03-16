@@ -4,6 +4,7 @@ import { browserHistory, Link } from 'react-router'
 import logo from '../images/bender-logo.svg'
 import { storageKey } from '../constants/globals'
 import ExperimentForm from './experiment-form'
+import UserModal from './user-modal'
 
 const buttonStyle = {
   marginBottom: '13px'
@@ -38,9 +39,7 @@ export default class LeftMenu extends Component {
         </Link>
         <div className='menu-bottom-button'>
           <ExperimentForm formButton={formButton} />
-          <Tooltip placement='right' title={'User'}>
-            <Button type='ghost' size='large' shape='circle-outline' icon='user' style={buttonStyle} />
-          </Tooltip>
+          <UserModal />
           <Tooltip placement='right' title={'Log out'}>
             <Button type='ghost' size='large' shape='circle-outline' icon='logout' onClick={this.logout} style={buttonStyle} />
           </Tooltip>
