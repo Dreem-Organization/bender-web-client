@@ -1,19 +1,37 @@
 import React from 'react'
-import { Form, Input, Button, Switch } from 'antd'
+import { Form, Input, Button, Mention } from 'antd'
+import { fetchUsernames } from '../constants/requests'
+import _ from 'lodash'
 
 const FormItem = Form.Item
+const getMentions = Mention.getMentions
 
 const ExperimentFormContent = Form.create()(React.createClass({
+  getInitialState () {
+    return {
+      suggestions: []
+    }
+  },
+
   handleSubmit (e) {
     e.preventDefault()
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         this.props.handleCreateExperiment(
           Object.assign({}, values, {
-            author: this.props.username
+            owner: this.props.username,
+            shared_with: getMentions(values.shared_with)
           })
         )
       }
+    })
+  },
+
+  onSearchChange (value) {
+    fetchUsernames (this.props.user.token, value.toLowerCase(), (data) => {
+      this.setState({
+        suggestions: _.chain(data.results).map((k) => k.username).filter((k) => k !== this.props.user.username).value()
+      })
     })
   },
 
@@ -57,13 +75,18 @@ const ExperimentFormContent = Form.create()(React.createClass({
             <Input placeholder='Dataset Parameters' />
           )}
         </FormItem>
-        <FormItem
-          label='Private Experiment'
-        >
-          {getFieldDecorator('is_private')(
-            <Switch defaultChecked={true} />
+        <FormItem label='Share your experiment (Optional)'>
+          {getFieldDecorator('shared_with', {
+            rules: [{ required: false, message: '(Optional) share your experiment' }]
+          })(
+            <Mention
+              placeholder='@username'
+              notFoundContent='Type @username'
+              suggestions={this.state.suggestions}
+              onSearchChange={this.onSearchChange}
+            />
           )}
-        </FormItem>
+          </FormItem>
         <Button type='primary' htmlType='submit' size='large' loading={this.props.loading}>
           Submit
         </Button>

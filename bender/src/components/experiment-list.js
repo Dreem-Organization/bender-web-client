@@ -3,7 +3,7 @@ import ExperimentListItem from './experiment-list-item'
 import ExperimentForm from './experiment-form'
 import { Row, Col, Tabs, Button } from 'antd'
 import { getUserData } from '../constants/utils'
-import { fetchPublicExperiments, fetchUserExperiments } from '../constants/requests'
+import { fetchSharedWithExperiments, fetchUserExperiments } from '../constants/requests'
 
 const TabPane = Tabs.TabPane
 
@@ -15,7 +15,7 @@ export default class ExperimentList extends Component {
     this.handleFetchExperiments = this.handleFetchExperiments.bind(this)
     this.state = {
       user: getUserData(),
-      publicExperiments: [],
+      sharedWithExperiments: [],
       userExperiments: []
     }
   }
@@ -38,10 +38,12 @@ export default class ExperimentList extends Component {
   }
 
   handleFetchExperiments () {
-    fetchPublicExperiments(this.state.user.token, (publicExperiments) => {
-      this.setState({publicExperiments})
+    fetchSharedWithExperiments(this.state.user.token, this.state.user.username, (resp) => {
+      const sharedWithExperiments = resp.results
+      this.setState({sharedWithExperiments})
     })
-    fetchUserExperiments(this.state.user.token, this.state.user.username, (userExperiments) => {
+    fetchUserExperiments(this.state.user.token, this.state.user.username, (resp) => {
+      const userExperiments = resp.results
       this.setState({userExperiments})
     })
   }
@@ -80,10 +82,10 @@ export default class ExperimentList extends Component {
             </div>
           </TabPane>
           <TabPane tab={
-              <h4>Public ({this.state.publicExperiments.length})</h4>
+              <h4>Shared With Me ({this.state.sharedWithExperiments.length})</h4>
             } key='2'>
             <div className='experiment-list'>
-              <ul>{this._getExperimentList(this.state.publicExperiments)}</ul>
+              <ul>{this._getExperimentList(this.state.sharedWithExperiments)}</ul>
             </div>
           </TabPane>
         </Tabs>

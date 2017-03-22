@@ -6,7 +6,7 @@ import AlgoList from './algo-list'
 import TrialFilterer from './trial-filterer'
 import AlgoForm from './algo-form'
 import { deleteTrial, deleteExperiment } from '../constants/requests'
-import { Button, Row, Col, Tabs, Popconfirm, message, Input, Icon, Steps } from 'antd'
+import { Button, Row, Col, Tag, Tabs, Popconfirm, message, Input, Icon, Steps } from 'antd'
 import { Link, browserHistory } from 'react-router'
 
 const Step = Steps.Step
@@ -33,7 +33,7 @@ export default class ExperimentTrials extends Component {
         <Trial
           key={i}
           trial={trial}
-          mainMetric={this.props.experiment.main_metric}
+          mainMetric={this.props.experiment.metrics[0]}
           deleteTrial={this.deleteTrial}
         />
       )
@@ -52,7 +52,7 @@ export default class ExperimentTrials extends Component {
   _renderDatasetLabel () {
     if (this.props.experiment.dataset !== null && this.props.experiment.dataset.length >= 1) {
       return (
-        <span className='dataset-label'>{this.props.experiment.dataset}</span>
+        <Tag color='blue'>{this.props.experiment.dataset}</Tag>
       )
     }
   }
@@ -63,7 +63,8 @@ export default class ExperimentTrials extends Component {
         <HomeChart
           trials={this.props.trials}
           algos={this.props.algos}
-          mainMetric={this.props.experiment.main_metric}
+          experiment={this.props.experiment}
+          metrics={this.props.experiment.metrics}
           isAnimationActive={this.state.animateChart}
         />
       )
@@ -127,19 +128,6 @@ export default class ExperimentTrials extends Component {
           {trialsOrGetStarted}
         </TabPane>
         <TabPane tab={<h4>Algos</h4>} key='2'>
-          <AlgoForm
-            user={this.props.user}
-            experiment={this.props.experiment}
-            fetchExperimentData={this.props.fetchExperimentData}
-            formButton={
-              <Button
-                type='primary'
-                style={{margin: '15px 0px'}}
-                className='custom-primary'>
-                Create algo
-              </Button>
-              }
-            />
           <AlgoList
             algos={this.props.algos}
             user={this.props.user}
@@ -166,20 +154,26 @@ export default class ExperimentTrials extends Component {
             </h1>
           </Col>
           <Col span={12}>
-            <Button
-              style={{float: 'right', marginTop: '15px', fontSize: '13px'}}
-              id={'buttonId'}
-              type='primary'
-              className='custom-primary'
-              onClick={this.props.openDashboard}
-              >
-              Dashboard
-            </Button>
+            <AlgoForm
+              user={this.props.user}
+              experiment={this.props.experiment}
+              fetchExperimentData={this.props.fetchExperimentData}
+              formButton={
+                <Button
+                  type='primary'
+                  size='small'
+                  style={{float: 'right', marginTop: '15px', fontSize: '12px'}}
+                  className='custom-primary'>
+                  Create algo
+                </Button>
+                }
+              />
           </Col>
         </Row>
         <Row>
           <Col span={18}>
-            <i>by {this.props.experiment.author}</i>
+            <Tag color='blue'>{this.props.experiment.owner}</Tag>
+            {_.map(this.props.experiment.shared_with, (k) => <Tag color='blue'>{k}</Tag>)}
             {this._renderDatasetLabel()}
           </Col>
           <Col span={6}>
@@ -187,6 +181,7 @@ export default class ExperimentTrials extends Component {
               addonAfter={<Icon type='link' />}
               defaultValue={this.props.experiment.id}
               value={this.props.experiment.id}
+              readOnly
             />
           </Col>
         </Row>

@@ -3,7 +3,7 @@ body {
   padding: 0;
   font-family: sans-serif;
   background: #f4f1f1;
-  color: rgb(51, 50, 59);
+  color: rgb(68, 66, 87);
   font-family: 'Inconsolata', 'Titillium Web', 'Oxygen Mono', monospace;
   font-size: 14px;
   letter-spacing: 0.5px;
@@ -11,14 +11,15 @@ body {
 
 h1, h2, h3, h4 {
   font-family: 'Lekton', sans-serif;
+
 }
 
 .App {
   color: #46474b !important;
   padding: 10px;
   .App-logo {
-    height: 43px;
-    margin: 14px;
+    height: 42px;
+    margin: 10px;
     margin-top: 20px;
   }
   .App-header {
@@ -35,7 +36,7 @@ h1, h2, h3, h4 {
 }
 
 .left-menu {
-  width: 70px;
+  width: 60px;
   height: 100%;
   position: fixed;
   left: 0px;
@@ -49,7 +50,7 @@ h1, h2, h3, h4 {
 .menu-bottom-button {
   position: absolute;
   bottom: 0px;
-  padding: 10px 17px;
+  padding: 7px 14px;
 }
 
 h1 {
@@ -141,7 +142,8 @@ i.author {
         font-size: 12px;
         padding: 13px;
       }
-      span {
+      div.algo-count span,
+      div.trial-count span {
         font-size: 25px;
       }
     }
@@ -398,8 +400,13 @@ div.algolist-content {
 /************* LOGIN **************/
 /**********************************/
 
-.ant-input {
-  background: #f9f9f9;
+.ant-input,
+.ant-mention-editor{
+  background: #f9f9f9 !important;
+  color: #8d8e9a !important;
+}
+.ant-form-item-label {
+  padding: 0px;
 }
 .form-wrapper {
   position: absolute;
@@ -423,6 +430,7 @@ div.algolist-content {
 
 .login-form {
   max-width: 370px;
+  min-width: 350px;
   background: #fff;
   display: block;
   border-radius: 10px;
@@ -476,4 +484,43 @@ div.algolist-content {
 
 .ant-btn.ant-btn-primary.custom-primary:hover {
     box-shadow: 0px 0px 0px 0 #a2b3c2;
+}
+
+
+
+/* use css to set position of modal */
+.vertical-center-modal {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.vertical-center-modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  width: 0;
+}
+
+.vertical-center-modal .ant-modal {
+  display: inline-block;
+  vertical-align: middle;
+  top: 0;
+  text-align: left;
+}
+
+.experiment-settings-item {
+  background: #F7F7F7;
+  padding: 10px 20px;
+  margin: 10px 0px;
+  border-radius: 5px;
+  border: 1px solid #EFEFEF;
+  clear: both;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: inset 0px 20px 50px -10px white;
+  h3 {
+    margin: 5px;
+  }
 }

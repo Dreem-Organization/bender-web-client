@@ -1,7 +1,7 @@
-import { BASE_URL } from '../constants/globals'
+import { API_BASE_URL } from '../constants/globals'
 
-export function fetchPublicExperiments (token, handler) {
-  fetch(`${BASE_URL}/experiments/public_experiments/`, {
+export function fetchSharedWithExperiments (token, owner, handler) {
+  fetch(`${API_BASE_URL}/experiments/?shared_with=${owner}`, {
     headers: {
       'Content-type': 'application/json',
       'Authorization': token
@@ -13,8 +13,8 @@ export function fetchPublicExperiments (token, handler) {
   })
 }
 
-export function fetchUserExperiments (token, author, handler) {
-  fetch(`${BASE_URL}/experiments/user_experiments/?author=${author}`, {
+export function fetchUserExperiments (token, owner, handler) {
+  fetch(`${API_BASE_URL}/experiments/?owner=${owner}`, {
     headers: {
       'Content-type': 'application/json',
       'Authorization': token
@@ -26,8 +26,8 @@ export function fetchUserExperiments (token, author, handler) {
   })
 }
 
-export function fetchExperiment (token, experimentID, handler) {
-  fetch(`${BASE_URL}/experiments/${experimentID}/`, {
+export function fetchExperiment (token, owner, experimentID, handler) {
+  fetch(`${API_BASE_URL}/experiments/${experimentID}/`, {
     headers: {
       'Content-type': 'application/json',
       'Authorization': token
@@ -40,7 +40,7 @@ export function fetchExperiment (token, experimentID, handler) {
 }
 
 export function fetchTrials (token, experimentID, urlFilters, handler) {
-  let url = `${BASE_URL}/experiments/${experimentID}/trials/`
+  let url = `${API_BASE_URL}/trials/?experiment=${experimentID}`
   if (urlFilters != null) {
     url += urlFilters
   }
@@ -57,7 +57,7 @@ export function fetchTrials (token, experimentID, urlFilters, handler) {
 }
 
 export function fetchAlgos (token, experimentID, handler) {
-  fetch(`${BASE_URL}/experiments/${experimentID}/algos/`, {
+  fetch(`${API_BASE_URL}/algos/?experiment=${experimentID}`, {
     headers: {
       'Content-type': 'application/json',
       'Authorization': token
@@ -69,7 +69,7 @@ export function fetchAlgos (token, experimentID, handler) {
 }
 
 export function deleteTrial (token, trialId) {
-  fetch(`${BASE_URL}/trials/${trialId}/`, {
+  fetch(`${API_BASE_URL}/trials/${trialId}/`, {
     method: 'DELETE',
     headers: {
       'Authorization': token
@@ -78,7 +78,7 @@ export function deleteTrial (token, trialId) {
 }
 
 export function deleteExperiment (token, experimentID) {
-  fetch(`${BASE_URL}/experiments/${experimentID}/`, {
+  fetch(`${API_BASE_URL}/experiments/${experimentID}/`, {
     method: 'DELETE',
     headers: {
       'Authorization': token
@@ -87,7 +87,7 @@ export function deleteExperiment (token, experimentID) {
 }
 
 export function deleteAlgo (token, algoID, handler) {
-  fetch(`${BASE_URL}/algos/${algoID}/`, {
+  fetch(`${API_BASE_URL}/algos/${algoID}/`, {
     method: 'DELETE',
     headers: {
       'Authorization': token
@@ -98,7 +98,7 @@ export function deleteAlgo (token, algoID, handler) {
 }
 
 export function createExperiment (token, experimentData, handler) {
-  fetch(`${BASE_URL}/experiments.json`, {
+  fetch(`${API_BASE_URL}/experiments.json`, {
     method: 'POST',
     body: JSON.stringify(experimentData),
     headers: {
@@ -112,7 +112,7 @@ export function createExperiment (token, experimentData, handler) {
 }
 
 export function createAlgo (token, algoData, handler) {
-  fetch(`${BASE_URL}/algos.json`, {
+  fetch(`${API_BASE_URL}/algos.json`, {
     method: 'POST',
     body: JSON.stringify(algoData),
     headers: {
@@ -122,5 +122,19 @@ export function createAlgo (token, algoData, handler) {
   }).then((res) => res.json())
     .then((json) => {
       handler(json)
+  })
+}
+
+
+export function fetchUsernames (token, q, handler) {
+  fetch(`${API_BASE_URL}/users/?search=${q}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': token,
+      'Content-Type': 'application/json'
+    }
+  }).then((res) => res.json())
+  .then((json) => {
+    handler(json)
   })
 }

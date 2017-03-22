@@ -4,14 +4,5 @@ export const storageKey = {
   user: 'dreem-viewer-user'
 }
 
-export const loginURL = (function () {
-  switch (process.env.DREEM_API) {
-    case 'preprod':
-      return 'https://login.staging.rythm.co/token/'
-    case 'eu':
-    default:
-      return 'https://login.rythm.co/token/'
-  }
-})()
-
-export const BASE_URL = 'https://api.rythm.co/v1/dreem/bender'
+export const BASE_URL = 'https://bender-api.rythm.co'
+export const API_BASE_URL = 'https://bender-api.rythm.co/api'

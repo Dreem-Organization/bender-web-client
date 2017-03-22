@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import { Menu, Select, Button, Icon } from 'antd'
+import { Select, Button, Icon } from 'antd'
 
 const Option = Select.Option
 const OptGroup = Select.OptGroup

@@ -2,8 +2,7 @@ import React from 'react'
 import { Form, Icon, Input, Button, Checkbox } from 'antd'
 import logo from '../images/bender-logo.svg'
 import { storageKey, BASE_URL } from '../constants/globals'
-import { browserHistory, Link } from 'react-router'
-
+import { browserHistory } from 'react-router'
 
 const FormItem = Form.Item
 
@@ -33,31 +32,33 @@ function responseHandler (resp) {
   return resp.json().catch(defaultBodyValue)
 }
 
-function loginRequest (credentials) {
-  return fetch(`${BASE_URL}/login/`, {
+function signupRequest (credentials) {
+  return fetch(`${BASE_URL}/registration/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       username: credentials.username,
-      password: credentials.password
+      email: credentials.email,
+      password1: credentials.password1,
+      password2: credentials.password2
     })
   }).then(responseHandler)
 }
 
-const NormalLoginForm = Form.create()(React.createClass({
+const SignUpForm = Form.create()(React.createClass({
   handleSubmit (e) {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.login(values)
+        this.signup(values)
       }
     })
   },
 
-  login (credentials) {
-    return loginRequest(credentials).then((data) => {
+  signup (credentials) {
+    return signupRequest(credentials).then((data) => {
       const user = {
         token: `JWT ${data.token}`,
         id: data.user.pk,
@@ -67,8 +68,8 @@ const NormalLoginForm = Form.create()(React.createClass({
         lastName: data.user.last_name
       }
 
-      window.localStorage.setItem(storageKey.token, user.token)
       window.localStorage.setItem(storageKey.user, JSON.stringify(user))
+      window.localStorage.setItem(storageKey.token, user.token)
       browserHistory.push('/experiments')
     })
   },
@@ -82,24 +83,36 @@ const NormalLoginForm = Form.create()(React.createClass({
           className='form-logo'
           alt='logo'
           style={{cursor: 'pointer'}}
-          onClick={() => this.props.moveToView('experiment-list')}
         />
         <Form onSubmit={this.handleSubmit} className='login-form'>
-          <h1>Login to Bender</h1>
-          <p>New around here ? <Link to='signup/'>Signup</Link> instead</p>
+          <h1>Sign Up to Bender</h1>
           <br />
           <FormItem>
             {getFieldDecorator('username', {
-              rules: [{ required: true, message: 'Please input your username!' }]
+              rules: [{ required: true, message: 'Please input your username' }]
             })(
               <Input addonBefore={<Icon type='user' />} placeholder='Username' />
             )}
           </FormItem>
           <FormItem>
-            {getFieldDecorator('password', {
+            {getFieldDecorator('email', {
+              rules: [{ required: true, message: 'Please input your email' }]
+            })(
+              <Input addonBefore={'@'} placeholder='Email Adress' />
+            )}
+          </FormItem>
+          <FormItem>
+            {getFieldDecorator('password1', {
               rules: [{ required: true, message: 'Please input your Password!' }]
             })(
               <Input addonBefore={<Icon type='lock' />} type='password' placeholder='Password' />
+            )}
+          </FormItem>
+          <FormItem>
+            {getFieldDecorator('password2', {
+              rules: [{ required: true, message: 'Please input your Password!' }]
+            })(
+              <Input addonBefore={<Icon type='lock' />} type='password' placeholder='Confirm Password' />
             )}
           </FormItem>
           <FormItem>
@@ -119,4 +132,4 @@ const NormalLoginForm = Form.create()(React.createClass({
   }
 }))
 
-export default NormalLoginForm
+export default SignUpForm
