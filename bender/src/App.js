@@ -39,7 +39,6 @@ export default class App extends Component {
   requireAuth (nextState, replace) {
     const user = window.localStorage.getItem(storageKey.user)
     const token = window.localStorage.getItem(storageKey.token)
-
     if (!user || !checkTokenValidity(token)) {
       replace({
         pathname: '/login',
