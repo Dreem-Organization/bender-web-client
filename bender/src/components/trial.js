@@ -14,6 +14,8 @@ export default class Trial extends Component {
 
     this.handleClick = this.handleClick.bind(this)
     this.handleDeleteTrial = this.handleDeleteTrial.bind(this)
+    this.renderComment = this.renderComment.bind(this)
+
     this.state = {
       isExpanded: false,
       main_metric: {
@@ -50,6 +52,20 @@ export default class Trial extends Component {
     return null
   }
 
+  renderComment () {
+    if (this.props.trial.comment !== null) {
+      return (
+        <div>
+          <p>
+            {this.props.trial.comment.text !== null ? this.props.trial.comment.text : null}
+            {this.props.trial.comment.url !== null ? <a href={this.props.trial.comment.url} target='_blank'>{this.props.trial.comment.url}</a> : null}
+          </p>
+        </div>
+      )
+    }
+    return null
+  }
+
   render () {
     let trial
     if (this.state.isExpanded) {
@@ -66,8 +82,7 @@ export default class Trial extends Component {
             </div>
           </div>
           <div className='trial-expanded-content'>
-            <p>{this.props.trial.comment.text}</p>
-            {this.props.trial.comment.url !== null ? <a href={this.props.trial.comment.url} target='_blank'>{this.props.trial.comment.url}</a> : null}
+            {this.renderComment()}
             <Row>
               <Col span={12}>
                 {this._renderTableFromObject(this.props.trial.parameters, 'Parameters')}
