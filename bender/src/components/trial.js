@@ -67,7 +67,7 @@ export default class Trial extends Component {
             </div>
           </div>
           <div className='trial-expanded-content'>
-            <q>{this.props.trial.comment}</q>
+            <b>{this.props.trial.comment.text}</b>
             <Row>
               <Col span={12}>
                 {this._renderTableFromObject(this.props.trial.parameters, 'Parameters')}
