@@ -55,12 +55,10 @@ export default class Trial extends Component {
   renderComment () {
     if (this.props.trial.comment !== null) {
       return (
-        <div>
-          <p>
-            {this.props.trial.comment.text !== null ? this.props.trial.comment.text : null}
-            {this.props.trial.comment.url !== null ? <a href={this.props.trial.comment.url} target='_blank'>{this.props.trial.comment.url}</a> : null}
-          </p>
-        </div>
+        <p>
+          {this.props.trial.comment.text !== null ? this.props.trial.comment.text : null}
+          {this.props.trial.comment.url !== null ? <a href={this.props.trial.comment.url} target='_blank'>{this.props.trial.comment.url}</a> : null}
+        </p>
       )
     }
     return null
