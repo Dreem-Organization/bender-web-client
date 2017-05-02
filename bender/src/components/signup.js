@@ -61,7 +61,7 @@ const SignUpForm = Form.create()(React.createClass({
     return signupRequest(credentials).then((data) => {
       const user = {
         token: `JWT ${data.token}`,
-        id: data.user.pk,
+        id: data.user,
         email: data.user.email,
         username: data.user.username,
         firstName: data.user.first_name,

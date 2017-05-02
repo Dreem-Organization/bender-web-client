@@ -1,4 +1,4 @@
-import { API_BASE_URL } from '../constants/globals'
+import { API_BASE_URL, BASE_URL } from '../constants/globals'
 
 export function fetchSharedWithExperiments (token, owner, handler) {
   fetch(`${API_BASE_URL}/experiments/?shared_with=${owner}`, {
@@ -137,4 +137,33 @@ export function fetchUsernames (token, q, handler) {
   .then((json) => {
     handler(json)
   })
+}
+
+
+export function verifyEmail (key, handler) {
+  fetch(`${BASE_URL}/registration/verify-email/`, {
+    method: 'POST',
+    body: JSON.stringify({key}),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then((res) => res.json())
+    .then((json) => {
+      handler(json)
+    })
+}
+
+export function loginRequest (credentials, respHandler, handler) {
+  fetch(`${BASE_URL}/login/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      username: credentials.username,
+      password: credentials.password
+    })
+  }).then((resp) => {
+      return respHandler(resp)
+    }).then((json) => handler(json))
 }

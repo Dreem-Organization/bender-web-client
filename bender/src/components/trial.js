@@ -3,7 +3,6 @@ import TimeAgo from 'react-timeago'
 import { Row, Col, Button, message, Popconfirm } from 'antd'
 import _ from 'lodash'
 
-
 const deleteButtonStyle = {
   float: 'right',
   margin: '5px'
@@ -67,7 +66,8 @@ export default class Trial extends Component {
             </div>
           </div>
           <div className='trial-expanded-content'>
-            <b>{this.props.trial.comment.text}</b>
+            <p>{this.props.trial.comment.text}</p>
+            {this.props.trial.comment.url !== null ? <a href={this.props.trial.comment.url} target='_blank'>{this.props.trial.comment.url}</a> : null}
             <Row>
               <Col span={12}>
                 {this._renderTableFromObject(this.props.trial.parameters, 'Parameters')}

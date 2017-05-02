@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import Experiment from './components/experiment.js'
 import ExperimentList from './components/experiment-list'
-import LoginForm from './components/login.js'
+import LoginForm from './components/login'
+import VerifyEmail from './components/VerifyEmail'
 import LeftMenu from './components/left-menu.js'
 import enUS from 'antd/lib/locale-provider/en_US'
 import LocaleProvider from 'antd/lib/locale-provider'
@@ -55,6 +56,7 @@ export default class App extends Component {
         <Router history={browserHistory}>
           <Route path='signup' component={SignUpForm} />
           <Route path='login' component={LoginForm} />
+          <Route path='verify/:key' component={VerifyEmail} />
           <Route path='/' component={LoggedAppBase} onEnter={this.requireAuth}>
             <Route path='experiments' component={ExperimentList} onEnter={this.requireAuth} />
             <Route path='experiment/:experimentID' component={Experiment} onEnter={this.requireAuth} />

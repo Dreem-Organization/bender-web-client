@@ -1,9 +1,9 @@
 import React from 'react'
 import { Form, Icon, Input, Button, Checkbox } from 'antd'
 import logo from '../images/bender-logo.svg'
-import { storageKey, BASE_URL } from '../constants/globals'
+import { storageKey } from '../constants/globals'
+import { loginRequest } from '../constants/requests'
 import { browserHistory, Link } from 'react-router'
-
 
 const FormItem = Form.Item
 
@@ -33,19 +33,6 @@ function responseHandler (resp) {
   return resp.json().catch(defaultBodyValue)
 }
 
-function loginRequest (credentials) {
-  return fetch(`${BASE_URL}/login/`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      username: credentials.username,
-      password: credentials.password
-    })
-  }).then(responseHandler)
-}
-
 const NormalLoginForm = Form.create()(React.createClass({
   handleSubmit (e) {
     e.preventDefault()
@@ -57,7 +44,7 @@ const NormalLoginForm = Form.create()(React.createClass({
   },
 
   login (credentials) {
-    return loginRequest(credentials).then((data) => {
+    return loginRequest(credentials, responseHandler, (data) => {
       const user = {
         token: `JWT ${data.token}`,
         id: data.user.pk,
