@@ -47,6 +47,7 @@ export default class HomeChart extends Component {
     this.getChart = this.getChart.bind(this)
     this.lineCustomTooltip = this.lineCustomTooltip.bind(this)
     this.scatterCustomTooltip = this.scatterCustomTooltip.bind(this)
+    this.getDiscreteChartData = this.getDiscreteChartData.bind(this)
   }
 
   handleSelectMetric (selectedMetric) {
@@ -112,8 +113,23 @@ export default class HomeChart extends Component {
   getScatterChartData () {
     const algos = _.filter(this.props.algos, (a) => _.includes(a.parameters, this.state.selectedParameter)).map((k) => k.id)
     const data = _.chain(this.props.trials)
+              .filter((k) => (_.includes(algos, k.algo)))
+              .map((k) => ({id: k.id, X: _.round(k.results[this.state.selectedMetric], 4), Y: k.parameters[this.state.selectedParameter]}))
+              .value()
+    return data
+  }
+
+  getDiscreteChartData () {
+    const algos = _.filter(this.props.algos, (a) => _.includes(a.parameters, this.state.selectedParameter)).map((k) => k.id)
+    const discreteParameters = _.chain(this.props.trials).filter((k) => (_.includes(algos, k.algo))).uniqBy((k) => k.parameters[this.state.selectedParameter]).map((k, i) => ({param: k.parameters[this.state.selectedParameter], index: i})).value()
+    const data = _.chain(this.props.trials)
             .filter((k) => (_.includes(algos, k.algo)))
-            .map((k) => ({id: k.id, X: _.round(k.results[this.state.selectedMetric], 4), Y: k.parameters[this.state.selectedParameter]}))
+            .map((k) => ({
+              id: k.id,
+              X: _.round(k.results[this.state.selectedMetric], 4),
+              Y: discreteParameters.filter((y) => y.param === k.parameters[this.state.selectedParameter])[0].index,
+              param: k.parameters[this.state.selectedParameter]
+            }))
             .value()
     return data
   }
@@ -198,6 +214,19 @@ export default class HomeChart extends Component {
           />
         </ComposedChart>
       )
+    } else if (typeof this.props.trials[0].parameters[this.state.selectedParameter] === 'string') {
+      return (
+        <ScatterChart
+          style={chartStyles}
+          margin={{top: 20, right: 15, bottom: -10, left: -40}}>
+          <Scatter data={this.getDiscreteChartData()} fill='#008cec' r={2} />
+          <YAxis dataKey={'X'} domain={['auto', 'auto']} name={this.state.X} />
+          <XAxis dataKey={'Y'} domain={['dataMin - 1', 'dataMax + 1']} interval={1} name={this.state.Y} />
+          <ZAxis dataKey={'id'} />
+          <Tooltip content={this.scatterCustomTooltip} offset={25} />
+          <CartesianGrid strokeDasharray='3 3' style={{opacity: 0.3}} />
+        </ScatterChart>
+      )
     }
     return (
       <ScatterChart
@@ -205,7 +234,7 @@ export default class HomeChart extends Component {
         margin={{top: 20, right: 15, bottom: -10, left: -40}}>
         <Scatter data={this.getScatterChartData()} fill='#008cec' r={2} />
         <YAxis dataKey={'X'} domain={['auto', 'auto']} name={this.state.X} />
-        <XAxis dataKey={'Y'} domain={['auto', 'auto']} name={this.state.Y} />
+        <XAxis dataKey={'param'} name={'param'} domain={['auto', 'auto']} />
         <ZAxis dataKey={'id'} />
         <Tooltip content={this.scatterCustomTooltip} offset={25} />
         <CartesianGrid strokeDasharray='3 3' style={{opacity: 0.3}} />

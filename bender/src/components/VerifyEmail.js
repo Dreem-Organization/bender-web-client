@@ -21,7 +21,7 @@ export default class VerifyEmail extends Component {
 
   handleClickButton () {
     verifyEmail(this.props.params.key, (json) => {
-      browserHistory.push('/experiments')
+      browserHistory.push('/')
     })
   }
 

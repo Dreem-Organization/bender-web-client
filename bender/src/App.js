@@ -57,8 +57,8 @@ export default class App extends Component {
           <Route path='signup' component={SignUpForm} />
           <Route path='login' component={LoginForm} />
           <Route path='verify/:key' component={VerifyEmail} />
-          <Route path='/' component={LoggedAppBase} onEnter={this.requireAuth}>
-            <Route path='experiments' component={ExperimentList} onEnter={this.requireAuth} />
+          <Route component={LoggedAppBase} onEnter={this.requireAuth}>
+            <Route path='/' component={ExperimentList} onEnter={this.requireAuth} />
             <Route path='experiment/:experimentID' component={Experiment} onEnter={this.requireAuth} />
           </Route>
         </Router>

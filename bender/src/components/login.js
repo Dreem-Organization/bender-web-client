@@ -56,7 +56,7 @@ const NormalLoginForm = Form.create()(React.createClass({
 
       window.localStorage.setItem(storageKey.token, user.token)
       window.localStorage.setItem(storageKey.user, JSON.stringify(user))
-      browserHistory.push('/experiments')
+      browserHistory.push('/')
     })
   },
 
