@@ -234,7 +234,7 @@ export default class HomeChart extends Component {
         margin={{top: 20, right: 15, bottom: -10, left: -40}}>
         <Scatter data={this.getScatterChartData()} fill='#008cec' r={2} />
         <YAxis dataKey={'X'} domain={['auto', 'auto']} name={this.state.X} />
-        <XAxis dataKey={'param'} name={'param'} domain={['auto', 'auto']} />
+        <XAxis dataKey={'Y'} domain={['auto', 'auto']} name={this.state.Y} />
         <ZAxis dataKey={'id'} />
         <Tooltip content={this.scatterCustomTooltip} offset={25} />
         <CartesianGrid strokeDasharray='3 3' style={{opacity: 0.3}} />
