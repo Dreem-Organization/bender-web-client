@@ -40,7 +40,7 @@ export function fetchExperiment (token, owner, experimentID, handler) {
 }
 
 export function fetchTrials (token, experimentID, urlFilters, handler) {
-  let url = `${API_BASE_URL}/trials/?experiment=${experimentID}`
+  let url = `${API_BASE_URL}/trials/?experiment=${experimentID}`;
   if (urlFilters != null) {
     url += urlFilters
   }

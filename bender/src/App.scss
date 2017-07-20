@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  //font-family: sans-serif;
   background: #f4f1f1;
   color: rgb(68, 66, 87);
   font-family: 'Inconsolata', 'Titillium Web', 'Oxygen Mono', monospace;
@@ -30,7 +30,7 @@ h1, h2, h3, h4 {
 }
 
 .ant-card-body {
-  padding: 20px 0px;
+  padding: 20px 0;
   padding-left: 15px;
   padding-bottom: 5px;
 }
@@ -39,17 +39,17 @@ h1, h2, h3, h4 {
   width: 60px;
   height: 100%;
   position: fixed;
-  left: 0px;
-  top: 0px;
+  left: 0;
+  top: 0;
   background: #fff;
   border-right: 1px solid rgb(233, 233, 233);
-  box-shadow: 2px 5px 3px px rgba(0,0,0, 0.08);
-  z-index: 100;
+  //box-shadow: 2px 5px 3px 0 rgba(0, 0, 0, 0.08);
+  //z-index: 100;
 }
 
 .menu-bottom-button {
   position: absolute;
-  bottom: 0px;
+  bottom: 0;
   padding: 7px 14px;
 }
 
@@ -61,25 +61,23 @@ h1 {
   &.main {
     font-size: 20px;
     letter-spacing: 1px;
-    margin: 15px 0px;
+    margin: 15px 0;
   }
   &.no-trials {
-    font-size: px;
-    margin: 30px 0px;
+    font-size: 0;
+    margin: 30px 0;
   }
 }
 
-
 .main-container {
-  margin: 0px auto;
+  margin: 0 auto;
   max-width: 1050px;
   width: 75%;
-  margin: 0px auto;
 }
 
 i.author {
   display: inline-block;
-  margin: 8px 0px;
+  margin: 8px 0;
   font-size: 13px;
 }
 
@@ -90,13 +88,13 @@ i.author {
 .experiment-list {
   background: #fff;
   border-radius: 5px;
-  margin: 0px;
+  margin: 0;
   margin-bottom: 40px;
-  padding: 0px;
-  box-shadow: 0px 3px 5px -3px rgba(0,0,0, 0.1);
+  padding: 0;
+  box-shadow: 0 3px 5px -3px rgba(0, 0, 0, 0.1);
   ul {
     list-style: none;
-    padding-left: 0px;
+    padding-left: 0;
     position: relative;
     li {
       background: #fff;
@@ -114,23 +112,23 @@ i.author {
       }
       h3 {
         font-size: 16px;
-        padding: 0px;
-        margin: 0px;
+        padding: 0;
+        margin: 0;
       }
       &:first-child {
         border-top-left-radius: 5px !important;
         border-top-right-radius: 5px !important;
       }
-      &:last-child{
+      &:last-child {
         border-bottom-left-radius: 5px !important;
         border-bottom-right-radius: 5px !important;
-        border-bottom: 0px;
+        border-bottom: 0;
       }
       .trial-count {
         text-align: center;
         position: absolute;
         right: 10px;
-        top: 0px;
+        top: 0;
         font-size: 12px;
         padding: 13px;
       }
@@ -138,7 +136,7 @@ i.author {
         text-align: center;
         position: absolute;
         right: 80px;
-        top: 0px;
+        top: 0;
         font-size: 12px;
         padding: 13px;
       }
@@ -151,7 +149,7 @@ i.author {
 }
 
 .experiment-description {
-  margin: 20px 0px;
+  margin: 20px 0;
 }
 
 /**********************************/
@@ -161,15 +159,17 @@ i.author {
 .trial-list {
   background: #fff;
   border-radius: 5px;
-  margin: 0px;
+  margin: 0;
   margin-bottom: 40px;
-  padding: 0px;
-  box-shadow: 0px 5px 10px -3px rgba(0,0,0, 0.1);
+  padding: 0;
+  box-shadow: 0 5px 10px -3px rgba(0, 0, 0, 0.1);
   border: 1px solid #e9e9e9;
+  position: relative;
+  z-index: 10;
 
   ul {
     list-style: none;
-    padding-left: 0px;
+    padding-left: 0;
     position: relative;
     li {
       &.trial {
@@ -185,23 +185,23 @@ i.author {
           cursor: pointer;
           position: relative;
         }
-        &:first-child{
+        &:first-child {
           border-top-left-radius: 5px !important;
           border-top-right-radius: 5px !important;
         }
-        &:last-child{
+        &:last-child {
           border-bottom-left-radius: 5px !important;
           border-bottom-right-radius: 5px !important;
-          border-bottom: 0px;
+          border-bottom: 0;
         }
         h3 {
           font-size: 15px;
-          padding: 0px;
-          margin: 0px;
+          padding: 0;
+          margin: 0;
         }
         .date {
           font-size: 12px;
-          padding: 0px;
+          padding: 0;
           color: #919197;
           font-weight: 600;
         }
@@ -212,9 +212,9 @@ i.author {
         height: auto;
         position: relative;
         box-shadow: 0px -1px 2px rgba(0, 0, 0, 0.05),
-                    0px 3px 6px rgba(0, 0, 0, 0.1);
+        0px 3px 6px rgba(0, 0, 0, 0.1);
         background-color: #fff;
-        z-index: 100;
+        z-index: 20;
         width: 101%;
         right: .5%;
         border-radius: 5px;
@@ -226,7 +226,7 @@ i.author {
           cursor: pointer;
           border-top-left-radius: 5px !important;
           border-top-right-radius: 5px !important;
-          box-shadow: inset 0px 20px 50px -10px rgba(#fff, 1);
+          box-shadow: inset 0 20px 50px -10px rgba(#fff, 1);
           h2 {
             font-size: 18px;
           }
@@ -241,7 +241,7 @@ i.author {
       .score {
         position: absolute;
         right: 10px;
-        top: 0px;
+        top: 0;
         font-size: 18px;
         padding: 10px;
         padding-top: 15px;
@@ -261,7 +261,6 @@ i.author {
   top: -1px;
 }
 
-
 /**********************************/
 /************* TABLE **************/
 /**********************************/
@@ -273,8 +272,9 @@ table {
   margin-bottom: 15px;
   border-radius: 2px;
 }
+
 table, th, td {
-    /*border: 1px solid #dfdfdf;*/
+  /*border: 1px solid #dfdfdf;*/
 }
 
 th, td {
@@ -284,7 +284,6 @@ th, td {
   font-weight: 500;
   font-size: 13px;
 }
-
 
 .dataset-label {
   background-color: #F7F7F7;
@@ -301,18 +300,18 @@ th, td {
 }
 
 div.algolist-wrapper {
-  margin: 15px 0px;
+  margin: 15px 0;
   border-radius: 5px;
-  background: #F7F7F7;
+  // background: #F7F7F7;
   border: 1px solid #e9e9e9;
   background: #fff;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 div.algolist-header {
   background: #F7F7F7;
   width: 100%;
-  top: 0px;
+  top: 0;
   padding: 10px;
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
@@ -322,7 +321,6 @@ div.algolist-header {
 div.algolist-content {
   padding: 15px 15px;
 }
-
 
 /**********************************/
 /************* DASHBOARD **************/
@@ -336,12 +334,12 @@ div.algolist-content {
 
 .dashboard-number {
   text-align: center;
-  padding: 20px 0px;
+  padding: 20px 0;
   border-radius: 5px;
   border: 1px solid #e9e9e9;
   margin: 10px;
   white-space: nowrap;
-  h1{
+  h1 {
     font-size: 30px;
     font-weight: lighter;
     text-transform: uppercase;
@@ -358,16 +356,16 @@ div.algolist-content {
   text-align: right;
 
   .sort-button {
-    margin:0px;
-    border: 0px solid;
+    margin: 0;
+    border: 0 solid;
     min-width: 90px;
     // max-width: 150;
     outline: none !important;
 
     > div {
       border: 1px solid #e9e9e9;
-      border-radius: 0px;
-      border-right: 0px;
+      border-radius: 0;
+      border-right: 0;
     }
   }
   .sort-button:first-child > div {
@@ -375,39 +373,40 @@ div.algolist-content {
     border-bottom-left-radius: 5px;
   }
   .sort-button:last-child {
-    border-right: 0px;
+    border-right: 0;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
   }
 
   .sort-button.apply {
     // max-width: 80px;
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
   }
 }
 
 .ant-tabs-bar {
-  border-bottom: 0px solid;
+  border-bottom: 0 solid;
 }
 
 .recharts-rectangle {
   fill: rgba(237, 237, 237, 0.7) !important;
 }
 
-
 /**********************************/
 /************* LOGIN **************/
 /**********************************/
 
 .ant-input,
-.ant-mention-editor{
+.ant-mention-editor {
   background: #f9f9f9 !important;
   color: #8d8e9a !important;
 }
+
 .ant-form-item-label {
-  padding: 0px;
+  padding: 0;
 }
+
 .form-wrapper {
   position: absolute;
   top: 50%;
@@ -416,7 +415,7 @@ div.algolist-content {
   -moz-transform: translate(-50%, -50%);
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  justify-content:center;
+  justify-content: center;
 }
 
 .form-logo {
@@ -437,8 +436,9 @@ div.algolist-content {
   margin-top: 20px;
   padding: 50px 30px;
   padding-bottom: 20px;
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
+
 .login-form h1,
 .login-form p {
   margin-bottom: 20px;
@@ -448,45 +448,41 @@ div.algolist-content {
 .login-form-forgot {
   float: right;
 }
+
 .login-form-button {
   width: 100%;
   margin-top: 20px;
 }
-
-
 
 /**********************************/
 /************ GET STARTED *************/
 /**********************************/
 
 .getstarted {
-  margin: 30px 0px;
+  margin: 30px 0;
 }
 
 .snippet {
   background-color: #F7F7F7;
-  border: 1px solid #dfdfdf;
+  border: 0 solid #dfdfdf;
   color: rgb(89, 70, 129);
   border-radius: 3px;
-  margin: 10px 0px;
+  margin: 10px 0;
   padding: 8px 10px;
   font-size: 13px;
   width: auto;
   line-height: 20px;
 }
 
-
 .ant-btn.ant-btn-primary.custom-primary {
-    border: none;
-    padding: 5px 15px;
-    box-shadow: 3px 3px 10px 0 #a7b5c2;
+  border: none;
+  padding: 5px 15px;
+  box-shadow: 3px 3px 10px 0 #a7b5c2;
 }
 
 .ant-btn.ant-btn-primary.custom-primary:hover {
-    box-shadow: 0px 0px 0px 0 #a2b3c2;
+  box-shadow: 0 0 0 0 #a2b3c2;
 }
-
-
 
 /* use css to set position of modal */
 .vertical-center-modal {
@@ -512,15 +508,25 @@ div.algolist-content {
 .experiment-settings-item {
   background: #F7F7F7;
   padding: 10px 20px;
-  margin: 10px 0px;
+  margin: 10px 0;
   border-radius: 5px;
   border: 1px solid #EFEFEF;
   clear: both;
   height: 50px;
   display: flex;
   justify-content: space-between;
-  box-shadow: inset 0px 20px 50px -10px white;
+  box-shadow: inset 0 20px 50px -10px white;
   h3 {
     margin: 5px;
   }
+}
+
+.scatter-chart {
+  background: #FFF;
+  border-radius: 3px;
+  padding: 10px;
+  border: 0 solid rgb(217, 217, 217);
+  font-size: 13px;
+  position: relative;
+  z-index: 30;
 }

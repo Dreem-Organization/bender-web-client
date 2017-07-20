@@ -1,23 +1,25 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import { Select, Button, Icon } from 'antd'
+import Select from 'antd/lib/select'
+import Button from 'antd/lib/button'
+import Icon from 'antd/lib/icon'
 
-const Option = Select.Option
-const OptGroup = Select.OptGroup
+const Option = Select.Option;
+const OptGroup = Select.OptGroup;
 
 const descOptions = [
   <Option key={1} value={'true'}>Desc</Option>,
   <Option key={2} value={'false'}>Asc</Option>
-]
+];
 
 export default class TrialFilterer extends Component {
   constructor (props) {
-    super(props)
+    super(props);
 
-    this._getOrderOptions = this._getOrderOptions.bind(this)
-    this._getAlgoOptions = this._getAlgoOptions.bind(this)
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSetFilters = this.handleSetFilters.bind(this)
+    this._getOrderOptions = this._getOrderOptions.bind(this);
+    this._getAlgoOptions = this._getAlgoOptions.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSetFilters = this.handleSetFilters.bind(this);
 
     this.state = {
       filters: null
@@ -29,8 +31,8 @@ export default class TrialFilterer extends Component {
   }
 
   _getOrderOptions () {
-    const metrics = _.map(this.props.experiment.metrics, (m) => <Option key={m}>{m}</Option>)
-    const options = [<Option key={'date'}>Date</Option>].concat(metrics)
+    const metrics = _.map(this.props.experiment.metrics, (m) => <Option key={m}>{m}</Option>);
+    const options = [<Option key={'date'}>Date</Option>].concat(metrics);
     return (
       <OptGroup label='Order by'>
         {options}
@@ -39,7 +41,7 @@ export default class TrialFilterer extends Component {
   }
 
   _getLimitOptions () {
-    const options = _.map([10, 20, 30, 60, 100], (k, i) => <Option key={i} value={k.toString()}>{k}</Option>)
+    const options = _.map([10, 20, 30, 60, 100], (k, i) => <Option key={i} value={k.toString()}>{k}</Option>);
     return (
       <OptGroup label='Limit'>
         {options}
@@ -48,8 +50,8 @@ export default class TrialFilterer extends Component {
   }
 
   _getAlgoOptions () {
-    const algos = _.map(this.props.algos, (a, i) => <Option key={i} value={a.id}>{a.name}</Option>)
-    const options = [<Option key={'all'} value={null}>All</Option>].concat(algos)
+    const algos = _.map(this.props.algos, (a, i) => <Option key={i} value={a.id}>{a.name}</Option>);
+    const options = [<Option key={'all'} value={null}>All</Option>].concat(algos);
     return (
       <OptGroup label='Algo'>
         {options}
@@ -62,8 +64,8 @@ export default class TrialFilterer extends Component {
   }
 
   handleChange (key, val) {
-    const filters = Object.assign({}, this.state.filters)
-    filters[key] = val
+    const filters = Object.assign({}, this.state.filters);
+    filters[key] = val;
     this.setState({filters})
   }
 
@@ -99,7 +101,7 @@ export default class TrialFilterer extends Component {
           {this._getLimitOptions()}
         </Select>
         <Button type='primary' className={'sort-button apply'} onClick={this.handleSetFilters}>
-          Apply <Icon type='filter' />
+          Apply <Icon type='filter'/>
         </Button>
       </div>
     )
