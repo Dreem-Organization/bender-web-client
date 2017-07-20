@@ -24,7 +24,7 @@ export default class Experiment extends Component {
         };
 
         this.setFilters = this.setFilters.bind(this);
-        this.fetchExperimentData = this.fetchExperimentData.bind(this)
+        this.fetchExperimentData = this.fetchExperimentData.bind(this);
     }
 
     componentDidMount() {
@@ -53,7 +53,12 @@ export default class Experiment extends Component {
 
     fetchAlgos(experimentID) {
         fetchAlgos(this.state.user.token, experimentID, (resp) => {
-            const algos = resp.results;
+            const algos = resp.results.map((a) => {
+                return Object.assign(a, {}, {
+                    parametersDetails: a.parameters,
+                    parameters: a.parameters.map((p) => p.name)
+                })
+            });
             this.setState({algos})
         })
     }

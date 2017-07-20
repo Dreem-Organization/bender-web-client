@@ -31,7 +31,7 @@ export default class LeftMenu extends Component {
         );
         return (
             <div className='left-menu'>
-                <Link to='/experiments'>
+                <Link to='/'>
                     <img
                         src={logo}
                         className='App-logo'

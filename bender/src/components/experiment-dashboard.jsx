@@ -55,7 +55,7 @@ export default class Dashboard extends Component {
                 <Row>
                     <Col span={20}>
                         <h1 className='main'>
-                            <Link to={'/experiments'}>Experiments</Link>
+                            <Link to={'/'}>Experiments</Link>
                             &nbsp;>&nbsp;
                             <a onClick={this.props.closeDashboard}>
                                 {this.props.experiment.name}

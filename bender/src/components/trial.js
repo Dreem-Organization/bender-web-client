@@ -7,7 +7,6 @@ import message from 'antd/lib/message'
 import Popconfirm from 'antd/lib/popconfirm'
 import _ from 'lodash'
 
-
 const deleteButtonStyle = {
     float: 'right',
     margin: '5px'
@@ -19,13 +18,15 @@ export default class Trial extends Component {
 
         this.handleClick = this.handleClick.bind(this);
         this.handleDeleteTrial = this.handleDeleteTrial.bind(this);
+        this.renderComment = this.renderComment.bind(this);
+
         this.state = {
             isExpanded: false,
             main_metric: {
                 name: this.props.mainMetric,
-                value: this._getMainMetricValue()
+                value: _.round(this.props.trial.results[this.props.mainMetric], 3)
             }
-        }
+        };
     }
 
     handleClick() {
@@ -62,6 +63,19 @@ export default class Trial extends Component {
         return (_.round(this.props.trial.results[this.props.mainMetric], 3))
     }
 
+    renderComment() {
+        if (this.props.trial.comment !== null) {
+            return (
+                <p>
+                    {this.props.trial.comment.text !== null ? this.props.trial.comment.text : null}
+                    {this.props.trial.comment.url !== null ? <a href={this.props.trial.comment.url}
+                                                                target='_blank'>{this.props.trial.comment.url}</a> : null}
+                </p>
+            )
+        }
+        return null
+    }
+
     render() {
         let trial;
         if (this.state.isExpanded) {
@@ -74,11 +88,11 @@ export default class Trial extends Component {
                         </div>
                         <div className='score'>
                             <span>{this.state.main_metric.name}:</span>
-                            {this._getMainMetricValue()}
+                            {this.state.main_metric.value}
                         </div>
                     </div>
                     <div className='trial-expanded-content'>
-                        <q>{this.props.trial.comment}</q>
+                        {this.renderComment()}
                         <Row>
                             <Col span={12}>
                                 {this._renderTableFromObject(this.props.trial.parameters, 'Parameters')}
@@ -106,7 +120,7 @@ export default class Trial extends Component {
                     <div className='date'>
                         <TimeAgo date={this.props.trial.created}/>
                     </div>
-                    <div className='score'><span>{this.state.main_metric.name}:</span>{this._getMainMetricValue()}
+                    <div className='score'><span>{this.state.main_metric.name}:</span>{this.state.main_metric.value}
                     </div>
                 </li>
             )

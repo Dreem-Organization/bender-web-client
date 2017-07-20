@@ -75,7 +75,7 @@ class SignUpForm extends React.Component {
 
             window.localStorage.setItem(storageKey.user, JSON.stringify(user));
             window.localStorage.setItem(storageKey.token, user.token);
-            browserHistory.push('/experiments')
+            browserHistory.push('/')
         })
     }
 

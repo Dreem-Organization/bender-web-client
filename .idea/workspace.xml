@@ -2,37 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="25326f2b-64f6-42e3-9c64-34bb953cee0d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/package.json" afterPath="$PROJECT_DIR$/bender/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/public/index.html" afterPath="$PROJECT_DIR$/bender/public/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/scripts/build.js" afterPath="$PROJECT_DIR$/bender/scripts/build.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/scripts/start.js" afterPath="$PROJECT_DIR$/bender/scripts/start.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/bender/src/components/VerifyEmail.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/Dockerfile" afterPath="$PROJECT_DIR$/bender/Dockerfile" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/src/App.js" afterPath="$PROJECT_DIR$/bender/src/App.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/src/App.scss" afterPath="$PROJECT_DIR$/bender/src/App.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/src/components/algo-form-content.js" afterPath="$PROJECT_DIR$/bender/src/components/algo-form-content.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/src/components/algo-form.js" afterPath="$PROJECT_DIR$/bender/src/components/algo-form.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/src/components/algo-list.js" afterPath="$PROJECT_DIR$/bender/src/components/algo-list.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/src/components/experiment-dashboard.jsx" afterPath="$PROJECT_DIR$/bender/src/components/experiment-dashboard.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/src/components/experiment-form-content.js" afterPath="$PROJECT_DIR$/bender/src/components/experiment-form-content.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/src/components/experiment-form.js" afterPath="$PROJECT_DIR$/bender/src/components/experiment-form.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/src/components/experiment-list-item.js" afterPath="$PROJECT_DIR$/bender/src/components/experiment-list-item.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/src/components/experiment-list.js" afterPath="$PROJECT_DIR$/bender/src/components/experiment-list.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/src/components/experiment-trials.js" afterPath="$PROJECT_DIR$/bender/src/components/experiment-trials.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/src/components/experiment.js" afterPath="$PROJECT_DIR$/bender/src/components/experiment.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/src/components/home-chart.js" afterPath="$PROJECT_DIR$/bender/src/components/home-chart.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/src/components/left-menu.js" afterPath="$PROJECT_DIR$/bender/src/components/left-menu.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/src/components/loader.js" afterPath="$PROJECT_DIR$/bender/src/components/loader.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/src/components/login.js" afterPath="$PROJECT_DIR$/bender/src/components/login.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/src/components/signup.js" afterPath="$PROJECT_DIR$/bender/src/components/signup.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/src/components/trial-filterer.js" afterPath="$PROJECT_DIR$/bender/src/components/trial-filterer.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/src/components/trial.js" afterPath="$PROJECT_DIR$/bender/src/components/trial.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/src/components/trials-get-started.js" afterPath="$PROJECT_DIR$/bender/src/components/trials-get-started.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/src/components/user-modal-form-content.js" afterPath="$PROJECT_DIR$/bender/src/components/user-modal-form-content.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/src/components/user-modal.js" afterPath="$PROJECT_DIR$/bender/src/components/user-modal.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/src/components/widgets/line-chart-widget.js" afterPath="$PROJECT_DIR$/bender/src/components/widgets/line-chart-widget.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/src/components/widgets/radar-chart-widget.js" afterPath="$PROJECT_DIR$/bender/src/components/widgets/radar-chart-widget.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/src/components/widgets/scatter-chart-widget.js" afterPath="$PROJECT_DIR$/bender/src/components/widgets/scatter-chart-widget.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/src/constants/requests.js" afterPath="$PROJECT_DIR$/bender/src/constants/requests.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bender/src/index.js" afterPath="$PROJECT_DIR$/bender/src/index.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -43,65 +25,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="line-chart-widget.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bender/src/components/widgets/line-chart-widget.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="410">
-              <caret line="67" column="47" lean-forward="false" selection-start-line="67" selection-start-column="28" selection-end-line="67" selection-end-column="47" />
-              <folding>
-                <element signature="e#0#38#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="scatter-chart-widget.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bender/src/components/widgets/scatter-chart-widget.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-96">
-              <caret line="24" column="19" lean-forward="true" selection-start-line="24" selection-start-column="19" selection-end-line="24" selection-end-column="19" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="App.scss" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bender/src/App.scss">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="750">
-              <caret line="523" column="14" lean-forward="false" selection-start-line="523" selection-start-column="1" selection-end-line="523" selection-end-column="14" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="trial.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bender/src/components/trial.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-618">
-              <caret line="25" column="49" lean-forward="false" selection-start-line="25" selection-start-column="49" selection-end-line="25" selection-end-column="49" />
-              <folding>
-                <element signature="e#0#38#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="trial-filterer.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bender/src/components/trial-filterer.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-363">
-              <caret line="33" column="67" lean-forward="false" selection-start-line="33" selection-start-column="67" selection-end-line="33" selection-end-column="67" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="home-chart.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="home-chart.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bender/src/components/home-chart.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="393">
-              <caret line="279" column="17" lean-forward="false" selection-start-line="279" selection-start-column="17" selection-end-line="279" selection-end-column="17" />
+            <state relative-caret-position="1326">
+              <caret line="78" column="29" lean-forward="true" selection-start-line="78" selection-start-column="29" selection-end-line="78" selection-end-column="29" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
               </folding>
@@ -109,32 +37,102 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bender/src/index.css">
+      <file leaf-file-name="login.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bender/src/components/login.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="514">
+              <caret line="83" column="18" lean-forward="true" selection-start-line="83" selection-start-column="18" selection-end-line="83" selection-end-column="18" />
+              <folding>
+                <element signature="e#0#25#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="signup.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bender/src/components/signup.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="343">
+              <caret line="77" column="34" lean-forward="false" selection-start-line="77" selection-start-column="34" selection-end-line="77" selection-end-column="34" />
+              <folding>
+                <element signature="e#0#25#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="experiment-dashboard.jsx" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bender/src/components/experiment-dashboard.jsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="343">
+              <caret line="57" column="40" lean-forward="false" selection-start-line="57" selection-start-column="40" selection-end-line="57" selection-end-column="40" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="experiment-form-content.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bender/src/components/experiment-form-content.js">
+      <file leaf-file-name="experiment-trials.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/bender/src/components/experiment-trials.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="161">
-              <caret line="17" column="10" lean-forward="false" selection-start-line="17" selection-start-column="10" selection-end-line="17" selection-end-column="10" />
+            <state relative-caret-position="343">
+              <caret line="163" column="39" lean-forward="false" selection-start-line="163" selection-start-column="39" selection-end-line="163" selection-end-column="39" />
+              <folding>
+                <element signature="e#0#38#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="App.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bender/src/App.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1122">
+              <caret line="66" column="3" lean-forward="true" selection-start-line="66" selection-start-column="3" selection-end-line="66" selection-end-column="3" />
+              <folding>
+                <element signature="e#0#38#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="App.scss" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bender/src/App.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2389">
+              <caret line="476" column="39" lean-forward="false" selection-start-line="476" selection-start-column="25" selection-end-line="476" selection-end-column="39" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="App.test.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bender/src/App.test.js">
+      <file leaf-file-name="left-menu.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bender/src/components/left-menu.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="221">
+              <caret line="20" column="28" lean-forward="true" selection-start-line="20" selection-start-column="28" selection-end-line="20" selection-end-column="28" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="requests.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bender/src/constants/requests.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1264">
+              <caret line="39" column="1" lean-forward="true" selection-start-line="39" selection-start-column="1" selection-end-line="39" selection-end-column="1" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="experiment.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bender/src/components/experiment.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="759">
+              <caret line="102" column="35" lean-forward="false" selection-start-line="102" selection-start-column="35" selection-end-line="102" selection-end-column="35" />
+              <folding>
+                <element signature="e#0#38#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -143,36 +141,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>selected</find>
-      <find>selectedP</find>
-      <find>selectedPa</find>
-      <find>selectedPar</find>
-      <find>selectedPare</find>
-      <find>selectedPara</find>
-      <find>selectedParame</find>
-      <find>selectedParamet</find>
-      <find>selectedParamete</find>
-      <find>selectedParameter</find>
-      <find>generateTableData</find>
-      <find>getLineChartData</find>
-      <find>oints[0].payload.x</find>
-      <find>isNumber</find>
-      <find>getDiscrete</find>
-      <find>z-index</find>
-      <find>points[0].payload.x</find>
-      <find>v</find>
-      <find>ov</find>
-      <find>over</find>
-      <find>over time</find>
-      <find>console.l</find>
-      <find>co</find>
-      <find>console</find>
-      <find>chartSt</find>
-      <find>console.log</find>
-      <find>customTool</find>
-      <find>-</find>
       <find>---</find>
       <find>handleSelectMetric</find>
+      <find>/experim</find>
+      <find>/experimen</find>
+      <find>/</find>
+      <find>/expe</find>
+      <find>/experime</find>
+      <find>h</find>
+      <find>his</find>
+      <find>history</find>
+      <find>Cr</find>
+      <find>Create expe</find>
+      <find>Create experime</find>
+      <find>Cre</find>
+      <find>Crea</find>
+      <find>Creat</find>
+      <find>Create e</find>
+      <find>Create ex</find>
+      <find>Create exp</find>
+      <find>Create experiment</find>
+      <find>custom-primary</find>
+      <find>C</find>
+      <find>Create algo</find>
+      <find>Us</find>
+      <find>Username</find>
+      <find>/e</find>
+      <find>/experi</find>
+      <find>/experiment</find>
+      <find>loginRequest</find>
+      <find>/experiments</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$</dir>
@@ -194,31 +192,32 @@
         <option value="$PROJECT_DIR$/bender/src/components/user-modal-form-content.js" />
         <option value="$PROJECT_DIR$/bender/src/components/algo-form-content.js" />
         <option value="$PROJECT_DIR$/bender/src/components/algo-form.js" />
-        <option value="$PROJECT_DIR$/bender/src/components/login.js" />
         <option value="$PROJECT_DIR$/bender/src/components/widgets/radar-chart-widget.js" />
         <option value="$PROJECT_DIR$/bender/src/components/algo-list.js" />
-        <option value="$PROJECT_DIR$/bender/src/components/experiment.js" />
         <option value="$PROJECT_DIR$/bender/src/components/experiment-list.js" />
         <option value="$PROJECT_DIR$/bender/src/components/experiment-list-item.js" />
-        <option value="$PROJECT_DIR$/bender/src/components/left-menu.js" />
         <option value="$PROJECT_DIR$/bender/src/components/loader.js" />
-        <option value="$PROJECT_DIR$/bender/src/components/signup.js" />
         <option value="$PROJECT_DIR$/bender/src/components/trials-get-started.js" />
         <option value="$PROJECT_DIR$/bender/src/components/user-modal.js" />
         <option value="$PROJECT_DIR$/bender/src/index.js" />
-        <option value="$PROJECT_DIR$/bender/src/App.js" />
         <option value="$PROJECT_DIR$/bender/src/components/experiment-form.js" />
-        <option value="$PROJECT_DIR$/bender/src/components/experiment-dashboard.jsx" />
         <option value="$PROJECT_DIR$/bender/public/index.html" />
-        <option value="$PROJECT_DIR$/bender/src/components/experiment-trials.js" />
         <option value="$PROJECT_DIR$/bender/src/components/trial-filterer.js" />
-        <option value="$PROJECT_DIR$/bender/src/components/trial.js" />
         <option value="$PROJECT_DIR$/bender/src/components/widgets/line-chart-widget.js" />
         <option value="$PROJECT_DIR$/bender/src/components/experiment-form-content.js" />
         <option value="$PROJECT_DIR$/bender/src/App.scss" />
         <option value="$PROJECT_DIR$/bender/src/components/widgets/scatter-chart-widget.js" />
-        <option value="$PROJECT_DIR$/bender/src/components/home-chart.js" />
         <option value="$PROJECT_DIR$/bender/src/components/home-chart-copy.js" />
+        <option value="$PROJECT_DIR$/bender/src/components/trial.js" />
+        <option value="$PROJECT_DIR$/bender/src/components/experiment.js" />
+        <option value="$PROJECT_DIR$/bender/src/components/home-chart.js" />
+        <option value="$PROJECT_DIR$/bender/src/App.js" />
+        <option value="$PROJECT_DIR$/bender/src/constants/requests.js" />
+        <option value="$PROJECT_DIR$/bender/src/components/left-menu.js" />
+        <option value="$PROJECT_DIR$/bender/src/components/login.js" />
+        <option value="$PROJECT_DIR$/bender/src/components/signup.js" />
+        <option value="$PROJECT_DIR$/bender/src/components/experiment-dashboard.jsx" />
+        <option value="$PROJECT_DIR$/bender/src/components/experiment-trials.js" />
       </list>
     </option>
   </component>
@@ -301,6 +300,28 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bender-front" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bender-front" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bender" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="constants" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -773,15 +794,16 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1500364420742</updated>
-      <workItem from="1500364422274" duration="46107000" />
+      <workItem from="1500364422274" duration="49529000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="46107000" />
+    <option name="totallyTimeSpent" value="49529000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-254" y="-1080" width="1920" height="1080" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -798,7 +820,7 @@
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TypeScript" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -985,16 +1007,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bender/src/components/experiment-dashboard.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1020">
-          <caret line="66" column="31" lean-forward="true" selection-start-line="66" selection-start-column="31" selection-end-line="66" selection-end-column="31" />
-          <folding>
-            <element signature="e#315#378#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/bender/src/components/user-modal.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="419">
@@ -1011,26 +1023,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bender/src/components/left-menu.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="38" column="51" lean-forward="true" selection-start-line="38" selection-start-column="51" selection-end-line="38" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/bender/src/components/loader.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="16" column="1" lean-forward="false" selection-start-line="16" selection-start-column="1" selection-end-line="16" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bender/src/components/login.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="487">
-          <caret line="100" column="31" lean-forward="true" selection-start-line="100" selection-start-column="31" selection-end-line="100" selection-end-column="31" />
           <folding />
         </state>
       </provider>
@@ -1048,30 +1044,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bender/src/App.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="629">
-          <caret line="50" column="0" lean-forward="false" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bender/src/components/signup.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="24" column="38" lean-forward="false" selection-start-line="24" selection-start-column="38" selection-end-line="24" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bender/src/components/experiment-list.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="36" column="5" lean-forward="false" selection-start-line="36" selection-start-column="5" selection-end-line="36" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/bender/src/components/experiment-form.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="629">
@@ -1080,26 +1052,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bender/src/components/experiment-trials.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="7" lean-forward="false" selection-start-line="3" selection-start-column="7" selection-end-line="3" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/bender/src/components/algo-form-content.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
           <caret line="17" column="0" lean-forward="true" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bender/src/components/experiment.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-329">
-          <caret line="34" column="51" lean-forward="false" selection-start-line="34" selection-start-column="51" selection-end-line="34" selection-end-column="51" />
           <folding />
         </state>
       </provider>
@@ -1120,14 +1076,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bender/src/App.test.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/bender/src/components/experiment-form-content.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="161">
@@ -1144,16 +1092,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bender/src/components/trial.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-618">
-          <caret line="25" column="49" lean-forward="false" selection-start-line="25" selection-start-column="49" selection-end-line="25" selection-end-column="49" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/bender/src/components/trial-filterer.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-363">
@@ -1167,16 +1105,8 @@
         <state relative-caret-position="410">
           <caret line="67" column="47" lean-forward="false" selection-start-line="67" selection-start-column="28" selection-end-line="67" selection-end-column="47" />
           <folding>
-            <element signature="e#0#38#0" expanded="true" />
+            <element signature="e#0#38#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bender/src/App.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="750">
-          <caret line="523" column="14" lean-forward="false" selection-start-line="523" selection-start-column="1" selection-end-line="523" selection-end-column="14" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1191,18 +1121,8 @@
     <entry file="file://$PROJECT_DIR$/bender/src/components/widgets/scatter-chart-widget.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-96">
-          <caret line="24" column="19" lean-forward="true" selection-start-line="24" selection-start-column="19" selection-end-line="24" selection-end-column="19" />
+          <caret line="24" column="19" lean-forward="false" selection-start-line="24" selection-start-column="19" selection-end-line="24" selection-end-column="19" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bender/src/components/home-chart.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="393">
-          <caret line="279" column="17" lean-forward="false" selection-start-line="279" selection-start-column="17" selection-end-line="279" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#22#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1211,6 +1131,124 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bender/src/App.test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bender/src/components/trial.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1785">
+          <caret line="105" column="30" lean-forward="true" selection-start-line="105" selection-start-column="30" selection-end-line="105" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bender/src/components/experiment.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="759">
+          <caret line="102" column="35" lean-forward="false" selection-start-line="102" selection-start-column="35" selection-end-line="102" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bender/src/constants/requests.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1264">
+          <caret line="39" column="1" lean-forward="true" selection-start-line="39" selection-start-column="1" selection-end-line="39" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bender/src/components/experiment-list.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="326">
+          <caret line="59" column="42" lean-forward="false" selection-start-line="59" selection-start-column="16" selection-end-line="59" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bender/src/components/left-menu.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="20" column="28" lean-forward="true" selection-start-line="20" selection-start-column="28" selection-end-line="20" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bender/src/App.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1122">
+          <caret line="66" column="3" lean-forward="true" selection-start-line="66" selection-start-column="3" selection-end-line="66" selection-end-column="3" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bender/src/App.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2389">
+          <caret line="476" column="39" lean-forward="false" selection-start-line="476" selection-start-column="25" selection-end-line="476" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bender/src/components/home-chart.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1326">
+          <caret line="78" column="29" lean-forward="true" selection-start-line="78" selection-start-column="29" selection-end-line="78" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bender/src/components/login.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="514">
+          <caret line="83" column="18" lean-forward="true" selection-start-line="83" selection-start-column="18" selection-end-line="83" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bender/src/components/signup.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="343">
+          <caret line="77" column="34" lean-forward="false" selection-start-line="77" selection-start-column="34" selection-end-line="77" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bender/src/components/experiment-dashboard.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="343">
+          <caret line="57" column="40" lean-forward="false" selection-start-line="57" selection-start-column="40" selection-end-line="57" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bender/src/components/experiment-trials.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="343">
+          <caret line="163" column="39" lean-forward="false" selection-start-line="163" selection-start-column="39" selection-end-line="163" selection-end-column="39" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

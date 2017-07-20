@@ -4,8 +4,10 @@ import Icon from 'antd/lib/icon'
 import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
 import Checkbox from 'antd/lib/checkbox'
+import notification from 'antd/lib/notification'
 import logo from '../images/bender-logo.svg'
-import {storageKey, BASE_URL} from '../constants/globals'
+import {storageKey} from '../constants/globals'
+import {loginRequest} from '../constants/requests'
 import {browserHistory, Link} from 'react-router'
 
 const FormItem = Form.Item;
@@ -22,6 +24,11 @@ function defaultBodyValue() {
 }
 
 function throwErrorMessage(r) {
+    notification.open({
+        message: 'Wrong credentials',
+        description: 'Sorry, please check again your password/login combination!',
+        duration: 2,
+    });
     throw new Error(JSON.stringify(r))
 }
 
@@ -36,19 +43,6 @@ function responseHandler(resp) {
     return resp.json().catch(defaultBodyValue)
 }
 
-function loginRequest(credentials) {
-    return fetch(`${BASE_URL}/login/`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            username: credentials.username,
-            password: credentials.password
-        })
-    }).then(responseHandler)
-}
-
 class NormalLoginForm extends React.Component {
 
     handleSubmit = (e) => {
@@ -61,7 +55,7 @@ class NormalLoginForm extends React.Component {
     };
 
     login(credentials) {
-        return loginRequest(credentials).then((data) => {
+        return loginRequest(credentials, responseHandler, (data) => {
             const user = {
                 token: `JWT ${data.token}`,
                 id: data.user.pk,
@@ -73,7 +67,7 @@ class NormalLoginForm extends React.Component {
 
             window.localStorage.setItem(storageKey.token, user.token);
             window.localStorage.setItem(storageKey.user, JSON.stringify(user));
-            browserHistory.push('/experiments')
+            browserHistory.push('/')
         })
     }
 
@@ -96,7 +90,8 @@ class NormalLoginForm extends React.Component {
                         {getFieldDecorator('username', {
                             rules: [{required: true, message: 'Please input your username'}]
                         })(
-                            <Input addonBefore={<Icon type='user'/>} placeholder='Username'/>
+                            <Input addonBefore={<Icon type='user'/>}
+                                   placeholder='Username'/>
                         )}
                     </FormItem>
                     <FormItem>
