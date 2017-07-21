@@ -93,7 +93,7 @@ export default class HomeChart extends Component {
         });
         const parameters = _.flatMap(this.props.algos, (algo) => {
             return _.map(algo.parameters, (param) => {
-                return <Option key={param.name} value={param.name}>{param.name}</Option>
+                return <Option key={param} value={param}>{param}</Option>
             })
         });
 
@@ -134,7 +134,7 @@ export default class HomeChart extends Component {
     }
 
     getScatterChartData() {
-        const algos = _.filter(this.props.algos, (a) => _.includes(a.parameters.map((k) => k.name), this.state.selectedParameter)).map((k) => k.id);
+        const algos = this.getAlgos();
         const data = _.chain(this.props.trials)
             .filter((k) => (_.includes(algos, k.algo)))
             .map((k) => ({
@@ -147,7 +147,7 @@ export default class HomeChart extends Component {
     }
 
     getAlgos() {
-        return (_.filter(this.props.algos, (a) => _.includes(a.parameters.map((k) => k.name),
+        return (_.filter(this.props.algos, (a) => _.includes(a.parameters,
             this.state.selectedParameter)).map((k) => k.id))
     }
 
