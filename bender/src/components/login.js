@@ -83,8 +83,8 @@ class NormalLoginForm extends React.Component {
                     onClick={() => this.props.moveToView('experiment-list')}
                 />
                 <Form onSubmit={this.handleSubmit} className='login-form'>
-                    <h1>Login to Bender</h1>
-                    <p>New around here ? <Link to='signup/'>Signup</Link> instead</p>
+                    <h1>Welcome to Bender!</h1>
+                    <p>New around here? <Link to='signup/'>Signup</Link> instead.</p>
                     <br />
                     <FormItem>
                         {getFieldDecorator('username', {

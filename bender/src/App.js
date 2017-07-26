@@ -18,7 +18,7 @@ class LoggedAppBase extends Component {
     render() {
         return (
             <div className='App'>
-                <LeftMenu />
+                <LeftMenu/>
                 {this.props.children}
             </div>
         )
@@ -50,19 +50,19 @@ export default class App extends Component {
         }
     }
 
-  render () {
-    return (
-      <LocaleProvider locale={enUS}>
-        <Router history={browserHistory}>
-          <Route path='signup' component={SignUpForm} />
-          <Route path='login' component={LoginForm} />
-          <Route path='verify/:key' component={VerifyEmail} />
-          <Route component={LoggedAppBase} onEnter={this.requireAuth}>
-            <Route path='/' component={ExperimentList} onEnter={this.requireAuth} />
-            <Route path='experiment/:experimentID' component={Experiment} onEnter={this.requireAuth} />
-          </Route>
-        </Router>
-      </LocaleProvider>
-    )
-  }
+    render() {
+        return (
+            <LocaleProvider locale={enUS}>
+                <Router history={browserHistory}>
+                    <Route path='signup' component={SignUpForm}/>
+                    <Route path='login' component={LoginForm}/>
+                    <Route path='verify/:key' component={VerifyEmail}/>
+                    <Route component={LoggedAppBase} onEnter={this.requireAuth}>
+                        <Route path='/' component={ExperimentList} onEnter={this.requireAuth}/>
+                        <Route path='experiment/:experimentID' component={Experiment} onEnter={this.requireAuth}/>
+                    </Route>
+                </Router>
+            </LocaleProvider>
+        )
+    }
 }

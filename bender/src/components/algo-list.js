@@ -47,11 +47,10 @@ export default class AlgoList extends Component {
                             </Col>
                             <Col span={12} style={{textAlign: 'right'}}>
                                 <Input
+                                    style={{width: '260px', marginRight: '10px'}}
                                     addonAfter={<Icon type='link'/>}
                                     defaultValue={algo.id}
-                                    value={algo.id}
                                 />
-                                <br />
                                 <Popconfirm placement='top' title={'Are you sure ?'}
                                             onConfirm={() => this.handleDeleteAlgo(algo.id)} okText='Yes'
                                             cancelText='No'>

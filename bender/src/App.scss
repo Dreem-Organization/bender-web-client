@@ -71,7 +71,7 @@ h1 {
 
 .main-container {
   margin: 0 auto;
-  max-width: 1050px;
+  //max-width: 1050px;
   width: 75%;
 }
 
@@ -439,6 +439,11 @@ div.algolist-content {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
+.login-form .ant-input {
+  width: 187%;
+  //margin: 0 8px 8px 0;
+}
+
 .login-form h1,
 .login-form p {
   margin-bottom: 20px;
@@ -476,7 +481,6 @@ div.algolist-content {
 
 .ant-btn.ant-btn-primary.custom-primary {
   border: none;
-  padding: 5px 15px;
   box-shadow: 3px 3px 10px 0 #a7b5c2;
 }
 
@@ -521,6 +525,10 @@ div.algolist-content {
   }
 }
 
+/**********************************/
+/************* MISC. **************/
+/**********************************/
+
 .scatter-chart {
   background: #FFF;
   border-radius: 3px;
@@ -529,4 +537,20 @@ div.algolist-content {
   font-size: 13px;
   position: relative;
   z-index: 30;
+}
+
+.dynamic-delete-button {
+  cursor: pointer;
+  position: relative;
+  top: 4px;
+  font-size: 24px;
+  color: #999;
+  transition: all .3s;
+}
+.dynamic-delete-button:hover {
+  color: #777;
+}
+.dynamic-delete-button[disabled] {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
