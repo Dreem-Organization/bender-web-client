@@ -25,7 +25,8 @@ const chartStyles = {
     fontSize: '12px',
     borderRadius: '5px',
     height: '250px',
-    marginLeft: '-5px',
+    marginLeft: '10px',
+    marginBottom: '20px',
     overflow: 'visible',
     position: 'relative',
     zIndex: 30
@@ -53,11 +54,9 @@ export default class HomeChart extends Component {
         super(props);
 
         this.state = {
-            selectedMetric: this.props.metrics[0],
-            selectedParameter: null
+            selectedParameter: null,
         };
 
-        this.handleSelectMetric = this.handleSelectMetric.bind(this);
         this.handleSelectAlgo = this.handleSelectAlgo.bind(this);
         this.getLineChartData = this.getLineChartData.bind(this);
         this.getScatterChartData = this.getScatterChartData.bind(this);
@@ -68,11 +67,7 @@ export default class HomeChart extends Component {
         this.getDiscreteParameters = this.getDiscreteParameters.bind(this);
         this.getAlgos = this.getAlgos.bind(this);
         this.displayParameter = this.displayParameter.bind(this);
-    }
-
-    handleSelectMetric(selectedMetric) {
-        this.setState({selectedMetric})
-    }
+    };
 
     handleSelectAlgo(algo) {
         algo = parseInt(algo, 10);
@@ -108,9 +103,9 @@ export default class HomeChart extends Component {
                 </Select>
                 <Select
                     placeholder={'Metrics'}
-                    defaultValue={this.state.selectedMetric}
+                    defaultValue={this.props.selectedMetric}
                     style={{minWidth: '160px', marginLeft: '20px'}}
-                    onChange={(m) => this.setState({selectedMetric: m})}
+                    onChange={(m) => this.handleSelectMetric(m)}
                 >
                     {[...[<Option key='' value={null}> --- </Option>], metrics]}
                 </Select>
@@ -119,10 +114,10 @@ export default class HomeChart extends Component {
     }
 
     getLineChartData() {
-        if (this.state.selectedMetric !== null) {
+        if (this.props.selectedMetric !== null) {
             return _
                 .chain(this.props.trials)
-                .map((k) => ({id: k.id, value: _.round(k.results[this.state.selectedMetric], 4)}))
+                .map((k) => ({id: k.id, value: _.round(k.results[this.props.selectedMetric], 4)}))
                 .reverse()
                 .value()
         } else if (this.state.selectedParameter !== null) {
@@ -139,7 +134,7 @@ export default class HomeChart extends Component {
             .filter((k) => (_.includes(algos, k.algo)))
             .map((k) => ({
                 id: k.id,
-                X: _.round(k.results[this.state.selectedMetric], 4),
+                X: _.round(k.results[this.props.selectedMetric], 4),
                 Y: k.parameters[this.state.selectedParameter]
             }))
             .value();
@@ -170,7 +165,7 @@ export default class HomeChart extends Component {
             .filter((k) => (_.includes(this.getAlgos(), k.algo)))
             .map((k) => ({
                 id: k.id,
-                X: _.round(k.results[this.state.selectedMetric], 4),
+                X: _.round(k.results[this.props.selectedMetric], 4),
                 Y: this.getDiscreteParameters().filter((y) =>
                 y.param === k.parameters[this.state.selectedParameter])[0].index,
                 param: k.parameters[this.state.selectedParameter]
@@ -224,11 +219,11 @@ export default class HomeChart extends Component {
     }
 
     getChart() {
-        if (this.state.selectedMetric === null || this.state.selectedParameter === null) {
+        if (this.props.selectedMetric === null || this.state.selectedParameter === null) {
             return (
                 <ComposedChart
                     style={chartStyles}
-                    margin={{top: 5, right: 5, left: -15, bottom: 5}}
+                    margin={{top: 5, right: 10, left: -15, bottom: 5}}
                     data={this.getLineChartData()}>
                     <YAxis domain={['auto', 'auto']} tickFormatter={(v) => _.round(v, 3)}/>
                     <CartesianGrid strokeDasharray='3 3' style={{opacity: 0.3}}/>
@@ -291,16 +286,17 @@ export default class HomeChart extends Component {
 
     render() {
         return (
-            <Card title={this.state.selectedMetric + ' over time'}
+            <Card title={this.props.selectedMetric + ' over time'}
                   extra={this._getMetricSelect()}
                   style={cardStyles}
                   bodyStyle={{
                       height: '275px',
-                      marginLeft: '-35px',
-                      marginRight: '-30px',
+                      marginLeft: '-25px',
+                      marginRight: '10px',
                       marginTop: '-10px',
-                      marginBottom: '-20px'
-                  }}>
+                      padding: '10px'
+                  }}
+            >
                 <ResponsiveContainer>
                     {this.getChart()}
                 </ResponsiveContainer>

@@ -35,7 +35,7 @@ export default class Experiment extends Component {
         this.setState({algos: null, trials: null});
         this.fetchExperiment(experimentID);
         this.fetchAlgos(experimentID);
-        this.fetchTrials(experimentID, null)
+        this.fetchTrials(experimentID, null);
     }
 
     fetchExperiment(experimentID) {

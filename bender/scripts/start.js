@@ -184,7 +184,7 @@ function addMiddleware(devServer) {
 
 function runDevServer(host, port, protocol) {
   const devServer = new WebpackDevServer(compiler, {
-    historyApiFallback: true,
+    // historyApiFallback: true,
     // Silence WebpackDevServer's own logs since they're generally not useful.
     // It will still show compile warnings and errors with this setting.
     clientLogLevel: 'none',

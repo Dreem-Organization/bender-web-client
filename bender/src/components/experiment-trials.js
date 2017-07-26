@@ -28,13 +28,24 @@ export default class ExperimentTrials extends Component {
         super(props);
 
         this.state = {
-            animateChart: true
+            animateChart: true,
+            filters: props.filters,
+            selectedMetric: null
         };
-        this._getTrialList = this._getTrialList.bind(this)
-        this._renderDatasetLabel = this._renderDatasetLabel.bind(this)
-        this.deleteTrial = this.deleteTrial.bind(this)
-        this._renderContentOrGetStarted = this._renderContentOrGetStarted.bind(this)
-        this.handleDeleteExperiment = this.handleDeleteExperiment.bind(this)
+        this._getTrialList = this._getTrialList.bind(this);
+        this._renderDatasetLabel = this._renderDatasetLabel.bind(this);
+        this.deleteTrial = this.deleteTrial.bind(this);
+        this._renderContentOrGetStarted = this._renderContentOrGetStarted.bind(this);
+        this.handleDeleteExperiment = this.handleDeleteExperiment.bind(this);
+        this.handleSelectedMetric = this.handleSelectedMetric.bind(this);
+    }
+
+    componentDidMount() {
+        this.setState({selectedMetric: this.props.experiment.metrics[0]})
+    }
+
+    handleSelectedMetric(selectedMetric) {
+        this.setState({selectedMetric})
     }
 
     _getTrialList() {
@@ -73,9 +84,12 @@ export default class ExperimentTrials extends Component {
                 <HomeChart
                     trials={this.props.trials}
                     algos={this.props.algos}
+                    filters={this.props.filters}
                     experiment={this.props.experiment}
                     metrics={this.props.experiment.metrics}
                     isAnimationActive={this.state.animateChart}
+                    selectedMetric={this.state.selectedMetric}
+                    handleSelectedMetric={this.handleSelectedMetric}
                 />
             )
         } else {
@@ -97,7 +111,11 @@ export default class ExperimentTrials extends Component {
                     user={this.props.user}
                     experiment={this.props.experiment}
                     fetchExperimentData={this.props.fetchExperimentData}
-                    formButton={<Button size='small' type='ghost' style={{marginTop: '10px'}}>Create Algo</Button>}
+                    formButton={<Button size='small'
+                                        type='ghost'
+                                        style={{
+                                            marginTop: '10px',
+                                        }}>Create Algo</Button>}
                 />
             );
             trialsOrGetStarted = (
