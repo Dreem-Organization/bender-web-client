@@ -104,8 +104,9 @@ export default class HomeChart extends Component {
                 <Select
                     placeholder={'Metrics'}
                     defaultValue={this.props.selectedMetric}
+                    value={this.props.selectedMetric}
                     style={{minWidth: '160px', marginLeft: '20px'}}
-                    onChange={(m) => this.handleSelectMetric(m)}
+                    onChange={(m) => this.props.handleSelectedMetric(m)}
                 >
                     {[...[<Option key='' value={null}> --- </Option>], metrics]}
                 </Select>
@@ -258,7 +259,7 @@ export default class HomeChart extends Component {
                 <ScatterChart
                     style={chartStyles}
                     className="scatter-chart"
-                    margin={{top: 20, right: 30, bottom: 0, left: -40}}>
+                    margin={{top: 5, right: 10, bottom: 0, left: -5}}>
                     <Scatter data={this.getDiscreteChartData()} fill='#008cec' r={2}/>
                     <YAxis dataKey={'X'} domain={['auto', 'auto']} name={this.state.X}/>
                     <XAxis dataKey={'Y'} tickFormatter={this.displayParameter}
@@ -273,7 +274,7 @@ export default class HomeChart extends Component {
             <ScatterChart
                 style={chartStyles}
                 className="scatter-chart"
-                margin={{top: 20, right: 30, bottom: 0, left: -40}}>
+                margin={{top: 5, right: 10, bottom: 0, left: -5}}>
                 <Scatter data={this.getScatterChartData()} fill='#008cec' r={2}/>
                 <YAxis dataKey={'X'} domain={['auto', 'auto']} name={this.state.X}/>
                 <XAxis dataKey={'Y'} domain={['auto', 'auto']} name={this.state.Y}/>
@@ -285,22 +286,21 @@ export default class HomeChart extends Component {
     }
 
     render() {
+        const titleSuffix = this.state.selectedParameter === null ? ' over time' : ': ' + this.state.selectedParameter;
         return (
-            <Card title={this.props.selectedMetric + ' over time'}
+            <Card title={this.props.selectedMetric + titleSuffix}
                   extra={this._getMetricSelect()}
                   style={cardStyles}
                   bodyStyle={{
                       height: '275px',
-                      marginLeft: '-25px',
-                      marginRight: '10px',
-                      marginTop: '-10px',
+                      marginLeft: '-15px',
+                      marginRight: '5px',
+                      marginTop: '0px',
                       padding: '10px'
-                  }}
-            >
+                  }}>
                 <ResponsiveContainer>
                     {this.getChart()}
                 </ResponsiveContainer>
-            </Card>
-        )
+            </Card>)
     }
 }

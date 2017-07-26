@@ -5,12 +5,9 @@ import Col from 'antd/lib/col'
 import Button from 'antd/lib/button'
 import message from 'antd/lib/message'
 import Popconfirm from 'antd/lib/popconfirm'
+import Input from 'antd/lib/input'
+import Icon from 'antd/lib/icon'
 import _ from 'lodash'
-
-const deleteButtonStyle = {
-    float: 'right',
-    margin: '5px'
-};
 
 export default class Trial extends Component {
     constructor(props) {
@@ -59,7 +56,7 @@ export default class Trial extends Component {
         return null
     }
 
-    _getMainMetricValue() {
+    getMainMetricValue() {
         return (_.round(this.props.trial.results[this.props.mainMetric], 3))
     }
 
@@ -88,7 +85,7 @@ export default class Trial extends Component {
                         </div>
                         <div className='score'>
                             <span>{this.state.main_metric.name}:</span>
-                            {this.state.main_metric.value}
+                            {this.getMainMetricValue()}
                         </div>
                     </div>
                     <div className='trial-expanded-content'>
@@ -100,15 +97,23 @@ export default class Trial extends Component {
                             <Col span={12}>
                                 {this._renderTableFromObject(this.props.trial.results, 'Metrics')}
                             </Col>
-                            <Popconfirm placement='top' title={'Are you sure ?'} onConfirm={this.handleDeleteTrial}
-                                        okText='Yes' cancelText='No'>
-                                <Button
-                                    style={deleteButtonStyle}
-                                    type='default'
-                                >
-                                    Delete
-                                </Button>
-                            </Popconfirm>
+                            <Col span={12} style={{textAlign: 'right', margin: '-5px'}}>
+                                <Input
+                                    style={{float: 'left', width: '260px', marginLeft: '10px'}}
+                                    addonAfter={<Icon type='link'/>}
+                                    defaultValue={this.props.trial.id}
+                                />
+                                <Popconfirm placement='top' title={'Are you sure ?'}
+                                            onConfirm={this.handleDeleteTrial}
+                                            okText='Yes' cancelText='No'>
+                                    <Button
+                                        type='default'
+                                        placement="bottom"
+                                    >
+                                        Delete
+                                    </Button>
+                                </Popconfirm>
+                            </Col>
                         </Row>
                     </div>
                 </li>
@@ -120,7 +125,7 @@ export default class Trial extends Component {
                     <div className='date'>
                         <TimeAgo date={this.props.trial.created}/>
                     </div>
-                    <div className='score'><span>{this.state.main_metric.name}:</span>{this.state.main_metric.value}
+                    <div className='score'><span>{this.state.main_metric.name}:</span>{this.getMainMetricValue()}
                     </div>
                 </li>
             )

@@ -38,6 +38,7 @@ export default class ExperimentTrials extends Component {
         this._renderContentOrGetStarted = this._renderContentOrGetStarted.bind(this);
         this.handleDeleteExperiment = this.handleDeleteExperiment.bind(this);
         this.handleSelectedMetric = this.handleSelectedMetric.bind(this);
+        this.handleSetFilters = this.handleSetFilters.bind(this);
     }
 
     componentDidMount() {
@@ -103,6 +104,13 @@ export default class ExperimentTrials extends Component {
         browserHistory.push('/')
     }
 
+    handleSetFilters(filters) {
+        if (_.includes(this.props.experiment.metrics, filters.order)) {
+            this.handleSelectedMetric(filters.order)
+        }
+        this.props.setFilters(filters);
+    }
+
     _renderContentOrGetStarted() {
         let trialsOrGetStarted;
         if (this.props.trials.length < 1) {
@@ -111,7 +119,7 @@ export default class ExperimentTrials extends Component {
                     user={this.props.user}
                     experiment={this.props.experiment}
                     fetchExperimentData={this.props.fetchExperimentData}
-                    formButton={<Button size='small'
+                    formButton={<Button size="small"
                                         type='ghost'
                                         style={{
                                             marginTop: '10px',
@@ -147,7 +155,7 @@ export default class ExperimentTrials extends Component {
                     <TrialFilterer
                         experiment={this.props.experiment}
                         algos={this.props.algos}
-                        setFilters={this.props.setFilters}
+                        setFilters={this.handleSetFilters}
                         filters={this.props.filters}
                     />
                 }
@@ -190,7 +198,7 @@ export default class ExperimentTrials extends Component {
                             formButton={
                                 <Button
                                     type='primary'
-                                    size='small'
+                                    size='large'
                                     style={{float: 'right', marginTop: '15px', fontSize: '12px'}}
                                     className='custom-primary'>
                                     Create algo
@@ -207,6 +215,7 @@ export default class ExperimentTrials extends Component {
                     </Col>
                     <Col span={6}>
                         <Input
+                            style={{float: 'right', width: '260px'}}
                             addonAfter={<Icon type='link'/>}
                             defaultValue={this.props.experiment.id}
                             value={this.props.experiment.id}

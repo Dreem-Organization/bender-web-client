@@ -18,7 +18,7 @@ class LoggedAppBase extends Component {
     render() {
         return (
             <div className='App'>
-                <LeftMenu />
+                <LeftMenu/>
                 {this.props.children}
             </div>
         )

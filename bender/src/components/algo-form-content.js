@@ -18,9 +18,8 @@ class AlgoFormContent extends React.Component {
 
     render() {
         const {getFieldDecorator} = this.props.form;
-
         return (
-            <Form vertical onSubmit={this.handleSubmit}>
+            <Form layout={"vertical"} onSubmit={this.handleSubmit}>
                 <FormItem label='Name'>
                     {getFieldDecorator('name', {
                         rules: [{required: true, message: 'Please provide an algo name'}]
@@ -28,7 +27,7 @@ class AlgoFormContent extends React.Component {
                         <Input placeholder='Name'/>
                     )}
                 </FormItem>
-                <FormItem label='Hyper Parameters (Comma separated list)'>
+                <FormItem label='Hyper Parameters (Comma-separated list)'>
                     {getFieldDecorator('parameters', {
                         rules: [{required: true, message: 'Please provide algo parameters'}]
                     })(
