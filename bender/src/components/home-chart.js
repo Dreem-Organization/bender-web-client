@@ -224,7 +224,7 @@ export default class HomeChart extends Component {
             return (
                 <ComposedChart
                     style={chartStyles}
-                    margin={{top: 5, right: 10, left: -15, bottom: 5}}
+                    margin={{top: 5, right: 10, left: -18, bottom: 5}}
                     data={this.getLineChartData()}>
                     <YAxis domain={['auto', 'auto']} tickFormatter={(v) => _.round(v, 3)}/>
                     <CartesianGrid strokeDasharray='3 3' style={{opacity: 0.3}}/>
@@ -259,7 +259,7 @@ export default class HomeChart extends Component {
                 <ScatterChart
                     style={chartStyles}
                     className="scatter-chart"
-                    margin={{top: 5, right: 10, bottom: 0, left: -5}}>
+                    margin={{top: -5, right: 10, bottom: 0, left: -8}}>
                     <Scatter data={this.getDiscreteChartData()} fill='#008cec' r={2}/>
                     <YAxis dataKey={'X'} domain={['auto', 'auto']} name={this.state.X}/>
                     <XAxis dataKey={'Y'} tickFormatter={this.displayParameter}
@@ -274,7 +274,7 @@ export default class HomeChart extends Component {
             <ScatterChart
                 style={chartStyles}
                 className="scatter-chart"
-                margin={{top: 5, right: 10, bottom: 0, left: -5}}>
+                margin={{top: -5, right: 10, bottom: 0, left: -8}}>
                 <Scatter data={this.getScatterChartData()} fill='#008cec' r={2}/>
                 <YAxis dataKey={'X'} domain={['auto', 'auto']} name={this.state.X}/>
                 <XAxis dataKey={'Y'} domain={['auto', 'auto']} name={this.state.Y}/>

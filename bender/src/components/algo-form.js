@@ -25,12 +25,10 @@ export default class AlgoForm extends Component {
 
     handleCreateAlgo(formValue) {
         this.setState({loading: true});
+
         return createAlgo(this.state.user.token, {
             name: formValue.name,
-            parameters: _.chain(formValue.parameters.split(','))
-                .map((m) => m.replace(/\s+/g, ''))
-                .filter((m) => m !== '')
-                .value(),
+            parameters: formValue.parameters,
             experiment: this.props.experiment.id
         }, (resp) => {
             this.setState({loading: false, visible: false});
