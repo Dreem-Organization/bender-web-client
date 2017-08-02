@@ -93,7 +93,7 @@ class AlgoFormContent extends React.Component {
                 {
                     [k]: {
                         search_space: {
-                            values: {$push: newValues}
+                            values: {$set: newValues}
                         }
                     }
                 })
@@ -200,6 +200,7 @@ class AlgoFormContent extends React.Component {
 
     addParameters = () => {
         uuid++;
+        this.initParameter(uuid);
         const {form} = this.props;
         // can use data-binding to get
         const parameters = form.getFieldValue('parameters');
@@ -212,7 +213,6 @@ class AlgoFormContent extends React.Component {
     };
 
     handleNameChange(k) {
-        this.initParameter(k);
         this.setState((prevState, props) => ({
             hyperparameters: update(prevState.hyperparameters,
                 {
@@ -311,7 +311,7 @@ class AlgoFormContent extends React.Component {
                                 rules: [{
                                     required: true,
                                     whitespace: true,
-                                    message: "Please complete all required fields.",
+                                    message: "Please provide a hyper-parameter name.",
                                 }],
                             })(<Input{...paramName}
                                      onChange={(n) => this.handleNameChange(k)}
@@ -321,6 +321,7 @@ class AlgoFormContent extends React.Component {
                             {...category}
                             id="category"
                             placeholder={'Category'}
+                            defaultValue="uniform"
                             onChange={(e) => this.handleCategoryChange(k, e)}>
                             <OptGroup label="category">
                                 <Option value="uniform">uniform</Option>
@@ -334,8 +335,10 @@ class AlgoFormContent extends React.Component {
                                 {this.getSpace(k).values.map((tag, index) => {
                                     const isLongTag = tag.length > 20;
                                     const tagElem = (
-                                        <Tag key={tag} color="blue"
-                                             closable={index !== 0} afterClose={() => this.handleClose(k, tag)}>
+                                        <Tag key={tag}
+                                             color="blue"
+                                             closable={true}
+                                             afterClose={() => this.handleClose(k, tag)}>
                                             {isLongTag ? `${tag.slice(0, 20)}...` : tag}
                                         </Tag>
                                     );
@@ -391,7 +394,7 @@ class AlgoFormContent extends React.Component {
             <Form layout={"vertical"} onSubmit={this.handleSubmit}>
                 <FormItem label='Algo Name'>
                     {getFieldDecorator('algoName', {
-                        rules: [{required: true, message: 'Please provide an algo name'}]
+                        rules: [{required: true, message: 'Please provide an algo name.'}]
                     })(
                         <Input placeholder='Algo Name'/>
                     )}

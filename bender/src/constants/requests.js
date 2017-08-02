@@ -113,8 +113,6 @@ export function createExperiment(token, experimentData, handler) {
 }
 
 export function createAlgo(token, algoData, handler) {
-    console.log(algoData);
-    console.log(JSON.stringify(algoData));
     fetch(`${API_BASE_URL}/algos.json`, {
         method: 'POST',
         body: JSON.stringify(algoData),

@@ -133,7 +133,7 @@ export default class ExperimentTrials extends Component {
                     <Step title='Experiment created'/>
                     <Step
                         title={this.props.algos.length < 1 ? 'Create an Algo' : 'Algo Created'}
-                        description={<p>Click below to create your first algo. {algoForm}</p>}
+                        description={<div>Click below to create your first algo. {algoForm}</div>}
                     />
                     <Step title='Send a trial' description='Install the Python client to send your first trial.'/>
                 </Steps>

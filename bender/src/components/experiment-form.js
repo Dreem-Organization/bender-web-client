@@ -31,7 +31,7 @@ export default class ExperimentForm extends Component {
             name: formValue.name,
             owner: formValue.owner,
             description: formValue.description,
-            metrics: _.map(formValue.metrics.split(','), (m) => m.replace(/\s+/g, '')),
+            metrics: formValue.metrics,
             dataset: formValue.dataset,
             dataset_parameters: formValue.dataset_parameters,
             shared_with: _.map(formValue.shared_with, (k) => k.replace('@', ''))
