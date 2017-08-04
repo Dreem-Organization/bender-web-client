@@ -27,7 +27,7 @@ function throwErrorMessage(r) {
     notification.open({
         message: 'Wrong credentials',
         description: 'Sorry, please check again your password/login combination!',
-        duration: 2,
+        duration: 3,
     });
     throw new Error(JSON.stringify(r))
 }

@@ -4,14 +4,14 @@ import {
     ComposedChart,
     ResponsiveContainer,
     Area,
-    Line,
+    Legend,
     CartesianGrid,
     Tooltip,
     ScatterChart,
     Scatter,
     XAxis,
     YAxis,
-    ZAxis
+    ZAxis,
 } from 'recharts'
 import Card from 'antd/lib/card'
 import Select from 'antd/lib/select'
@@ -49,24 +49,41 @@ const customTooltip = {
     zIndex: 30,
 };
 
+const colTooltip = {
+    //display: 'inline-block',
+    verticalAlign: 'top',
+    marginRight: 20,
+    marginTop: 3
+};
+
+const colorWheel = {
+    0: '#108FE9', //#108EE9
+    1: '#56B9FD',
+    2: '#B69CFD',
+    3: '#FFA2D6',
+    4: '#FF999C'
+};
+
 export default class HomeChart extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             selectedParameter: null,
+            displayedMetrics: [],
         };
 
         this.handleSelectAlgo = this.handleSelectAlgo.bind(this);
-        this.getLineChartData = this.getLineChartData.bind(this);
-        this.getScatterChartData = this.getScatterChartData.bind(this);
+        this.getLineData = this.getLineData.bind(this);
+        this.getScatterData = this.getScatterData.bind(this);
         this.getChart = this.getChart.bind(this);
         this.lineCustomTooltip = this.lineCustomTooltip.bind(this);
         this.scatterCustomTooltip = this.scatterCustomTooltip.bind(this);
-        this.getDiscreteChartData = this.getDiscreteChartData.bind(this);
+        this.getDiscreteData = this.getDiscreteData.bind(this);
         this.getDiscreteParameters = this.getDiscreteParameters.bind(this);
         this.getAlgos = this.getAlgos.bind(this);
         this.displayParameter = this.displayParameter.bind(this);
+        this.handleDisplayedMetric = this.handleDisplayedMetric.bind(this);
     };
 
     handleSelectAlgo(algo) {
@@ -80,6 +97,14 @@ export default class HomeChart extends Component {
         this.setState({
             selectedAlgos: newSelectedAlgos
         })
+    }
+
+    componentDidMount() {
+        this.setState({displayedMetrics: [this.props.selectedMetric]})
+    }
+
+    handleDisplayedMetric(displayedMetrics) {
+        this.setState({displayedMetrics})
     }
 
     _getMetricSelect() {
@@ -101,37 +126,56 @@ export default class HomeChart extends Component {
                 >
                     {[...[<Option key='' value={null}> --- </Option>], parameters]}
                 </Select>
-                <Select
-                    placeholder={'Metrics'}
-                    defaultValue={this.props.selectedMetric}
-                    value={this.props.selectedMetric}
-                    style={{minWidth: '160px', marginLeft: '20px'}}
-                    onChange={(m) => this.props.handleSelectedMetric(m)}
-                >
-                    {[...[<Option key='' value={null}> --- </Option>], metrics]}
-                </Select>
+                {this.state.selectedParameter === null ?
+                    <Select
+                        mode="multiple"
+                        placeholder="Metrics"
+                        defaultValue={this.props.selectedMetric}
+                        style={{minWidth: '160px', marginLeft: '20px'}}
+                        onChange={(m) => this.handleDisplayedMetric(m)}
+                    >{metrics}
+                    </Select> :
+                    <Select
+                        placeholder={'Metrics'}
+                        defaultValue={this.props.selectedMetric}
+                        value={this.props.selectedMetric}
+                        style={{minWidth: '160px', marginLeft: '20px'}}
+                        onChange={(m) => this.props.handleSelectedMetric(m)}>
+                        {[...[<Option key='' value={null}> --- </Option>], metrics]}
+                    </Select>}
             </div>
         )
     }
 
-    getLineChartData() {
+    getLineData() {
+        let data;
         if (this.props.selectedMetric !== null) {
-            return _
+            data = _
                 .chain(this.props.trials)
-                .map((k) => ({id: k.id, value: _.round(k.results[this.props.selectedMetric], 4)}))
+                .map(function (k) {
+                    let results = _.mapValues(k.results, (r) => (_.round(r, 4)));
+                    results.id = k.id;
+                    return results;
+                })
                 .reverse()
                 .value()
         } else if (this.state.selectedParameter !== null) {
-            return _(this.props.trials).map((k) => ({
-                id: k.id,
-                value: _.round(k.parameters[this.state.selectedParameter], 4)
-            })).reverse().value()
+            data = _(this.props.trials)
+                .map((k) => ({
+                            id: k.id,
+                            value: _.round(k.parameters[this.state.selectedParameter], 4)
+                        }
+                    )
+                )
+                .reverse()
+                .value()
         }
+        return data;
     }
 
-    getScatterChartData() {
+    getScatterData() {
         const algos = this.getAlgos();
-        const data = _.chain(this.props.trials)
+        return _.chain(this.props.trials)
             .filter((k) => (_.includes(algos, k.algo)))
             .map((k) => ({
                 id: k.id,
@@ -139,7 +183,6 @@ export default class HomeChart extends Component {
                 Y: k.parameters[this.state.selectedParameter]
             }))
             .value();
-        return data
     }
 
     getAlgos() {
@@ -161,7 +204,7 @@ export default class HomeChart extends Component {
         return queried.length > 0 ? queried[0].param : '';
     }
 
-    getDiscreteChartData() {
+    getDiscreteData() {
         return (_.chain(this.props.trials)
             .filter((k) => (_.includes(this.getAlgos(), k.algo)))
             .map((k) => ({
@@ -174,13 +217,23 @@ export default class HomeChart extends Component {
             .value())
     }
 
-    generateTableData(obj) {
-        const lis = Object.keys(obj).map((k) => {
+    generateTableData(obj, displayColors) {
+        const lis = Object.keys(obj).map((k, index) => {
             if (!_.isNull(obj[k]) || obj[k] === '') {
                 return (
-                    <li key={k}>
-                        {k}: {_.isNumber(obj[k]) ? _.round(+obj[k], 4) : obj[k]}
-                    </li>
+                    <div key={k}>
+                        {displayColors ? <div
+                            style={{
+                                display: "inline-block",
+                                borderRadius: "50%",
+                                marginTop: "5px", marginRight: "5px",
+                                width: "10px", height: "10px", float: "left",
+                                backgroundColor: colorWheel[index % _.size(colorWheel)]
+                            }}/> : null}
+                        <li>
+                            {k}: {_.isNumber(obj[k]) ? _.round(+obj[k], 4) : obj[k]}
+                        </li>
+                    </div>
                 )
             }
             return null
@@ -195,10 +248,15 @@ export default class HomeChart extends Component {
                 <TimeAgo style={{opacity: 0.6, float: 'right'}} date={trial.created}/>
                 <h3 style={{color: '#1882fd', padding: '0 5'}}>{item.payload[0].payload.value}</h3>
                 <h3>{trial.algo_name}</h3>
-                <h4 style={{marginTop: 3}}>Parameters</h4>
-                <ul>{this.generateTableData(trial.parameters)}</ul>
-                <h4 style={{marginTop: 3}}>Metrics</h4>
-                <ul>{this.generateTableData(trial.results)}</ul>
+
+                <div style={colTooltip}>
+                    <h4>Parameters</h4>
+                    <ul>{this.generateTableData(trial.parameters, false)}</ul>
+                </div>
+                <div style={colTooltip}>
+                    <h4>Metrics</h4>
+                    <ul>{this.generateTableData(trial.results, true)}</ul>
+                </div>
             </div>
         )
     }
@@ -211,47 +269,86 @@ export default class HomeChart extends Component {
                 <TimeAgo style={{opacity: 0.6, float: 'right'}} date={trial.created}/>
                 <h3 style={{color: '#1882fd', padding: '0 5'}}>X:{item.payload[0].value} Y:{item.payload[1].value}</h3>
                 <h3>{trial.algo_name}</h3>
-                <h4 style={{marginTop: 3}}>Parameters</h4>
-                <ul>{this.generateTableData(trial.parameters)}</ul>
-                <h4 style={{marginTop: 3}}>Metrics</h4>
-                <ul>{this.generateTableData(trial.results)}</ul>
+
+                <div style={colTooltip}>
+                    <h4>Parameters</h4>
+                    <ul>{this.generateTableData(trial.parameters, false)}</ul>
+                </div>
+                <div style={colTooltip}>
+                    <h4>Metrics</h4>
+                    <ul>{this.generateTableData(trial.results, true)}</ul>
+                </div>
             </div>
         )
     }
 
     getChart() {
+        const experimentMetrics = this.props.experiment.metrics;
+        const displayedMetrics = this.state.displayedMetrics;
+
         if (this.props.selectedMetric === null || this.state.selectedParameter === null) {
             return (
                 <ComposedChart
                     style={chartStyles}
-                    margin={{top: 5, right: 10, left: -18, bottom: 5}}
-                    data={this.getLineChartData()}>
-                    <YAxis domain={['auto', 'auto']} tickFormatter={(v) => _.round(v, 3)}/>
+                    margin={{top: 10, right: 10, left: -18, bottom: 5}}
+                    data={this.getLineData()}>
                     <CartesianGrid strokeDasharray='3 3' style={{opacity: 0.3}}/>
+                    <Legend align="right"/>
                     <Tooltip content={this.lineCustomTooltip} offset={25}/>
                     <defs>
-                        <linearGradient id='colorUv' x1='0' y1='0' x2='0' y2='1'>
-                            <stop offset='5%' stopColor='#0082dc' stopOpacity={0.15}/>
-                            <stop offset='95%' stopColor='#0082dc' stopOpacity={0.05}/>
-                        </linearGradient>
+                        {this.props.experiment.metrics.map(function (m, index) {
+                                const id = index % _.size(colorWheel);
+                                const color_id = `colorUv-${id}`;
+                                return (
+                                    <linearGradient
+                                        key={m}
+                                        id={color_id} x1='0' y1='0' x2='0' y2='1'>
+                                        <stop offset='5%' stopColor={colorWheel[id]} stopOpacity={0.15}/>
+                                        <stop offset='95%' stopColor={colorWheel[id]} stopOpacity={0.25}/>
+                                        >
+                                    </linearGradient>
+                                )
+                            }
+                        )
+                        }
                     </defs>
-                    <Line
-                        type='monotone'
-                        dataKey={'value'}
-                        stroke='#108ee9'
-                        strokeWidth={1.5}
-                        activeDot={{r: 5}}
-                        animationDuration={850}
-                    />
-                    <Area
-                        type='monotone'
-                        dataKey={'value'}
-                        fillOpacity={1}
-                        fill='url(#colorUv)'
-                        strokeWidth={0}
-                        activeDot={{r: 5}}
-                        animationDuration={850}
-                    />
+                    {displayedMetrics.map(function (m, index) {
+                            const colorIndex = experimentMetrics.indexOf(m) % _.size(colorWheel);
+                            return (
+                                <YAxis
+                                    key={m}
+                                    margin={{left: -20 + 20 * displayedMetrics.length}}
+                                    width={65 - 5 * displayedMetrics.length}
+                                    stroke={colorWheel[colorIndex]}
+                                    yAxisId={`yaxis-${index}`}
+                                    domain={['auto', 'auto']}
+                                    tickFormatter={(v) => _.round(v, 3)}/>
+                            )
+                        }
+                    )
+                    }
+                    {displayedMetrics.map(function (m, index) {
+                            const colorIndex = experimentMetrics.indexOf(m) % _.size(colorWheel);
+                            const stroke = `${colorWheel[colorIndex]}`;
+                            const fill = `url(#colorUv-${colorIndex})`;
+                            return (
+                                <Area
+                                    margin={{bottom: 5}}
+                                    type='monotone'
+                                    key={m}
+                                    dataKey={m}
+                                    yAxisId={`yaxis-${index}`}
+                                    fillOpacity={1}
+                                    fill={fill}
+                                    strokeWidth={1.7}
+                                    stroke={stroke}
+                                    activeDot={{r: 5}}
+                                    animationDuration={850}/>
+                            )
+                        }
+                    )
+                    }
+
                 </ComposedChart>
             )
         } else if (typeof this.props.trials[0].parameters[this.state.selectedParameter] === 'string') {
@@ -259,8 +356,8 @@ export default class HomeChart extends Component {
                 <ScatterChart
                     style={chartStyles}
                     className="scatter-chart"
-                    margin={{top: -5, right: 10, bottom: 0, left: -8}}>
-                    <Scatter data={this.getDiscreteChartData()} fill='#008cec' r={2}/>
+                    margin={{top: 0, right: 20, bottom: 3, left: -11}}>
+                    <Scatter data={this.getDiscreteData()} fill='#008cec' r={2}/>
                     <YAxis dataKey={'X'} domain={['auto', 'auto']} name={this.state.X}/>
                     <XAxis dataKey={'Y'} tickFormatter={this.displayParameter}
                            domain={['dataMin - 1', 'dataMax + 1']} interval={0} name={this.state.Y}/>
@@ -274,8 +371,8 @@ export default class HomeChart extends Component {
             <ScatterChart
                 style={chartStyles}
                 className="scatter-chart"
-                margin={{top: -5, right: 10, bottom: 0, left: -8}}>
-                <Scatter data={this.getScatterChartData()} fill='#008cec' r={2}/>
+                margin={{top: 0, right: 20, bottom: 3, left: -11}}>
+                <Scatter data={this.getScatterData()} fill='#008cec' r={2}/>
                 <YAxis dataKey={'X'} domain={['auto', 'auto']} name={this.state.X}/>
                 <XAxis dataKey={'Y'} domain={['auto', 'auto']} name={this.state.Y}/>
                 <ZAxis dataKey={'id'}/>
@@ -286,7 +383,7 @@ export default class HomeChart extends Component {
     }
 
     render() {
-        const titleSuffix = this.state.selectedParameter === null ? ' over time' : ': ' + this.state.selectedParameter;
+        const titleSuffix = this.state.selectedParameter === null ? ' over time': ': ' + this.state.selectedParameter;
         return (
             <Card title={this.props.selectedMetric + titleSuffix}
                   extra={this._getMetricSelect()}
@@ -301,6 +398,7 @@ export default class HomeChart extends Component {
                 <ResponsiveContainer>
                     {this.getChart()}
                 </ResponsiveContainer>
-            </Card>)
+            </Card>
+        )
     }
 }

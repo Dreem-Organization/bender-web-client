@@ -1,4 +1,10 @@
 *:8000 {
   gzip
   root /srv
+  rewrite {
+    if {path} not_has .html
+    if {path} not_has .js
+    if {path} not_has .css
+    to /
+  }
 }

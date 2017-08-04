@@ -106,7 +106,7 @@ export default class ExperimentTrials extends Component {
 
     handleSetFilters(filters) {
         if (_.includes(this.props.experiment.metrics, filters.order)) {
-            this.handleSelectedMetric(filters.order)
+            this.handleSelectedMetric(filters.order);
         }
         this.props.setFilters(filters);
     }
@@ -182,7 +182,7 @@ export default class ExperimentTrials extends Component {
     }
 
     render() {
-        return (
+        return (this.state.selectedMetric !== null ?
             <div className='main-container'>
                 <Row>
                     <Col span={12}>
@@ -210,7 +210,7 @@ export default class ExperimentTrials extends Component {
                 <Row>
                     <Col span={18}>
                         <Tag color='blue'>{this.props.experiment.owner}</Tag>
-                        {_.map(this.props.experiment.shared_with, (k) => <Tag color='blue'>{k}</Tag>)}
+                        {_.map(this.props.experiment.shared_with, (k) => <Tag key={k} color='blue'>{k}</Tag>)}
                         {this._renderDatasetLabel()}
                     </Col>
                     <Col span={6}>
@@ -231,7 +231,7 @@ export default class ExperimentTrials extends Component {
                     </Col>
                 </Row>
                 {this._renderContentOrGetStarted()}
-            </div>
+            </div> : null
         )
     }
 }
