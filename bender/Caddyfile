@@ -5,6 +5,7 @@
     if {path} not_has .html
     if {path} not_has .js
     if {path} not_has .css
+    if {path} not_has .svg
     to /
   }
 }
