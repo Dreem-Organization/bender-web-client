@@ -217,19 +217,41 @@ export default class HomeChart extends Component {
             .value())
     }
 
-    generateTableData(obj, displayColors) {
-        const lis = Object.keys(obj).map((k, index) => {
+    generateTableData(obj) {
+
+        const lis = Object.keys(obj).map((k) => {
+
             if (!_.isNull(obj[k]) || obj[k] === '') {
                 return (
                     <div key={k}>
-                        {displayColors ? <div
+                        <li>
+                            {k}: {_.isNumber(obj[k]) ? _.round(+obj[k], 4) : obj[k]}
+                        </li>
+                    </div>
+                )
+            }
+            return null
+        });
+        return <ul>{lis}</ul>
+    }
+
+    generateTableMetrics(obj) {
+
+        const metrics = this.props.experiment.metrics;
+        const lis = metrics.map((k) => {
+            let id = metrics.indexOf(k) % _.size(colorWheel);
+
+            if (!_.isNull(obj[k]) || obj[k] === '') {
+                return (
+                    <div key={k}>
+                        <div
                             style={{
                                 display: "inline-block",
                                 borderRadius: "50%",
                                 marginTop: "5px", marginRight: "5px",
                                 width: "10px", height: "10px", float: "left",
-                                backgroundColor: colorWheel[index % _.size(colorWheel)]
-                            }}/> : null}
+                                backgroundColor: colorWheel[id],
+                            }}/>
                         <li>
                             {k}: {_.isNumber(obj[k]) ? _.round(+obj[k], 4) : obj[k]}
                         </li>
@@ -251,11 +273,11 @@ export default class HomeChart extends Component {
 
                 <div style={colTooltip}>
                     <h4>Parameters</h4>
-                    <ul>{this.generateTableData(trial.parameters, false)}</ul>
+                    <ul>{this.generateTableData(trial.parameters)}</ul>
                 </div>
                 <div style={colTooltip}>
                     <h4>Metrics</h4>
-                    <ul>{this.generateTableData(trial.results, true)}</ul>
+                    <ul>{this.generateTableMetrics(trial.results)}</ul>
                 </div>
             </div>
         )
@@ -272,11 +294,11 @@ export default class HomeChart extends Component {
 
                 <div style={colTooltip}>
                     <h4>Parameters</h4>
-                    <ul>{this.generateTableData(trial.parameters, false)}</ul>
+                    <ul>{this.generateTableData(trial.parameters)}</ul>
                 </div>
                 <div style={colTooltip}>
                     <h4>Metrics</h4>
-                    <ul>{this.generateTableData(trial.results, true)}</ul>
+                    <ul>{this.generateTableMetrics(trial.results)}</ul>
                 </div>
             </div>
         )
@@ -285,6 +307,9 @@ export default class HomeChart extends Component {
     getChart() {
         const experimentMetrics = this.props.experiment.metrics;
         const displayedMetrics = this.state.displayedMetrics;
+        const id = function (metric) {
+            return experimentMetrics.indexOf(metric) % _.size(colorWheel);
+        };
 
         if (this.props.selectedMetric === null || this.state.selectedParameter === null) {
             return (
@@ -296,15 +321,14 @@ export default class HomeChart extends Component {
                     <Legend align="right"/>
                     <Tooltip content={this.lineCustomTooltip} offset={25}/>
                     <defs>
-                        {this.props.experiment.metrics.map(function (m, index) {
-                                const id = index % _.size(colorWheel);
-                                const color_id = `colorUv-${id}`;
+                        {experimentMetrics.map(function (m) {
+                                const color_id = `colorUv-${id(m)}`;
                                 return (
                                     <linearGradient
                                         key={m}
                                         id={color_id} x1='0' y1='0' x2='0' y2='1'>
-                                        <stop offset='5%' stopColor={colorWheel[id]} stopOpacity={0.15}/>
-                                        <stop offset='95%' stopColor={colorWheel[id]} stopOpacity={0.25}/>
+                                        <stop offset='5%' stopColor={colorWheel[id(m)]} stopOpacity={0.15}/>
+                                        <stop offset='95%' stopColor={colorWheel[id(m)]} stopOpacity={0.25}/>
                                         >
                                     </linearGradient>
                                 )
@@ -313,13 +337,13 @@ export default class HomeChart extends Component {
                         }
                     </defs>
                     {displayedMetrics.map(function (m, index) {
-                            const colorIndex = experimentMetrics.indexOf(m) % _.size(colorWheel);
+                            //const colorIndex = experimentMetrics.indexOf(m) % _.size(colorWheel);
                             return (
                                 <YAxis
                                     key={m}
                                     margin={{left: -20 + 20 * displayedMetrics.length}}
                                     width={65 - 5 * displayedMetrics.length}
-                                    stroke={colorWheel[colorIndex]}
+                                    stroke={colorWheel[id(m)]}
                                     yAxisId={`yaxis-${index}`}
                                     domain={['auto', 'auto']}
                                     tickFormatter={(v) => _.round(v, 3)}/>
@@ -328,9 +352,9 @@ export default class HomeChart extends Component {
                     )
                     }
                     {displayedMetrics.map(function (m, index) {
-                            const colorIndex = experimentMetrics.indexOf(m) % _.size(colorWheel);
-                            const stroke = `${colorWheel[colorIndex]}`;
-                            const fill = `url(#colorUv-${colorIndex})`;
+                            //const colorIndex = experimentMetrics.indexOf(m) % _.size(colorWheel);
+                            const stroke = `${colorWheel[id(m)]}`;
+                            const fill = `url(#colorUv-${id(m)})`;
                             return (
                                 <Area
                                     margin={{bottom: 5}}
@@ -383,7 +407,7 @@ export default class HomeChart extends Component {
     }
 
     render() {
-        const titleSuffix = this.state.selectedParameter === null ? ' over time': ': ' + this.state.selectedParameter;
+        const titleSuffix = this.state.selectedParameter === null ? ' over time' : ': ' + this.state.selectedParameter;
         return (
             <Card title={this.props.selectedMetric + titleSuffix}
                   extra={this._getMetricSelect()}
