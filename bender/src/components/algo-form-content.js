@@ -325,7 +325,9 @@ class AlgoFormContent extends React.Component {
                             onChange={(e) => this.handleCategoryChange(k, e)}>
                             <OptGroup label="category">
                                 <Option value="uniform">uniform</Option>
-                                <Option value="loguniform">loguniform</Option>
+                                <Option value="loguniform">log-uniform</Option>
+                                <Option value="normal">normal</Option>
+                                <Option value="lognormal">log-normal</Option>
                                 <Option value="categorical">categorical</Option>
                             </OptGroup>
                         </Select>

@@ -18,6 +18,7 @@ import Select from 'antd/lib/select'
 import TimeAgo from 'react-timeago'
 import 'antd/lib/card/style/css'
 import 'antd/lib/select/style/css'
+import grey_logo from '../images/bender-logo-grey.svg'
 
 const Option = Select.Option;
 
@@ -84,6 +85,7 @@ export default class HomeChart extends Component {
         this.getAlgos = this.getAlgos.bind(this);
         this.displayParameter = this.displayParameter.bind(this);
         this.handleDisplayedMetric = this.handleDisplayedMetric.bind(this);
+        this.getDiscreteTicks = this.getDiscreteTicks.bind(this);
     };
 
     handleSelectAlgo(algo) {
@@ -141,7 +143,7 @@ export default class HomeChart extends Component {
                         value={this.props.selectedMetric}
                         style={{minWidth: '160px', marginLeft: '20px'}}
                         onChange={(m) => this.props.handleSelectedMetric(m)}>
-                        {[...[<Option key='' value={null}> --- </Option>], metrics]}
+                        {metrics}
                     </Select>}
             </div>
         )
@@ -202,6 +204,10 @@ export default class HomeChart extends Component {
     displayParameter(tick) {
         const queried = this.getDiscreteParameters().filter((y) => y.index === tick);
         return queried.length > 0 ? queried[0].param : '';
+    }
+
+    getDiscreteTicks() {
+        return this.getDiscreteParameters().map((p, index) => index);
     }
 
     getDiscreteData() {
@@ -311,7 +317,19 @@ export default class HomeChart extends Component {
             return experimentMetrics.indexOf(metric) % _.size(colorWheel);
         };
 
-        if (this.props.selectedMetric === null || this.state.selectedParameter === null) {
+        if (displayedMetrics.length === 0) {
+            return (<div style={{fontSize: 19, color: '#e9e9e9', textAlign: 'center', marginTop: '85px'}}>
+                <img
+                    src={grey_logo}
+                    className='form-logo-large'
+                    alt='logo'
+                    style={{cursor: 'pointer', marginBottom: '-20px'}}
+                    onClick={() => this.props.moveToView('experiment-list')}
+                />
+                        Uh, oh — looks like you haven't selected any metric to display yet.
+                </div>)
+        }
+        else if (this.props.selectedMetric === null || this.state.selectedParameter === null) {
             return (
                 <ComposedChart
                     style={chartStyles}
@@ -337,7 +355,6 @@ export default class HomeChart extends Component {
                         }
                     </defs>
                     {displayedMetrics.map(function (m, index) {
-                            //const colorIndex = experimentMetrics.indexOf(m) % _.size(colorWheel);
                             return (
                                 <YAxis
                                     key={m}
@@ -352,7 +369,6 @@ export default class HomeChart extends Component {
                     )
                     }
                     {displayedMetrics.map(function (m, index) {
-                            //const colorIndex = experimentMetrics.indexOf(m) % _.size(colorWheel);
                             const stroke = `${colorWheel[id(m)]}`;
                             const fill = `url(#colorUv-${id(m)})`;
                             return (
@@ -383,8 +399,11 @@ export default class HomeChart extends Component {
                     margin={{top: 0, right: 20, bottom: 3, left: -11}}>
                     <Scatter data={this.getDiscreteData()} fill='#008cec' r={2}/>
                     <YAxis dataKey={'X'} domain={['auto', 'auto']} name={this.state.X}/>
-                    <XAxis dataKey={'Y'} tickFormatter={this.displayParameter}
-                           domain={['dataMin - 1', 'dataMax + 1']} interval={0} name={this.state.Y}/>
+                    <XAxis dataKey={'Y'}
+                           ticks={this.getDiscreteTicks()}
+                           tickFormatter={this.displayParameter}
+                           domain={['dataMin - 1', 'dataMax + 1']} interval={0}
+                           name={this.state.Y}/>
                     <ZAxis dataKey={'id'}/>
                     <Tooltip content={this.scatterCustomTooltip} offset={25}/>
                     <CartesianGrid strokeDasharray='3 3' style={{opacity: 0.3}}/>

@@ -108,7 +108,6 @@ export default class Trial extends Component {
                                             okText='Yes' cancelText='No'>
                                     <Button
                                         type='default'
-                                        placement="bottom"
                                     >
                                         Delete
                                     </Button>
