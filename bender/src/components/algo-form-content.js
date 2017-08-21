@@ -49,7 +49,10 @@ const deleteButton = {
     type: "minus-circle-o",
     style: {
         float: 'right',
-        width: '8%'
+        width: '8%',
+        display: 'inline-block',
+        verticalAlign: 'top',
+        //overflow: 'hidden',
     }
 };
 
@@ -81,6 +84,7 @@ class AlgoFormContent extends React.Component {
         this.handleSpaceChange = this.handleSpaceChange.bind(this);
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleCategoryChange = this.handleCategoryChange.bind(this);
+        this.renderSpace = this.renderSpace.bind(this);
 
     }
 
@@ -293,6 +297,64 @@ class AlgoFormContent extends React.Component {
         }
     }
 
+    renderSpace(k) {
+
+        if (this.getCategory(k) === "categorical") {
+            return (<div {...values}>
+                    {this.getSpace(k).values.map((tag) => {
+                        const isLongTag = tag.length > 20;
+                        const tagElem = (
+                            <Tag key={tag}
+                                 color="blue"
+                                 closable={true}
+                                 afterClose={() => this.handleClose(k, tag)}>
+                                {isLongTag ? `${tag.slice(0, 20)}...` : tag}
+                            </Tag>
+                        );
+                        return isLongTag ? <Tooltip title={tag}>{tagElem}</Tooltip> : tagElem;
+                    })}
+
+                    {this.getInput(k).visible && (
+                        <Input
+                            ref={this.saveInputRef}
+                            type="text"
+                            size="small"
+                            style={{width: "78px"}}
+                            value={this.getInput(k).value}
+                            onChange={(e) => this.handleInputChange(k, e)}
+                            onBlur={() => this.handleInputConfirm(k)}
+                            onPressEnter={() => this.handleInputConfirm(k)}
+                        />
+                    )}
+                    {!this.getInput(k).visible &&
+                    <Button size="small" type="dashed"
+                            onClick={() => this.showInput(k)}>+ New Value</Button>}
+                </div>
+            )
+        }
+        else if (this.getCategory(k) === "descriptive") {
+            return undefined;
+        }
+        else {
+            return (
+                <div {...values}>
+                    <InputNumber {...inputNumber} step={0.1}
+                                 onChange={(v) => this.handleSpaceChange(k, v, "low")}
+                                 placeholder="Low"/>
+
+                    <InputNumber {...inputNumber} step={0.1}
+                                 onChange={(v) => this.handleSpaceChange(k, v, "high")}
+                                 placeholder="High"/>
+
+                    <InputNumber {...inputNumber} step={0.1}
+                                 onChange={(v) => this.handleSpaceChange(k, v, "step")}
+                                 placeholder="Step"/>
+                </div>
+            )
+        }
+    }
+
+
     render() {
         const {getFieldDecorator, getFieldValue} = this.props.form;
         getFieldDecorator('parameters', {initialValue: []});
@@ -329,56 +391,11 @@ class AlgoFormContent extends React.Component {
                                 <Option value="normal">normal</Option>
                                 <Option value="lognormal">log-normal</Option>
                                 <Option value="categorical">categorical</Option>
+                                <Option value="descriptive">descriptive</Option>
                             </OptGroup>
                         </Select>
 
-                        {this.getCategory(k) === "categorical" ? (
-                            <div {...values}>
-                                {this.getSpace(k).values.map((tag, index) => {
-                                    const isLongTag = tag.length > 20;
-                                    const tagElem = (
-                                        <Tag key={tag}
-                                             color="blue"
-                                             closable={true}
-                                             afterClose={() => this.handleClose(k, tag)}>
-                                            {isLongTag ? `${tag.slice(0, 20)}...` : tag}
-                                        </Tag>
-                                    );
-                                    return isLongTag ? <Tooltip title={tag}>{tagElem}</Tooltip> : tagElem;
-                                })}
-
-                                {this.getInput(k).visible && (
-                                    <Input
-                                        ref={this.saveInputRef}
-                                        type="text"
-                                        size="small"
-                                        style={{width: "78px"}}
-                                        value={this.getInput(k).value}
-                                        onChange={(e) => this.handleInputChange(k, e)}
-                                        onBlur={() => this.handleInputConfirm(k)}
-                                        onPressEnter={() => this.handleInputConfirm(k)}
-                                    />
-                                )}
-                                {!this.getInput(k).visible &&
-                                <Button size="small" type="dashed"
-                                        onClick={() => this.showInput(k)}>+ New Value</Button>}
-                            </div>
-                        ) : (
-                            <div {...values}>
-                                <InputNumber {...inputNumber} step={0.1}
-                                             onChange={(v) => this.handleSpaceChange(k, v, "low")}
-                                             placeholder="Low"/>
-
-                                <InputNumber {...inputNumber} step={0.1}
-                                             onChange={(v) => this.handleSpaceChange(k, v, "high")}
-                                             placeholder="High"/>
-
-                                <InputNumber {...inputNumber} step={0.1}
-                                             onChange={(v) => this.handleSpaceChange(k, v, "step")}
-                                             placeholder="Step"/>
-                            </div>
-                        )
-                        }
+                        {this.renderSpace(k)}
                         {parameters.length > 1 ? (
                             <Icon
                                 {...deleteButton}

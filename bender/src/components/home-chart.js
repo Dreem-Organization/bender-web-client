@@ -15,6 +15,7 @@ import {
 } from 'recharts'
 import Card from 'antd/lib/card'
 import Select from 'antd/lib/select'
+import Tag from 'antd/lib/tag'
 import TimeAgo from 'react-timeago'
 import 'antd/lib/card/style/css'
 import 'antd/lib/select/style/css'
@@ -63,6 +64,22 @@ const colorWheel = {
     2: '#B69CFD',
     3: '#FFA2D6',
     4: '#FF999C'
+};
+
+const lightColorWheel = {
+    0: 'rgba(16, 143, 233, 0.3)', //#108EE9
+    1: 'rgba(86, 185, 253, 0.3)',
+    2: 'rgba(182, 156, 253, 0.3)',
+    3: 'rgba(255, 162, 214, 0.3)',
+    4: 'rgba(255, 153, 156, 0.3)',
+};
+
+const darkColorWheel = {
+    0: '#0b63a1', //#108EE9
+    1: '#0a9afc',
+    2: '#7f51fb',
+    3: '#ff56b4',
+    4: '#ff4d52',
 };
 
 export default class HomeChart extends Component {
@@ -124,7 +141,10 @@ export default class HomeChart extends Component {
                 <Select
                     placeholder={'Parameters'}
                     style={{minWidth: '160px'}}
-                    onChange={(p) => this.setState({selectedParameter: p})}
+                    onChange={(p) => this.setState({
+                        selectedParameter: p,
+                        displayedMetrics: [this.props.selectedMetric]
+                    })}
                 >
                     {[...[<Option key='' value={null}> --- </Option>], parameters]}
                 </Select>
@@ -224,14 +244,27 @@ export default class HomeChart extends Component {
     }
 
     generateTableData(obj) {
-
         const lis = Object.keys(obj).map((k) => {
 
             if (!_.isNull(obj[k]) || obj[k] === '') {
                 return (
                     <div key={k}>
-                        <li>
-                            {k}: {_.isNumber(obj[k]) ? _.round(+obj[k], 4) : obj[k]}
+
+                        <Tag style={{
+                            color: "#707070",
+                            type: 'dashed',
+                            display: "inline-block",
+                            //width: 7.7 * textWidth
+                        }}
+                             color="#f4f1f1">
+                            {k}
+                        </Tag>
+                        <li style={{
+                            display: "inline-block",
+                            fontWeight: 900
+                        }}>
+                            {_.isNumber(obj[k]) ? _.round(+obj[k], 4) : obj[k]}
+
                         </li>
                     </div>
                 )
@@ -244,6 +277,7 @@ export default class HomeChart extends Component {
     generateTableMetrics(obj) {
 
         const metrics = this.props.experiment.metrics;
+        const textWidth = _.max(metrics.map((k) => k.length));
         const lis = metrics.map((k) => {
             let id = metrics.indexOf(k) % _.size(colorWheel);
 
@@ -255,11 +289,21 @@ export default class HomeChart extends Component {
                                 display: "inline-block",
                                 borderRadius: "50%",
                                 marginTop: "5px", marginRight: "5px",
-                                width: "10px", height: "10px", float: "left",
+                                width: "10px", height: "10px", //float: "right",
                                 backgroundColor: colorWheel[id],
                             }}/>
-                        <li>
-                            {k}: {_.isNumber(obj[k]) ? _.round(+obj[k], 4) : obj[k]}
+                        <Tag style={{
+                            //color: colorWheel[id],
+                            display: "inline-block",
+                            width: 7.7 * textWidth
+                        }}
+                             color="blue">{k}</Tag>
+                        <li style={{
+                            //color: colorWheel[id],
+                            display: "inline-block",
+                            fontWeight: 900
+                        }}>
+                            {_.isNumber(obj[k]) ? _.round(+obj[k], 4) : obj[k]}
                         </li>
                     </div>
                 )
@@ -278,12 +322,12 @@ export default class HomeChart extends Component {
                 <h3>{trial.algo_name}</h3>
 
                 <div style={colTooltip}>
-                    <h4>Parameters</h4>
-                    <ul>{this.generateTableData(trial.parameters)}</ul>
-                </div>
-                <div style={colTooltip}>
                     <h4>Metrics</h4>
                     <ul>{this.generateTableMetrics(trial.results)}</ul>
+                </div>
+                <div style={colTooltip}>
+                    <h4>Parameters</h4>
+                    <ul>{this.generateTableData(trial.parameters)}</ul>
                 </div>
             </div>
         )
@@ -326,8 +370,8 @@ export default class HomeChart extends Component {
                     style={{cursor: 'pointer', marginBottom: '-20px'}}
                     onClick={() => this.props.moveToView('experiment-list')}
                 />
-                        Uh, oh — looks like you haven't selected any metric to display yet.
-                </div>)
+                Uh, oh — looks like you haven't selected any metric to display yet.
+            </div>)
         }
         else if (this.props.selectedMetric === null || this.state.selectedParameter === null) {
             return (
