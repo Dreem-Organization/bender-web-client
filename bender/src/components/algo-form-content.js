@@ -50,9 +50,9 @@ const deleteButton = {
     style: {
         float: 'right',
         width: '8%',
-        display: 'inline-block',
-        verticalAlign: 'top',
         //overflow: 'hidden',
+        //textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
     }
 };
 

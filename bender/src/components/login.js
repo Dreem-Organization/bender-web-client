@@ -12,6 +12,17 @@ import {browserHistory, Link} from 'react-router'
 
 const FormItem = Form.Item;
 
+const formItemLayout = {
+    labelCol: {
+        xs: {span: 24},
+        sm: {span: 6},
+    },
+    wrapperCol: {
+        xs: {span: 24},
+        sm: {span: 14},
+    },
+};
+
 function formatResponseString(resp) {
     if (resp.status === 401 || resp.status === 403) {
         return 'Your session has expired. Please reload the page and log in again.'
@@ -85,8 +96,10 @@ class NormalLoginForm extends React.Component {
                 <Form onSubmit={this.handleSubmit} className='login-form'>
                     <h1>Welcome to Bender!</h1>
                     <p>New around here? <Link to='signup/'>Signup</Link> instead.</p>
-                    <br />
-                    <FormItem>
+                    <br/>
+                    <FormItem
+                        {...formItemLayout}
+                    >
                         {getFieldDecorator('username', {
                             rules: [{required: true, message: 'Please input your username'}]
                         })(
@@ -94,7 +107,9 @@ class NormalLoginForm extends React.Component {
                                    placeholder='Username'/>
                         )}
                     </FormItem>
-                    <FormItem>
+                    <FormItem
+                        {...formItemLayout}
+                    >
                         {getFieldDecorator('password', {
                             rules: [{required: true, message: 'Please input your password'}]
                         })(

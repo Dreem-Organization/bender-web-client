@@ -66,22 +66,6 @@ const colorWheel = {
     4: '#FF999C'
 };
 
-const lightColorWheel = {
-    0: 'rgba(16, 143, 233, 0.3)', //#108EE9
-    1: 'rgba(86, 185, 253, 0.3)',
-    2: 'rgba(182, 156, 253, 0.3)',
-    3: 'rgba(255, 162, 214, 0.3)',
-    4: 'rgba(255, 153, 156, 0.3)',
-};
-
-const darkColorWheel = {
-    0: '#0b63a1', //#108EE9
-    1: '#0a9afc',
-    2: '#7f51fb',
-    3: '#ff56b4',
-    4: '#ff4d52',
-};
-
 export default class HomeChart extends Component {
     constructor(props) {
         super(props);
@@ -301,9 +285,10 @@ export default class HomeChart extends Component {
                         <li style={{
                             //color: colorWheel[id],
                             display: "inline-block",
-                            fontWeight: 900
+                            marginLeft: "5px",
+                            fontWeight: 600
                         }}>
-                            {_.isNumber(obj[k]) ? _.round(+obj[k], 4) : obj[k]}
+                            {(_.isNumber(obj[k]) ? _.round(+obj[k], 4) : obj[k])}
                         </li>
                     </div>
                 )
