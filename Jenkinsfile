@@ -26,7 +26,8 @@ node ('frontend-slave') {
 
       if(env.BRANCH_NAME == 'master') {
         stage('Deploy on prod') {
-          sh "/build-scripts/deploy-tested-image.sh 'bender-front' prod '${env.REGISTRY_USER}' '${env.REGISTRY_PASSWORD}' latest"
+          sh "/build-scripts/deploy_image.py -n prod -d bender-front bender-front=registry.rythm.co/bender-front:\$(git rev-parse --verify --short HEAD)"
+
           sh '/build-scripts/bump-stable-tag.sh bender-front latest'
         }
       }
