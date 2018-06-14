@@ -2,7 +2,7 @@
 
 def shortCommitHash = null
 def imageTag = null
-def projectName = "compal"
+def projectName = "bender-front"
 def dockerRegistry = env.GLOBAL_VAR_DOCKER_REGISTRY
 
 node ('frontend-slave') {
