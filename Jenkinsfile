@@ -2,10 +2,11 @@
 
 def shortCommitHash = null
 def imageTag = null
-def projectName = "bender-front"
+def projectName = "compal"
+def dockerRegistry = env.GLOBAL_VAR_DOCKER_REGISTRY
 
 node ('frontend-slave') {
-  withEnv(["DOCKER_REGISTRY=${env.GLOBAL_VAR_DOCKER_REGISTRY}"]) {
+  withEnv(["DOCKER_REGISTRY=${dockerRegistry}"]) {
     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'docker-registry-jenkins-user', usernameVariable: 'REGISTRY_USER', passwordVariable: 'REGISTRY_PASSWORD']]) {
 
       container('slave') {
@@ -22,7 +23,7 @@ node ('frontend-slave') {
             cd bender
             npm install
             npm run build
-            docker login -u "${env.REGISTRY_USER}" -p "${env.REGISTRY_PASSWORD}" ${env.DOCKER_REGISTRY}
+            docker login -u "${env.REGISTRY_USER}" -p "${env.REGISTRY_PASSWORD}" ${dockerRegistry}
             docker build -t ${imageTag} .
           """
         }
