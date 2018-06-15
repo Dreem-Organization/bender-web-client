@@ -30,7 +30,7 @@ node ('frontend-slave') {
 
         if(env.BRANCH_NAME == "staging" || env.BRANCH_NAME == "master") {
           stage('Push Container Image') {
-            sh 'docker push ${imageTag}'
+            sh "docker push ${imageTag}"
           }
         }
 
