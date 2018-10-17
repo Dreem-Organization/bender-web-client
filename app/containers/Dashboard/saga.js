@@ -1,0 +1,209 @@
+import { call, take, put, all, fork } from 'redux-saga/effects';
+import { api } from 'utils/api';
+import { FETCH_ERROR } from 'containers/App/constants';
+import {
+  FETCH_EXPERIMENTS,
+  FEED_EXPERIMENTS,
+  FETCH_DELETE_EXPERIMENT,
+  FETCH_CREATE_EXPERIMENT,
+  DELETE_EXPERIMENT,
+  CREATE_EXPERIMENT,
+  FETCH_TRIALS,
+  FETCH_ALGOS,
+  FETCH_DELETE_ALGO,
+  FETCH_CREATE_ALGO,
+  DELETE_ALGO,
+  CREATE_ALGO,
+  FEED_ALGOS,
+  FEED_TRIALS,
+} from './constants';
+
+function* fetchExperiments(action) {
+  try {
+    const data = yield call(api.getExperiments, action.payload);
+    const experiments = {};
+    data.results.forEach(e => {
+      experiments[e.id] = {
+        ...e,
+        algos: {
+          loaded: false,
+          list: {},
+        },
+        trials: {
+          loaded: false,
+          list: [],
+        },
+        selectedHyperParameter: 'time',
+        hyperParametersAvailables: [],
+        selectedMetrics: [e.metrics[0]],
+      };
+    });
+    yield put({ type: FEED_EXPERIMENTS, payload: experiments });
+  } catch (error) {
+    yield put({ type: FETCH_ERROR, payload: error });
+  }
+}
+
+function* fetchDeleteExperiment(action) {
+  try {
+    yield call(api.deleteExperiment, action.payload);
+    yield put({ type: DELETE_EXPERIMENT, payload: action.payload.experiment });
+  } catch (error) {
+    yield put({ type: FETCH_ERROR, payload: error });
+  }
+}
+
+function* fetchCreateExperiment(action) {
+  try {
+    const data = yield call(api.createExperiment, action.payload);
+    yield put({
+      type: CREATE_EXPERIMENT,
+      payload: data,
+      meta: action.payload.experimentData.owner,
+    });
+  } catch (error) {
+    yield put({ type: FETCH_ERROR, payload: error });
+  }
+}
+
+function* fetchAlgos(action) {
+  try {
+    const data = yield call(api.getAlgos, action.payload);
+    const algos = {};
+    data.results.forEach(a => {
+      algos[a.id] = a;
+    });
+    const update = {};
+    update[action.payload.experiment] = {
+      algos: {
+        loaded: true,
+        list: algos,
+      },
+    };
+    yield put({
+      type: FEED_ALGOS,
+      payload: update,
+    });
+  } catch (error) {
+    yield put({ type: FETCH_ERROR, payload: error });
+  }
+}
+
+function* fetchDeleteAlgo(action) {
+  try {
+    const data = yield call(api.deleteAlgo, action.payload);
+    yield put({
+      type: DELETE_ALGO,
+      payload: action.payload.algo,
+      meta: action.payload.experiment,
+    });
+  } catch (error) {
+    yield put({ type: FETCH_ERROR, payload: error });
+  }
+}
+
+function* fetchCreateAlgo(action) {
+  try {
+    const data = yield call(api.createAlgo, action.payload);
+    yield put({ type: CREATE_ALGO, payload: data, meta: action.payload.user });
+  } catch (error) {
+    yield put({ type: FETCH_ERROR, payload: error });
+  }
+}
+
+function* fetchTrials(action) {
+  try {
+    const trials = yield call(api.getTrials, action.payload);
+    const update = {};
+    const hyperParameters = [];
+    trials.results.forEach(trial => {
+      Object.keys(trial.parameters).forEach(param => {
+        if (!hyperParameters.includes(param)) {
+          hyperParameters.push(param);
+        }
+      });
+    });
+    update[action.payload.experiment] = {
+      trials: {
+        loaded: true,
+        list: trials.results,
+      },
+    };
+    yield put({
+      type: FEED_TRIALS,
+      payload: trials.results,
+      meta: action.payload.experiment,
+      hyperParameters,
+    });
+  } catch (error) {
+    console.log(error);
+    yield put({ type: FETCH_ERROR, payload: error });
+  }
+}
+
+// ############################################################################
+// ############################################################################
+// ---------------------------  WATCHERS --------------------------------------
+// ############################################################################
+// ############################################################################
+
+function* fetchExperimentsWatcher() {
+  while (true) {
+    const data = yield take(FETCH_EXPERIMENTS);
+    yield call(fetchExperiments, data);
+  }
+}
+
+function* delExperimentWatcher() {
+  while (true) {
+    const data = yield take(FETCH_DELETE_EXPERIMENT);
+    yield call(fetchDeleteExperiment, data);
+  }
+}
+
+function* createExperimentWatcher() {
+  while (true) {
+    const data = yield take(FETCH_CREATE_EXPERIMENT);
+    yield call(fetchCreateExperiment, data);
+  }
+}
+
+function* fetchAlgosWatcher() {
+  while (true) {
+    const data = yield take(FETCH_ALGOS);
+    yield call(fetchAlgos, data);
+  }
+}
+
+function* delAlgoWatcher() {
+  while (true) {
+    const data = yield take(FETCH_DELETE_ALGO);
+    yield call(fetchDeleteAlgo, data);
+  }
+}
+
+function* createAlgoWatcher() {
+  while (true) {
+    const data = yield take(FETCH_CREATE_ALGO);
+    yield call(fetchCreateAlgo, data);
+  }
+}
+
+function* fetchTrialsWatcher() {
+  while (true) {
+    const data = yield take(FETCH_TRIALS);
+    yield call(fetchTrials, data);
+  }
+}
+
+export default function* rootSaga() {
+  yield all([
+    fork(fetchExperimentsWatcher),
+    fork(delExperimentWatcher),
+    fork(createExperimentWatcher),
+    fork(fetchAlgosWatcher),
+    fork(delAlgoWatcher),
+    fork(createAlgoWatcher),
+    fork(fetchTrialsWatcher),
+  ]);
+}
