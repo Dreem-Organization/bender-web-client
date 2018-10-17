@@ -1,16 +1,10 @@
-# See http://help.github.com/ignore-files/ for more about ignoring files.
-
-# dependencies
-node_modules
-
-# testing
+# Don't check auto-generated stuff into git
 coverage
-
-# production
 build
+node_modules
+stats.json
 
-# misc
+# Cruft
 .DS_Store
-.env
-.idea
 npm-debug.log
+.idea
