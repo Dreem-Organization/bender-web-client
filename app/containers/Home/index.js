@@ -1,9 +1,11 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { createStructuredSelector } from 'reselect';
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import Title from 'components/Title';
+import Image from 'components/Image';
+import logo from 'images/white.png';
 import LoginForm from 'components/LoginForm';
 import JoinForm from 'components/JoinForm';
 import {
@@ -23,7 +25,7 @@ import {
   socialLogin,
 } from 'containers/App/actions';
 import theme from 'themeConfig';
-import { ParallaxProvider, Parallax } from 'react-scroll-parallax';
+// import { ParallaxProvider, Parallax } from 'react-scroll-parallax';
 import homeReducer from './reducer';
 import { makeSelectForm } from './selectors';
 import { login, join, toggleForm } from './actions';
@@ -31,56 +33,64 @@ import { login, join, toggleForm } from './actions';
 const HomeView = styled.div`
   .home-head-container {
     display: flex;
+    position: relative;
     justify-content: center;
     align-items: center;
-    height: 25vh;
+    height: 50vh;
     min-height: 150px;
-    .home-sub-head {
-      .title {
-        margin: 10px;
-        transition: 0.2s;
-        &:hover {
-          cursor: pointer;
-          color: ${theme.light};
-          transform: scale(1.05);
-        }
-      }
-      display: flex;
-      justify-content: center;
+    background-color: ${theme.main};
+    flex-direction: column;
+    .home-title {
+      color: ${theme.inverted};
     }
-  }
-  .home-middle-container {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    height: 25vh;
-    min-height: 150px;
-    position: relative;
-    z-index: 2;
-    .home-form-container {
-      .home-form-sub-container {
-        position: relative;
-        text-align: center;
+    .home-sub-title {
+      font-size: 1.6rem;
+      color: ${theme.inverted};
+    }
+    .bender-container {
+      position: absolute;
+      bottom: -2px;
+      left: 50px;
+      width: 250px;
+      height: 250px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: flex-end;
+      img {
+        width: 100%;
+        height: auto;
+        opacity: 0.3;
+      }
+      .eyes-container {
+        position: absolute;
+        .eye {
+          margin: 0 20px 5px 20px;
+          position: relative;
+          display: inline-block;
+          height: 40px;
+          width: 40px;
+        }
+        .pupil {
+          position: absolute;
+          bottom: 10px;
+          left: 10px;
+          width: 20px;
+          height: 20px;
+          background: #5eb0ef;
+          transition: 0.5s;
+        }
       }
     }
   }
   .home-body-container {
     position: relative;
     height: 100vh;
-    background-color: ${theme.main};
+    background-color: ${theme.grey};
+    display: flex;
+    justify-content: center;
+    align-items: center;
     z-index: 1;
-    .home-body-back {
-      position: absolute;
-      z-index: 1;
-      height: 100px;
-      top: -100px;
-      width: 100%;
-      background: linear-gradient(
-        to left bottom,
-        #f4f1f1 50%,
-        ${theme.main} 50%
-      );
-    }
   }
 `;
 
@@ -90,12 +100,30 @@ export class Home extends React.PureComponent {
     super(props);
     const token = LocalStorageManager.getUser();
     this.props.verifyUser(token);
+    this.handleEyes = this.handleEyes.bind(this);
   }
 
   componentDidMount() {
     setTimeout(() => {
       this.props.loaded();
     }, 2000);
+  }
+
+  handleEyes(event) {
+    const pupil1 = document.getElementById('pupil1');
+    const pupil2 = document.getElementById('pupil2');
+    const eye1 = document.getElementById('eye1');
+    const eye2 = document.getElementById('eye2');
+    const x = event.screenX;
+    const y = event.screenY;
+    pupil1.style.left = `${(x * eye1.offsetWidth) / window.innerWidth -
+      pupil1.offsetWidth / 2}px`;
+    pupil1.style.top = `${(y * eye1.offsetHeight) / window.innerHeight -
+      pupil1.offsetHeight / 2}px`;
+    pupil2.style.left = `${(x * eye2.offsetWidth) / window.innerWidth -
+      pupil2.offsetWidth / 2}px`;
+    pupil2.style.top = `${(y * eye2.offsetHeight) / window.innerHeight -
+      pupil2.offsetHeight / 2}px`;
   }
 
   render() {
@@ -105,66 +133,47 @@ export class Home extends React.PureComponent {
       return <div>Loading...</div>;
     }
     return (
-      <HomeView>
-        <ParallaxProvider>
-          <div className="home-head-container">
-            <Parallax
-              className="custom-class"
-              offsetYMax={40}
-              offsetYMin={-100}
-              slowerScrollRate
-              tag="figure"
-            >
-              <Title
-                className="home-title"
-                content="Welcome to Bender"
-                size={1}
-              />
-              <div className="home-sub-head">
-                <Link
-                  to="/eat-my-shiny-metal-docs"
-                  href="/eat-my-shiny-metal-docs"
-                >
-                  <Title content="EAT DOCS" size={2} />
-                </Link>
-                <Link to="/demo" href="/eat-my-shiny-metal-docs">
-                  <Title content="SEE DEMO" size={2} />
-                </Link>
+      <HomeView onMouseMove={this.handleEyes}>
+        <div className="home-head-container">
+          <Title className="home-title" content="Welcome to Bender" size={1} />
+          <Title
+            className="home-sub-title"
+            content="The Free Hyper Parameters Optimizer"
+            size={3}
+          />
+          <div className="bender-container">
+            <Image src={logo} />
+            <div className="eyes-container">
+              <div className="eye" id="eye1">
+                <div className="pupil" id="pupil1" />
               </div>
-            </Parallax>
-          </div>
-          <div className="home-middle-container">
-            <div className="home-form-container">
-              <Parallax
-                className="custom-class"
-                offsetYMax={300}
-                offsetYMin={-200}
-                tag="figure"
-              >
-                {this.props.from ? (
-                  <div className="home-form-sub-container">
-                    <LoginForm
-                      animate={!this.props.firstViewLoaded}
-                      onSubmit={this.props.onLogin}
-                      onSocialLoginSucess={this.props.onSocialLoginSucess}
-                      onToggleForm={this.props.toggleForm}
-                    />
-                  </div>
-                ) : (
-                  <div className="home-form-sub-container">
-                    <JoinForm
-                      animate={!this.props.firstViewLoaded}
-                      onSubmit={this.props.onJoin}
-                      onSocialLoginSucess={this.props.onSocialLoginSucess}
-                      onToggleForm={this.props.toggleForm}
-                    />
-                  </div>
-                )}
-              </Parallax>
+              <div className="eye" id="eye2">
+                <div className="pupil" id="pupil2" />
+              </div>
             </div>
           </div>
-          <div className="home-body-container">To come</div>
-        </ParallaxProvider>
+        </div>
+        <div className="home-body-container">
+          {this.props.from ? (
+            <div className="home-form-sub-container">
+              <LoginForm
+                animate={!this.props.firstViewLoaded}
+                onSubmit={this.props.onLogin}
+                onSocialLoginSucess={this.props.onSocialLoginSucess}
+                onToggleForm={this.props.toggleForm}
+              />
+            </div>
+          ) : (
+            <div className="home-form-sub-container">
+              <JoinForm
+                animate={!this.props.firstViewLoaded}
+                onSubmit={this.props.onJoin}
+                onSocialLoginSucess={this.props.onSocialLoginSucess}
+                onToggleForm={this.props.toggleForm}
+              />
+            </div>
+          )}
+        </div>
       </HomeView>
     );
   }
