@@ -16,6 +16,7 @@ import {
   CHART_POINT_SELECT,
   ADD_SELECTED_METRIC,
   REMOVE_SELECTED_METRIC,
+  FETCH_ERROR,
 } from './constants';
 
 export const initialState = fromJS({
@@ -40,10 +41,9 @@ export const initialState = fromJS({
 });
 
 function dashboardReducer(state = initialState, action) {
-  const menuState = state.get('menuState');
   switch (action.type) {
     case TOGGLE_MENU:
-      return state.set('menuState', !menuState);
+      return state.update('menuState', val => !val);
     case TOGGLE_MODAL:
       return state.set(
         'modals',
@@ -170,6 +170,8 @@ function dashboardReducer(state = initialState, action) {
         );
       }
       return state;
+    case FETCH_ERROR:
+      return state.update('error', () => action.payload.message);
     default:
       return state;
   }

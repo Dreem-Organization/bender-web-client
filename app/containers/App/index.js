@@ -16,6 +16,7 @@ import { Switch, Route } from 'react-router-dom';
 import Dashboard from 'containers/Dashboard/Loadable';
 import Home from 'containers/Home/Loadable';
 import Validation from 'containers/Validation/Loadable';
+import Toaster from 'containers/Toaster/Loadable';
 // import Docs from 'containers/Docs/Loadable';
 // import Demo from 'containers/Demo/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
@@ -23,6 +24,7 @@ import NotFoundPage from 'containers/NotFoundPage/Loadable';
 export default function App() {
   return (
     <div id="app-container">
+      <Toaster />
       <Switch>
         <Route exact path="/dashboard" component={Dashboard} />
         <Route path="/" component={Home} />

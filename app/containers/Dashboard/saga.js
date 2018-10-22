@@ -1,6 +1,6 @@
 import { call, take, put, all, fork } from 'redux-saga/effects';
 import { api } from 'utils/api';
-import { FETCH_ERROR } from 'containers/App/constants';
+import { PUT_TOAST } from 'containers/Toaster/constants';
 import {
   FETCH_EXPERIMENTS,
   FEED_EXPERIMENTS,
@@ -40,7 +40,14 @@ function* fetchExperiments(action) {
     });
     yield put({ type: FEED_EXPERIMENTS, payload: experiments });
   } catch (error) {
-    yield put({ type: FETCH_ERROR, payload: error });
+    console.log(error);
+    yield put({
+      type: PUT_TOAST,
+      payload: {
+        message: error.message,
+        life: 10,
+      },
+    });
   }
 }
 
@@ -49,7 +56,13 @@ function* fetchDeleteExperiment(action) {
     yield call(api.deleteExperiment, action.payload);
     yield put({ type: DELETE_EXPERIMENT, payload: action.payload.experiment });
   } catch (error) {
-    yield put({ type: FETCH_ERROR, payload: error });
+    yield put({
+      type: PUT_TOAST,
+      payload: {
+        message: error.message,
+        life: 10,
+      },
+    });
   }
 }
 
@@ -62,7 +75,13 @@ function* fetchCreateExperiment(action) {
       meta: action.payload.experimentData.owner,
     });
   } catch (error) {
-    yield put({ type: FETCH_ERROR, payload: error });
+    yield put({
+      type: PUT_TOAST,
+      payload: {
+        message: error.message,
+        life: 10,
+      },
+    });
   }
 }
 
@@ -85,20 +104,32 @@ function* fetchAlgos(action) {
       payload: update,
     });
   } catch (error) {
-    yield put({ type: FETCH_ERROR, payload: error });
+    yield put({
+      type: PUT_TOAST,
+      payload: {
+        message: error.message,
+        life: 10,
+      },
+    });
   }
 }
 
 function* fetchDeleteAlgo(action) {
   try {
-    const data = yield call(api.deleteAlgo, action.payload);
+    yield call(api.deleteAlgo, action.payload);
     yield put({
       type: DELETE_ALGO,
       payload: action.payload.algo,
       meta: action.payload.experiment,
     });
   } catch (error) {
-    yield put({ type: FETCH_ERROR, payload: error });
+    yield put({
+      type: PUT_TOAST,
+      payload: {
+        message: error.message,
+        life: 10,
+      },
+    });
   }
 }
 
@@ -107,7 +138,13 @@ function* fetchCreateAlgo(action) {
     const data = yield call(api.createAlgo, action.payload);
     yield put({ type: CREATE_ALGO, payload: data, meta: action.payload.user });
   } catch (error) {
-    yield put({ type: FETCH_ERROR, payload: error });
+    yield put({
+      type: PUT_TOAST,
+      payload: {
+        message: error.message,
+        life: 10,
+      },
+    });
   }
 }
 
@@ -136,8 +173,13 @@ function* fetchTrials(action) {
       hyperParameters,
     });
   } catch (error) {
-    console.log(error);
-    yield put({ type: FETCH_ERROR, payload: error });
+    yield put({
+      type: PUT_TOAST,
+      payload: {
+        message: error.message,
+        life: 10,
+      },
+    });
   }
 }
 

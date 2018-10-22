@@ -26,7 +26,7 @@ const Label = styled.span`
       default:
         return '';
     }
-  }}
+  }};
 `;
 
 export default Label;

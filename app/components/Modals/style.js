@@ -1,7 +1,26 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const fadeIn = keyframes`
+  0% {
+    display: none;
+    opacity: 0;
+  }
+  1% {
+    display: flex;
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
 
 const Modals = styled.div`
-  display: ${props => (props.modalStates.open ? 'flex' : 'none')};
+  &.is-open {
+    display: flex;
+    animation: ${fadeIn} 0.3s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  }
+  opacity: 0;
+  display: none;
   justify-content: center;
   align-items: center;
   position: absolute;

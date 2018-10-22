@@ -2,6 +2,11 @@ import { createSelector } from 'reselect';
 
 const selectDashboard = state => state.get('dashboard');
 
+const makeSelectDashboardErrors = () =>
+  createSelector(selectDashboard, dashboardState =>
+    dashboardState.get('error'),
+  );
+
 const makeSelectMenuState = () =>
   createSelector(selectDashboard, dashboardState =>
     dashboardState.get('menuState'),
@@ -28,6 +33,7 @@ const makeSelectChartSelectedPoint = () =>
   );
 
 export {
+  makeSelectDashboardErrors,
   makeSelectMenuState,
   makeSelectExperiments,
   makeSelectFilters,

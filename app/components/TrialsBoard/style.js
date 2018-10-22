@@ -8,7 +8,6 @@ const TrialsBoard = styled.div`
     min-height: 40px;
     display: flex;
     align-items: center;
-    }
   }
   .trials-board-filters-container {
     min-height: 40px;

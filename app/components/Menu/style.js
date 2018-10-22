@@ -18,7 +18,6 @@ const Menu = styled.div`
   margin-left: ${props => (props.visible ? 0 : '-60px')};
   .hide {
     position: absolute;
-    width: 60px;
     top: 50vh;
     right: 0;
     display: inline-block;

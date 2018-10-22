@@ -4,7 +4,6 @@ import { FETCH_ERROR } from 'containers/App/constants';
 import { FETCH_VALIDATE, VALIDATE } from './constants';
 
 function* validate(action) {
-  console.log(action);
   try {
     const data = yield call(api.validate, action.payload);
     yield put({ type: VALIDATE, payload: data });

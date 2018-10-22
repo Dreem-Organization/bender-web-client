@@ -30,14 +30,6 @@ const chartStyles = {
   zIndex: 30,
 };
 
-const cardStyles = {
-  width: '100%',
-  margin: '20px 0px',
-  borderRadius: '5px',
-  overflow: 'visible',
-};
-
-
 const colorWheel = {
   0: '#108FE9', // #108EE9
   1: '#56B9FD',
@@ -58,7 +50,7 @@ export default class Chart extends Component {
     this.getScatterData = this.getScatterData.bind(this);
     this.getChart = this.getChart.bind(this);
     this.lineCustomTooltip = this.lineCustomTooltip.bind(this);
-    this.scatterCustomTooltip = this.scatterCustomTooltip.bind(this);
+    // this.scatterCustomTooltip = this.scatterCustomTooltip.bind(this);
     this.getDiscreteData = this.getDiscreteData.bind(this);
     this.getDiscreteParameters = this.getDiscreteParameters.bind(this);
     this.getAlgos = this.getAlgos.bind(this);
@@ -138,7 +130,6 @@ export default class Chart extends Component {
         index: i,
       }))
       .value();
-    console.log('IMPORTANT', a);
     return a;
   }
 
@@ -147,21 +138,19 @@ export default class Chart extends Component {
   }
 
   getDiscreteData() {
-    const a = _.chain(this.props.experiment.trials.list)
+    _.chain(this.props.experiment.trials.list)
       .filter(k => _.includes(this.getAlgos(), k.algo))
-      .map(k => {
-        console.log('AHA!', k.results[this.props.experiment.selectedMetrics[0]]);
-        return {
-          id: k.id,
-          X: _.round(k.results[this.props.experiment.selectedMetrics[0]], 4),
-          Y: this.getDiscreteParameters().filter(
-            y => y.param === k.parameters[this.props.experiment.selectedHyperParameter],
-          )[0].index,
-          param: k.parameters[this.props.experiment.selectedHyperParameter],
-        }
-      })
+      .map(k => ({
+        id: k.id,
+        X: _.round(k.results[this.props.experiment.selectedMetrics[0]], 4),
+        Y: this.getDiscreteParameters().filter(
+          y =>
+            y.param ===
+            k.parameters[this.props.experiment.selectedHyperParameter],
+        )[0].index,
+        param: k.parameters[this.props.experiment.selectedHyperParameter],
+      }))
       .value();
-    console.log(a);
   }
 
   displayParameter(tick) {
@@ -259,50 +248,49 @@ export default class Chart extends Component {
     return '';
   }
 
-  scatterCustomTooltip(item) {
-    const trial = this.props.experiment.trials.list.filter(
-      k => k.id === item.payload[2].value,
-    )[0];
-
-    return (
-      <div className="custom-tooltip">
-        {/* <TimeAgo
-          style={{ opacity: 0.6, float: 'right' }}
-          date={trial.created}
-        /> */}
-        <h3 style={{ color: '#1882fd', padding: '0 5' }}>
-          X:
-          {item.payload[0].value}
-          Y:
-          {item.payload[1].value}
-        </h3>
-        <h3>{trial.algo_name}</h3>
-
-        <div className="custom-tooltip-sub-container">
-          <h4>Parameters</h4>
-          <ul>{this.generateTableData(trial.parameters)}</ul>
-        </div>
-        <div style={colTooltip}>
-          <h4>Metrics</h4>
-          <ul>{this.generateTableMetrics(trial.results)}</ul>
-        </div>
-      </div>
-    );
-  }
+  // scatterCustomTooltip(item) {
+  //   const trial = this.props.experiment.trials.list.filter(
+  //     k => k.id === item.payload[2].value,
+  //   )[0];
+  //
+  //   return (
+  //     <div className="custom-tooltip">
+  //       {/* <TimeAgo
+  //         style={{ opacity: 0.6, float: 'right' }}
+  //         date={trial.created}
+  //       /> */}
+  //       <h3 style={{ color: '#1882fd', padding: '0 5' }}>
+  //         X:
+  //         {item.payload[0].value}
+  //         Y:
+  //         {item.payload[1].value}
+  //       </h3>
+  //       <h3>{trial.algo_name}</h3>
+  //
+  //       <div className="custom-tooltip-sub-container">
+  //         <h4>Parameters</h4>
+  //         <ul>{this.generateTableData(trial.parameters)}</ul>
+  //       </div>
+  //       <div style={colTooltip}>
+  //         <h4>Metrics</h4>
+  //         <ul>{this.generateTableMetrics(trial.results)}</ul>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   getChart() {
     const id = metric =>
-      this.props.experiment.metrics.indexOf(metric) % Object.keys(colorWheel).length;
+      this.props.experiment.metrics.indexOf(metric) %
+      Object.keys(colorWheel).length;
 
     if (this.props.experiment.selectedMetrics.length === 0) {
-      console.log('-> NOTHING');
       return (
         <div className="chart-empty-container">
           <Label content="Uh, oh — looks like you haven't selected any metric to visualize yet." />
         </div>
       );
     } else if (this.props.experiment.selectedHyperParameter === 'time') {
-      console.log('-> COMPOSED CHART');
       return (
         <ComposedChart
           key={this.state.key}
@@ -348,7 +336,9 @@ export default class Chart extends Component {
           {this.props.experiment.selectedMetrics.map((m, index) => (
             <YAxis
               key={m}
-              margin={{ left: -20 + 20 * this.props.experiment.selectedMetrics.length }}
+              margin={{
+                left: -20 + 20 * this.props.experiment.selectedMetrics.length,
+              }}
               width={65 - 5 * this.props.experiment.selectedMetrics.length}
               stroke={colorWheel[id(m)]}
               yAxisId={`yaxis-${index}`}
@@ -383,7 +373,6 @@ export default class Chart extends Component {
         this.props.experiment.selectedHyperParameter
       ] === 'string'
     ) {
-      console.log('-> SCATTER DISCRETE DATA');
       return (
         <ScatterChart
           style={chartStyles}
@@ -411,7 +400,6 @@ export default class Chart extends Component {
         </ScatterChart>
       );
     }
-    console.log('-> REGULAR SCATTER');
     return (
       <ScatterChart
         style={chartStyles}

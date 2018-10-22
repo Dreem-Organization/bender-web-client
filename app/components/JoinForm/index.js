@@ -79,7 +79,7 @@ function LoginForm(props) {
           <Title size={2} content="Join Form" />
           <GithubButton
             onSuccess={props.onSocialLoginSucess}
-            onFailure={error => console.log(error)}
+            // onFailure={error => console.log(error)}
           />
         </div>
         <RForm login={props.onSubmit} />

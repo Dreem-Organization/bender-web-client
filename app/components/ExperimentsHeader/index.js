@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import theme from 'themeConfig';
-import { Link } from 'react-router-dom';
 import Title from 'components/Title';
 import Icon from 'components/Icon';
 import Label from 'components/Label';

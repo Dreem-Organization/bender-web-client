@@ -24,7 +24,6 @@ WaitingWrapper.propTypes = {
 
 WaitingWrapper.defaultProps = {
   theme,
-  size: 3,
 };
 
 export default WaitingWrapper;

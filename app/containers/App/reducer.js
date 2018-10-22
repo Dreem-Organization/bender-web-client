@@ -52,7 +52,7 @@ function appReducer(state = initialState, action) {
     case JOIN:
       return state;
     case FETCH_ERROR:
-      return state.set('error', action.payload);
+      return state.update('error', () => action.payload.message);
     case SOCIAL_LOGIN:
       return state;
     case FIRST_VIEW_LOADED:

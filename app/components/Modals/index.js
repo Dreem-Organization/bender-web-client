@@ -23,9 +23,13 @@ function Modals(props) {
     }
   }
   return (
-    <StyledModals className="modals" {...props} onClick={props.onClose}>
-      <div className="modal-container" onClick={(e) => e.stopPropagation()}>
-        {toRender}
+    <StyledModals
+      className={`modals ${props.modalStates.open ? 'is-open' : ''}`}
+      {...props}
+      onClick={props.onClose}
+    >
+      <div className="modal-container" onClick={e => e.stopPropagation()}>
+        <div className="modal">{toRender}</div>
         <div onClick={props.onClose} className="modal-close">
           <Icon name="clear" />
         </div>

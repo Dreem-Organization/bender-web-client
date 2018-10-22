@@ -65,7 +65,6 @@ const DashboardView = styled.div`
     overflow: scroll;
     .board {
       min-height: 500px;
-      position: relative;
       background-color: white;
       margin: 20px;
       display: flex;
@@ -100,7 +99,8 @@ export class Dashboard extends React.PureComponent {
         this.props.animatorUpdate({ pageLoader: 'hide' });
       }, 1000);
     }
-    if (this.props.experiments.selected !== '' &&
+    if (
+      this.props.experiments.selected !== '' &&
       prevProps.experiments.selected !== this.props.experiments.selected &&
       !this.props.experiments.list[this.props.experiments.selected].algos.loaded
     ) {
@@ -126,6 +126,9 @@ export class Dashboard extends React.PureComponent {
     if (this.props.status === 'out') {
       return <Redirect to="/" />;
     }
+    const condition =
+      this.props.experiments.selected !== '' &&
+      this.props.experiments.list[this.props.experiments.selected].algos.loaded;
     return (
       <WaitingWrapper
         pageLoader={this.props.animator.pageLoader}
@@ -142,7 +145,7 @@ export class Dashboard extends React.PureComponent {
               experiments={this.props.experiments}
               resetSelected={() => this.props.onExperimentChangeSelected('')}
             />
-            {this.props.experiments.selected !== '' && this.props.experiments.list[this.props.experiments.selected].algos.loaded ? (
+            {condition ? (
               <div className="board">
                 <TrialsBoard
                   onFilterChange={this.props.onFilterChange}

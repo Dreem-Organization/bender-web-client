@@ -1,7 +1,7 @@
 import React, { Children } from 'react';
 import PropTypes from 'prop-types';
-import StyledLabel from './style';
 import theme from 'themeConfig';
+import StyledLabel from './style';
 
 function Label(props) {
   return (

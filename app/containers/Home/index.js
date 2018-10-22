@@ -163,8 +163,7 @@ export class Home extends React.PureComponent {
               </Parallax>
             </div>
           </div>
-          <div className="home-body-container">
-          </div>
+          <div className="home-body-container">To come</div>
         </ParallaxProvider>
       </HomeView>
     );
