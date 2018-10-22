@@ -2,10 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Input from 'components/Input';
 import Title from 'components/Title';
-import Image from 'components/Image';
 import Button from 'components/Button';
 import GithubButton from 'components/GithubButton';
-import logo from 'images/bender-logo.svg';
 import Label from 'components/Label';
 import theme from 'themeConfig';
 import { Field, reduxForm } from 'redux-form/immutable';
@@ -54,7 +52,6 @@ const RForm = reduxForm({
 function LoginForm(props) {
   return (
     <StyledLoginForm className="login-form" {...props}>
-      <Image className="bender" src={logo} />
       <div className="login-form-container">
         <div className="login-form-head">
           <Title size={2} content="Login" />

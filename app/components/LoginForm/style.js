@@ -1,18 +1,12 @@
 /* eslint-disable */
 import styled from 'styled-components';
-import { slideInBottom, scaleInCenter } from 'KeyFrames';
+import { scaleInCenter } from 'KeyFrames';
 
 const LoginForm = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
   overflow: hidden;
-  .bender {
-    ${props =>
-    props.animate
-      ? `animation: ${slideInBottom} 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;`
-      : ''};
-  }
   .login-form-container {
     box-shadow: ${props => props.theme.shadow};
     background-color: white;
