@@ -83,6 +83,9 @@ const ModalCreateAlgo = styled.div`
       margin-top: 20px;
     }
   }
+  .create-algo-no-update {
+    display: none;
+  }
 `;
 
 export default ModalCreateAlgo;

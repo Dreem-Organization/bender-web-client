@@ -18,7 +18,9 @@ export const FETCH_ALGOS = 'Dashboard/FETCH_ALGOS';
 export const FETCH_DELETE_ALGO = 'Dashboard/FETCH_DELETE_ALGO';
 export const DELETE_ALGO = 'Dashboard/DELETE_ALGO';
 export const FETCH_CREATE_ALGO = 'Dashboard/FETCH_CREATE_ALGO';
+export const FETCH_UPDATE_ALGO = 'Dashboard/FETCH_UPDATE_ALGO';
 export const CREATE_ALGO = 'Dashboard/CREATE_ALGO';
+export const UPDATE_ALGO = 'Dashboard/UPDATE_ALGO';
 
 export const CHANGE_FILTERS = 'Dashboard/CHANGE_SELECTED_ALGO';
 export const CHANGE_SELECTED_HYPER_PARAMETER =

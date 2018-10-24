@@ -35,6 +35,7 @@ export const initialState = fromJS({
   modals: {
     open: false,
     name: '',
+    meta: null,
   },
   fetching: [],
   menuState: true,
@@ -58,6 +59,7 @@ function dashboardReducer(state = initialState, action) {
         fromJS({
           open: !state.getIn(['modals', 'open']),
           name: action.payload,
+          meta: action.meta,
         }),
       );
     case FEED_EXPERIMENTS:

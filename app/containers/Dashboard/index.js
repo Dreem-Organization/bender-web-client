@@ -30,6 +30,7 @@ import {
   deleteExperiment,
   fetchAlgos,
   createAlgo,
+  updateAlgo,
   deleteAlgo,
   fetchTrials,
   changeSelectedExperiment,
@@ -161,6 +162,9 @@ export class Dashboard extends React.PureComponent {
                       .algos
                   }
                   openAlgoModal={() => this.props.toggleModal('algoCreate')}
+                  openUpdateAlgoModal={meta =>
+                    this.props.toggleModal('algoUpdate', meta)
+                  }
                   onRemoveAlgo={id =>
                     this.props.onRemoveAlgo(
                       this.props.jwt,
@@ -203,6 +207,14 @@ export class Dashboard extends React.PureComponent {
                 this.props.user.username,
               )
             }
+            onUpdateAlgo={data => {
+              this.props.onUpdateAlgo(
+                this.props.jwt,
+                data,
+                this.props.experiments.selected,
+                this.props.user.username,
+              );
+            }}
           />
         </DashboardView>
       </WaitingWrapper>
@@ -223,6 +235,7 @@ Dashboard.propTypes = {
   onCreateExperiment: PropTypes.func,
   fetchAlgos: PropTypes.func,
   onCreateAlgo: PropTypes.func,
+  onUpdateAlgo: PropTypes.func,
   fetchTrials: PropTypes.func,
   onExperimentChangeSelected: PropTypes.func,
   onRemoveExperiment: PropTypes.func,
@@ -250,6 +263,8 @@ export function mapDispatchToProps(dispatch) {
     fetchAlgos: (jwt, experiment) => dispatch(fetchAlgos(jwt, experiment)),
     onCreateAlgo: (jwt, data, experiment, user) =>
       dispatch(createAlgo(jwt, data, experiment, user)),
+    onUpdateAlgo: (jwt, data, experiment, user) =>
+      dispatch(updateAlgo(jwt, data, experiment, user)),
     fetchTrials: (jwt, experiment, filters) =>
       dispatch(fetchTrials(jwt, experiment, filters)),
     onExperimentChangeSelected: val => dispatch(changeSelectedExperiment(val)),
@@ -259,7 +274,7 @@ export function mapDispatchToProps(dispatch) {
     onFilterChange: data => dispatch(filterChange(data)),
     onSelectedHyperParameterChange: (experiment, metric) =>
       dispatch(selectedHyperParameterChange(experiment, metric)),
-    toggleModal: modal => dispatch(toggleModal(modal)),
+    toggleModal: (modal, meta) => dispatch(toggleModal(modal, meta)),
     onChartPointSelect: point => dispatch(chartPointSelect(point)),
     onChangeSelectedMetrics: data => dispatch(changeSelectedMetrics(data)),
   };

@@ -13,6 +13,7 @@ import {
   FieldArray,
   reduxForm,
   getFormValues,
+  initialize,
 } from 'redux-form/immutable';
 import StyledModalCreateAlgo from './style';
 
@@ -78,7 +79,7 @@ const validate = values => {
 class renderChildMembers extends React.PureComponent {
   componentWillMount() {
     const { fields } = this.props;
-    if (!fields.length) fields.push();
+    if (!fields.length && !this.props.isUpdate) fields.push();
   }
 
   render() {
@@ -115,6 +116,7 @@ class renderChildMembers extends React.PureComponent {
 
 renderChildMembers.propTypes = {
   fields: PropTypes.object,
+  isUpdate: PropTypes.bool,
 };
 
 class renderMembers extends React.PureComponent {
@@ -127,7 +129,11 @@ class renderMembers extends React.PureComponent {
   getConditionalFields(param, index) {
     let toDisplay = (
       <div className="categoricals">
-        <FieldArray name={`${param}.select`} component={renderChildMembers} />
+        <FieldArray
+          name={`${param}.select`}
+          component={renderChildMembers}
+          isUpdate={this.props.isUpdate}
+        />
       </div>
     );
     if (this.props.allValues.parameters[index].type !== 'categorical') {
@@ -166,7 +172,9 @@ class renderMembers extends React.PureComponent {
         <div className="parameters-head">
           <Label content="Hyper-Parameters" type="simple" size="normal" />
           <Button
-            className="spec"
+            className={
+              this.props.isUpdate ? 'create-algo-no-update spec' : 'spec'
+            }
             type="round"
             icon="add_circle_outline"
             color="positive"
@@ -178,18 +186,40 @@ class renderMembers extends React.PureComponent {
         </div>
         {this.props.fields.map((param, index) => (
           <div className="parameters" key={`parameters-${index}`}>
-            <div className="delete-container">
+            <div
+              className={
+                this.props.isUpdate
+                  ? 'create-algo-no-update delete-container'
+                  : 'delete-container'
+              }
+            >
               <Icon
                 name="close"
                 onClick={() => this.props.fields.remove(index)}
               />
             </div>
             <Field
+              className={
+                this.props.isUpdate ? 'input create-algo-no-update' : 'input'
+              }
               name={`${param}.hpName`}
               type="text"
               component={Input}
               placeholder={`Hyper-Parameter ${index + 1}`}
             />
+            {this.props.isUpdate ? (
+              <Label
+                type="important"
+                size="tiny"
+                content={
+                  this.props.allValues.parameters[index]
+                    ? this.props.allValues.parameters[index].hpName
+                    : ''
+                }
+              />
+            ) : (
+              ''
+            )}
             {/* <Field name={`select-${index}`} component="select">
               {[
                 'Categorical',
@@ -201,6 +231,9 @@ class renderMembers extends React.PureComponent {
             </Field> */}
             <Field
               id={`create-algo-select-${index}`}
+              className={
+                this.props.isUpdate ? 'create-algo-no-update select' : 'select'
+              }
               name={`${param}.type`}
               selected=""
               component={Select}
@@ -230,52 +263,116 @@ class renderMembers extends React.PureComponent {
 renderMembers.propTypes = {
   allValues: PropTypes.object,
   fields: PropTypes.object,
+  isUpdate: PropTypes.bool,
 };
 
-const Form = ({ handleSubmit, submitting, onCreate, allValues }) => (
-  <form onSubmit={handleSubmit(onCreate)}>
-    <Label content="Name" type="simple" size="normal" />
-    <Field
-      name="name"
-      type="text"
-      component={Input}
-      placeholder="Choose wisely"
-    />
-    <FieldArray
-      allValues={allValues}
-      name="parameters"
-      component={renderMembers}
-    />
-    <Button
-      className="submit"
-      content="Create"
-      type="submit"
-      disabled={submitting}
-    />
-  </form>
-);
+let Form = class FormClass extends React.PureComponent {
+  componentDidMount() {
+    if (this.props.isUpdate) {
+      this.props.initializeForm();
+    }
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.props.handleSubmit(this.props.onCreate)}>
+        <Label content="Name" type="simple" size="normal" />
+        <Field
+          name="name"
+          type="text"
+          component={Input}
+          placeholder="Choose wisely"
+          value="toto"
+        />
+        <FieldArray
+          allValues={this.props.allValues}
+          name="parameters"
+          component={renderMembers}
+          isUpdate={this.props.isUpdate}
+        />
+        <Button
+          className="submit"
+          content={this.props.isUpdate ? 'Update' : 'Create'}
+          type="submit"
+          disabled={this.props.submitting}
+        />
+      </form>
+    );
+  }
+};
 
 Form.propTypes = {
+  initializeForm: PropTypes.func,
   allValues: PropTypes.object,
   handleSubmit: PropTypes.func,
   onCreate: PropTypes.func,
   submitting: PropTypes.bool,
+  isUpdate: PropTypes.bool,
 };
 
-let RForm = reduxForm({
-  form: 'createAlgoForm',
+Form = reduxForm({
+  form: 'updateAlgoForm',
   validate,
 })(Form);
 
-RForm = connect(state => ({
-  allValues: getFormValues('createAlgoForm')(state),
-}))(RForm);
+let stateValues;
+
+const mapStateToProps = (state, props) => {
+  stateValues = props.values;
+
+  return {
+    allValues: getFormValues('updateAlgoForm')(state),
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  initializeForm: () => {
+    dispatch(initialize('updateAlgoForm', stateValues));
+  },
+});
+
+const FormContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Form);
 
 function ModalCreateAlgo(props) {
+  let initialValues = null;
+  if (props.update) {
+    initialValues = {
+      name: props.algo.name,
+      parameters: [],
+    };
+    props.algo.parameters.forEach(p => {
+      if (p.category === 'categorical') {
+        initialValues.parameters.push({
+          type: p.category,
+          hpName: p.name,
+          select: p.search_space.values,
+        });
+      } else {
+        initialValues.parameters.push({
+          type: p.category,
+          hpName: p.name,
+          low: p.search_space.low,
+          high: p.search_space.high,
+          step: p.search_space.step,
+        });
+      }
+    });
+  }
   return (
     <StyledModalCreateAlgo className="modal-create-experiment" {...props}>
-      <Label content="Create a new algo" type="important" size="big" />
-      <RForm onCreate={props.onValidate} />
+      <Label
+        content={props.update ? 'Update Algo' : 'Create a new algo'}
+        type="important"
+        size="big"
+      />
+      <FormContainer
+        onCreate={props.onValidate}
+        isUpdate={props.update}
+        values={initialValues}
+      />
     </StyledModalCreateAlgo>
   );
 }
@@ -283,7 +380,9 @@ function ModalCreateAlgo(props) {
 ModalCreateAlgo.propTypes = {
   theme: PropTypes.object,
   onClose: PropTypes.func,
-  onValidate: PropTypes.func,
+  onValidate: PropTypes.func.isRequired,
+  algo: PropTypes.object,
+  update: PropTypes.bool,
 };
 
 ModalCreateAlgo.defaultProps = {

@@ -12,8 +12,10 @@ import {
   FETCH_ALGOS,
   FETCH_DELETE_ALGO,
   FETCH_CREATE_ALGO,
+  FETCH_UPDATE_ALGO,
   DELETE_ALGO,
   CREATE_ALGO,
+  UPDATE_ALGO,
   FEED_ALGOS,
   FEED_TRIALS,
   SET_IS_FETCHING,
@@ -160,6 +162,23 @@ function* fetchCreateAlgo(action) {
   }
 }
 
+function* fetchUpdateAlgo(action) {
+  console.log(action);
+  try {
+    yield put({ type: SET_IS_FETCHING, payload: true });
+    const data = yield call(api.updateAlgo, action.payload);
+    yield put({ type: UPDATE_ALGO, payload: data, meta: action.payload.user });
+  } catch (error) {
+    yield put({
+      type: PUT_TOAST,
+      payload: {
+        message: error.message,
+        life: 10,
+      },
+    });
+  }
+}
+
 function* fetchTrials(action) {
   try {
     yield put({ type: SET_IS_FETCHING, payload: true });
@@ -245,6 +264,13 @@ function* createAlgoWatcher() {
   }
 }
 
+function* updateAlgoWatcher() {
+  while (true) {
+    const data = yield take(FETCH_UPDATE_ALGO);
+    yield call(fetchUpdateAlgo, data);
+  }
+}
+
 function* fetchTrialsWatcher() {
   while (true) {
     const data = yield take(FETCH_TRIALS);
@@ -260,6 +286,7 @@ export default function* rootSaga() {
     fork(fetchAlgosWatcher),
     fork(delAlgoWatcher),
     fork(createAlgoWatcher),
+    fork(updateAlgoWatcher),
     fork(fetchTrialsWatcher),
   ]);
 }

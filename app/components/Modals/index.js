@@ -16,7 +16,20 @@ function Modals(props) {
         );
         break;
       case 'algoCreate':
-        toRender = <ModalCreateAlgo onValidate={props.onCreateAlgo} />;
+        toRender = (
+          <ModalCreateAlgo onValidate={props.onCreateAlgo} update={false} />
+        );
+        break;
+      case 'algoUpdate':
+        toRender = (
+          <ModalCreateAlgo
+            onValidate={data =>
+              props.onUpdateAlgo({ id: props.modalStates.meta.id, ...data })
+            }
+            update
+            algo={props.modalStates.meta}
+          />
+        );
         break;
       default:
         console.log('UNEXPECTED MODAL NAME');
@@ -44,6 +57,7 @@ Modals.propTypes = {
   onClose: PropTypes.func,
   onCreateExperiment: PropTypes.func.isRequired,
   onCreateAlgo: PropTypes.func.isRequired,
+  onUpdateAlgo: PropTypes.func.isRequired,
 };
 
 Modals.defaultProps = {

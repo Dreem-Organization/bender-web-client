@@ -15,7 +15,12 @@ function Algos(props) {
       </div>
       <div className="algo-list">
         {Object.values(props.algos.list).map(a => (
-          <AlgoTile key={a.id} algo={a} onRemoveAlgo={props.onRemoveAlgo} />
+          <AlgoTile
+            key={a.id}
+            algo={a}
+            onRemoveAlgo={props.onRemoveAlgo}
+            onUpdateAlgo={props.openUpdateAlgoModal}
+          />
         ))}
         {Object.keys(props.algos.list).length ? (
           ''
@@ -42,6 +47,7 @@ Algos.propTypes = {
   theme: PropTypes.object,
   algos: PropTypes.object.isRequired,
   onRemoveAlgo: PropTypes.func.isRequired,
+  openUpdateAlgoModal: PropTypes.func.isRequired,
   openAlgoModal: PropTypes.func.isRequired,
 };
 

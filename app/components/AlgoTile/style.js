@@ -8,22 +8,26 @@ const AlgoTile = styled.div`
   flex-direction: column;
   justify-content: center;
   color: ${props => props.theme.greyDark};
-  .algo-tile-delete-container {
+  .algo-tile-ud-container {
     opacity: 0;
     position: absolute;
     right: 2px;
     top: 0;
     transition: 0.2s;
-    i {
+    .delete {
       color: ${props => props.theme.negative};
       font-size: 1rem;
     }
-    &:hover {
+    .update {
+      color: ${props => props.theme.main};
+      font-size: 1rem;
+    }
+    i:hover {
       cursor: pointer;
     }
   }
   &:hover {
-    .algo-tile-delete-container {
+    .algo-tile-ud-container {
       opacity: 1;
     }
   }

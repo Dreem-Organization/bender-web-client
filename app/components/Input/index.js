@@ -33,10 +33,13 @@ const Wrapper = styled.div`
 `;
 
 function Input(props) {
+  const isError =
+    props.meta.error &&
+    ((props.meta.visited && !props.meta.active) || props.meta.submitFailed);
   return (
     <Wrapper className="input-wrapper">
       <StyledInput className="input" {...props} {...props.input} />
-      {props.meta.error && props.meta.visited && !props.meta.active ? (
+      {isError ? (
         <div className="input-error">
           <div className="input-error-arrow" />
           <span>{props.meta.error}</span>

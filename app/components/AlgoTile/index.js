@@ -8,14 +8,23 @@ import StyledAlgoTile from './style';
 function AlgoTile(props) {
   return (
     <StyledAlgoTile className="algo-tile" {...props}>
-      <div
-        className="algo-tile-delete-container"
-        onClick={e => {
-          e.stopPropagation();
-          props.onRemoveAlgo(props.algo.id);
-        }}
-      >
-        <Icon name="clear" />
+      <div className="algo-tile-ud-container">
+        <Icon
+          className="material-icons update"
+          name="edit"
+          onClick={e => {
+            e.stopPropagation();
+            props.onUpdateAlgo(props.algo);
+          }}
+        />
+        <Icon
+          className="material-icons delete"
+          name="clear"
+          onClick={e => {
+            e.stopPropagation();
+            props.onRemoveAlgo(props.algo.id);
+          }}
+        />
       </div>
       <div className="algo-tile-head">
         <span className="algo-tile-name">{props.algo.name}</span>
@@ -56,6 +65,7 @@ AlgoTile.propTypes = {
   theme: PropTypes.object,
   algo: PropTypes.object.isRequired,
   onRemoveAlgo: PropTypes.func.isRequired,
+  onUpdateAlgo: PropTypes.func.isRequired,
 };
 
 AlgoTile.defaultProps = {
