@@ -11,8 +11,33 @@ const Menu = styled.div`
   background-color: ${props => props.theme.inverted};
   position: relative;
   z-index: 10;
-  .button {
+  .menu-logo-container {
     margin-top: 10px;
+    position: relative;
+    height: 40px;
+    width: 40px;
+    &:hover {
+      .fixed {
+        display: none;
+      }
+      .animated {
+        display: block;
+      }
+    }
+    .image {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .fixed {
+      ${p => (p.fetching.length > 0 ? 'display: none' : 'display: block')};
+    }
+    .animated {
+      ${p => (p.fetching.length > 0 ? 'display: block' : 'display: none')};
+    }
+  }
+  .button {
+    margin-top: 20px;
   }
   transition: 0.3s;
   margin-left: ${props => (props.visible ? 0 : '-60px')};

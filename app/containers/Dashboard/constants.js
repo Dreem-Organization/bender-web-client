@@ -2,6 +2,7 @@ export const TOGGLE_MENU = 'Dashboard/TOGGLE_MENU';
 export const TOGGLE_MODAL = 'Dashboard/TOGGLE_MODAL';
 
 export const FETCH_ERROR = 'Dashboard/FETCH_ERROR';
+export const SET_IS_FETCHING = 'Dashboard/SET_IS_FETCHING';
 
 export const FEED_EXPERIMENTS = 'Dashboard/FEED_EXPERIMENTS';
 export const FETCH_EXPERIMENTS = 'Dashboard/FETCH_EXPERIMENTS';

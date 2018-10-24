@@ -7,6 +7,11 @@ const makeSelectDashboardErrors = () =>
     dashboardState.get('error'),
   );
 
+const makeSelectFetching = () =>
+  createSelector(selectDashboard, dashboardState =>
+    dashboardState.get('fetching').toJS(),
+  );
+
 const makeSelectMenuState = () =>
   createSelector(selectDashboard, dashboardState =>
     dashboardState.get('menuState'),
@@ -33,6 +38,7 @@ const makeSelectChartSelectedPoint = () =>
   );
 
 export {
+  makeSelectFetching,
   makeSelectDashboardErrors,
   makeSelectMenuState,
   makeSelectExperiments,

@@ -8,6 +8,9 @@ import ClipBoardButton from 'components/ClipBoardButton';
 import StyledExperiments from './style';
 
 function Experiments(props) {
+  const condition =
+    props.experiments.selected !== '' &&
+    props.experiments.list[props.experiments.selected].algos.loaded;
   return (
     <StyledExperiments className="experiments" {...props}>
       <div className="experiments-head-container">
@@ -18,7 +21,7 @@ function Experiments(props) {
             size={2}
             onClick={props.resetSelected}
           />
-          {props.experiments.selected !== '' ? (
+          {condition ? (
             <Title
               className="selected"
               content={`> ${
@@ -30,7 +33,7 @@ function Experiments(props) {
             ''
           )}
         </div>
-        {props.experiments.selected !== '' ? (
+        {condition ? (
           <div className="experiments-head-sub-container">
             <ClipBoardButton value={props.experiments.selected} />
           </div>
@@ -38,7 +41,7 @@ function Experiments(props) {
           ''
         )}
       </div>
-      {props.experiments.selected !== '' ? (
+      {condition ? (
         <div className="experiments-infos-container">
           <Icon name="info" />
           <div className="experiments-infos-sub-container">

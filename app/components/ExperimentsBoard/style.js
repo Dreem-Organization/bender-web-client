@@ -13,6 +13,11 @@ const ExperimentsBoard = styled.div`
       font-size: 1.5rem;
     }
   }
+  .experiments-board-empty {
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+  }
 `;
 
 export default ExperimentsBoard;

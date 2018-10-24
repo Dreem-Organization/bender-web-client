@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import theme from 'themeConfig';
-import logo from 'images/bender-logo.svg';
+import animated from 'images/animation.gif';
+import logo from 'images/logo.png';
 import Image from 'components/Image';
 import Button from 'components/Button';
 import StyledMenu from './style';
@@ -9,9 +10,34 @@ import StyledMenu from './style';
 function Menu(props) {
   return (
     <StyledMenu className="menu" {...props}>
-      <Image src={logo} width="40px" />
-      <Button type="round" icon="settings" onClick={() => {}} />
-      <Button type="round" icon="power_settings_new" onClick={props.onLogout} />
+      <div className="menu-logo-container">
+        <Image
+          className="image animated"
+          src={animated}
+          width="40px"
+          height="40px"
+        />
+        <Image className="image fixed" src={logo} width="40px" height="40px" />
+      </div>
+      <Button
+        type="round"
+        icon="settings"
+        onClick={() => {}}
+        content="PROFILE"
+      />
+      <Button
+        type="round"
+        icon="power_settings_new"
+        onClick={props.onLogout}
+        content="LOGOUT"
+      />
+      <Button type="round" icon="bug_report" onClick={() => {}} content="BUG" />
+      <Button
+        type="round"
+        icon="contact_support"
+        onClick={() => {}}
+        content="CONTACT"
+      />
       <span
         className={props.visible ? 'hide' : 'hide hidden'}
         onClick={props.toggle}
@@ -25,6 +51,7 @@ Menu.propTypes = {
   onLogout: PropTypes.func,
   visible: PropTypes.bool,
   toggle: PropTypes.func,
+  fetching: PropTypes.array,
 };
 
 Menu.defaultProps = {

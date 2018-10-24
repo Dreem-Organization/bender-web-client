@@ -6,7 +6,6 @@ const LoginForm = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  overflow: hidden;
   .login-form-container {
     box-shadow: ${props => props.theme.shadow};
     background-color: white;

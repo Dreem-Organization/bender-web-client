@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import theme from 'themeConfig';
 import ExperimentTile from 'components/ExperimentTile';
 import Button from 'components/Button';
+import Label from 'components/Label';
 import StyledExperimentsBoard from './style';
 
 function ExperimentsBoard(props) {
@@ -16,6 +17,13 @@ function ExperimentsBoard(props) {
           onRemoveExperiment={props.onRemoveExperiment}
         />
       ))}
+      {Object.keys(props.experiments).length ? (
+        ''
+      ) : (
+        <div className="experiments-board-empty">
+          <Label content="No experiment yet, create one !" type="important" />
+        </div>
+      )}
       <div className="experiments-board-button-container">
         <Button
           className="spec"

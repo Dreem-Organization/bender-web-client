@@ -7,10 +7,6 @@ import { compose } from 'redux';
 import { CSSTransitionGroup } from 'react-transition-group';
 import Toast from 'components/Toast';
 import injectReducer from 'utils/injectReducer';
-import globalReducer from 'containers/App/reducer';
-import dashboardReducer from 'containers/Dashboard/reducer';
-import { makeSelectGlobalErrors } from 'containers/App/selectors';
-import { makeSelectDashboardErrors } from 'containers/Dashboard/selectors';
 import toasterReducer from './reducer';
 import { makeSelectToasts } from './selectors';
 import { PUT_TOAST, GRILL_TOAST, TOAST_READY } from './constants';
@@ -28,27 +24,6 @@ export class Toaster extends React.PureComponent {
   // constructor(props) {
   //   super(props);
   // }
-
-  componentDidUpdate(prevProps) {
-    if (
-      JSON.stringify(this.props.dashboardErrors) !==
-      JSON.stringify(prevProps.dashboardErrors)
-    ) {
-      this.props.putToast({
-        message: this.props.dashboardErrors,
-        life: 10,
-      });
-    }
-    if (
-      JSON.stringify(this.props.globalErrors) !==
-      JSON.stringify(prevProps.globalErrors)
-    ) {
-      this.props.putToast({
-        message: this.props.globalErrors,
-        life: 10,
-      });
-    }
-  }
 
   render() {
     const toasts = Object.values(this.props.toasts).map(t => (
@@ -76,9 +51,7 @@ export class Toaster extends React.PureComponent {
 Toaster.displayName = 'Toaster';
 Toaster.propTypes = {
   toasts: PropTypes.object,
-  dashboardErrors: PropTypes.object,
-  globalErrors: PropTypes.object,
-  putToast: PropTypes.func,
+  // putToast: PropTypes.func,
   grillToast: PropTypes.func,
   toastReady: PropTypes.func,
 };
@@ -93,8 +66,6 @@ export function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = createStructuredSelector({
   toasts: makeSelectToasts(),
-  globalErrors: makeSelectGlobalErrors(),
-  dashboardErrors: makeSelectDashboardErrors(),
 });
 
 const withConnect = connect(
@@ -103,18 +74,8 @@ const withConnect = connect(
 );
 
 const withReducer = injectReducer({ key: 'toaster', reducer: toasterReducer });
-const withReducerGlobal = injectReducer({
-  key: 'global',
-  reducer: globalReducer,
-});
-const withReducerDashboard = injectReducer({
-  key: 'dashboard',
-  reducer: dashboardReducer,
-});
 
 export default compose(
   withReducer,
-  withReducerGlobal,
-  withReducerDashboard,
   withConnect,
 )(Toaster);

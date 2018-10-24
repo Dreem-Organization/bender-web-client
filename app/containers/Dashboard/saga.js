@@ -16,10 +16,13 @@ import {
   CREATE_ALGO,
   FEED_ALGOS,
   FEED_TRIALS,
+  SET_IS_FETCHING,
+  FETCH_ERROR,
 } from './constants';
 
 function* fetchExperiments(action) {
   try {
+    yield put({ type: SET_IS_FETCHING, payload: true });
     const data = yield call(api.getExperiments, action.payload);
     const experiments = {};
     data.results.forEach(e => {
@@ -40,7 +43,7 @@ function* fetchExperiments(action) {
     });
     yield put({ type: FEED_EXPERIMENTS, payload: experiments });
   } catch (error) {
-    console.log(error);
+    yield put({ type: FETCH_ERROR, payload: error });
     yield put({
       type: PUT_TOAST,
       payload: {
@@ -53,9 +56,11 @@ function* fetchExperiments(action) {
 
 function* fetchDeleteExperiment(action) {
   try {
+    yield put({ type: SET_IS_FETCHING, payload: true });
     yield call(api.deleteExperiment, action.payload);
     yield put({ type: DELETE_EXPERIMENT, payload: action.payload.experiment });
   } catch (error) {
+    yield put({ type: FETCH_ERROR, payload: error });
     yield put({
       type: PUT_TOAST,
       payload: {
@@ -68,6 +73,7 @@ function* fetchDeleteExperiment(action) {
 
 function* fetchCreateExperiment(action) {
   try {
+    yield put({ type: SET_IS_FETCHING, payload: true });
     const data = yield call(api.createExperiment, action.payload);
     yield put({
       type: CREATE_EXPERIMENT,
@@ -75,6 +81,7 @@ function* fetchCreateExperiment(action) {
       meta: action.payload.experimentData.owner,
     });
   } catch (error) {
+    yield put({ type: FETCH_ERROR, payload: error });
     yield put({
       type: PUT_TOAST,
       payload: {
@@ -87,6 +94,7 @@ function* fetchCreateExperiment(action) {
 
 function* fetchAlgos(action) {
   try {
+    yield put({ type: SET_IS_FETCHING, payload: true });
     const data = yield call(api.getAlgos, action.payload);
     const algos = {};
     data.results.forEach(a => {
@@ -104,6 +112,7 @@ function* fetchAlgos(action) {
       payload: update,
     });
   } catch (error) {
+    yield put({ type: FETCH_ERROR, payload: error });
     yield put({
       type: PUT_TOAST,
       payload: {
@@ -116,6 +125,7 @@ function* fetchAlgos(action) {
 
 function* fetchDeleteAlgo(action) {
   try {
+    yield put({ type: SET_IS_FETCHING, payload: true });
     yield call(api.deleteAlgo, action.payload);
     yield put({
       type: DELETE_ALGO,
@@ -123,6 +133,7 @@ function* fetchDeleteAlgo(action) {
       meta: action.payload.experiment,
     });
   } catch (error) {
+    yield put({ type: FETCH_ERROR, payload: error });
     yield put({
       type: PUT_TOAST,
       payload: {
@@ -135,6 +146,7 @@ function* fetchDeleteAlgo(action) {
 
 function* fetchCreateAlgo(action) {
   try {
+    yield put({ type: SET_IS_FETCHING, payload: true });
     const data = yield call(api.createAlgo, action.payload);
     yield put({ type: CREATE_ALGO, payload: data, meta: action.payload.user });
   } catch (error) {
@@ -150,6 +162,7 @@ function* fetchCreateAlgo(action) {
 
 function* fetchTrials(action) {
   try {
+    yield put({ type: SET_IS_FETCHING, payload: true });
     const trials = yield call(api.getTrials, action.payload);
     const update = {};
     const hyperParameters = [];
@@ -173,6 +186,7 @@ function* fetchTrials(action) {
       hyperParameters,
     });
   } catch (error) {
+    yield put({ type: FETCH_ERROR, payload: error });
     yield put({
       type: PUT_TOAST,
       payload: {

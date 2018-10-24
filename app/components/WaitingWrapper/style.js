@@ -3,7 +3,7 @@ import { puffOutCenter } from 'KeyFrames';
 
 const WaitingWrapper = styled.div`
   .page-loader {
-    opacity: 0.5;
+    opacity: 1;
     display: flex;
     justify-content: center;
     align-items: center;

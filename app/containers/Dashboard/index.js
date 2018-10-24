@@ -14,7 +14,6 @@ import {
   makeSelectStatus,
   makeSelectJwt,
   makeSelectUserInfos,
-  makeSelectAnimator,
 } from 'containers/App/selectors';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -22,7 +21,7 @@ import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
 import LocalStorageManager from 'utils/localStorageManager';
 import theme from 'themeConfig';
-import { verifyUser, animatorUpdate } from 'containers/App/actions';
+import { verifyUser } from 'containers/App/actions';
 import {
   logout,
   toggleMenu,
@@ -46,6 +45,7 @@ import {
   makeSelectFilters,
   makeSelectModalStates,
   makeSelectChartSelectedPoint,
+  makeSelectFetching,
 } from './selectors';
 import saga from './saga';
 import reducer from './reducer';
@@ -93,12 +93,6 @@ export class Dashboard extends React.PureComponent {
     if (this.props.status === 'in' && !this.props.experiments.loaded) {
       this.props.fetchExperiments(this.props.jwt, this.props.user.username);
     }
-    if (!prevProps.experiments.loaded && this.props.experiments.loaded) {
-      this.props.animatorUpdate({ pageLoader: 'out' });
-      setTimeout(() => {
-        this.props.animatorUpdate({ pageLoader: 'hide' });
-      }, 1000);
-    }
     if (
       this.props.experiments.selected !== '' &&
       prevProps.experiments.selected !== this.props.experiments.selected &&
@@ -131,7 +125,7 @@ export class Dashboard extends React.PureComponent {
       this.props.experiments.list[this.props.experiments.selected].algos.loaded;
     return (
       <WaitingWrapper
-        pageLoader={this.props.animator.pageLoader}
+        timeout={1000}
         show={this.props.status === 'waiting' || !this.props.experiments.loaded}
       >
         <DashboardView>
@@ -139,6 +133,7 @@ export class Dashboard extends React.PureComponent {
             onLogout={this.props.onLogout}
             visible={this.props.menuState}
             toggle={this.props.onToggleMenu}
+            fetching={this.props.fetching}
           />
           <div className="dashboard-container">
             <ExperimentsHeader
@@ -235,14 +230,13 @@ Dashboard.propTypes = {
   onFilterChange: PropTypes.func,
   menuState: PropTypes.bool,
   user: PropTypes.object,
-  animator: PropTypes.object,
-  animatorUpdate: PropTypes.func,
   filters: PropTypes.object,
   modalStates: PropTypes.object,
   chartSelectedPoint: PropTypes.number,
   onChartPointSelect: PropTypes.func,
   onSelectedHyperParameterChange: PropTypes.func,
   onChangeSelectedMetrics: PropTypes.func,
+  fetching: PropTypes.array,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -265,7 +259,6 @@ export function mapDispatchToProps(dispatch) {
     onFilterChange: data => dispatch(filterChange(data)),
     onSelectedHyperParameterChange: (experiment, metric) =>
       dispatch(selectedHyperParameterChange(experiment, metric)),
-    animatorUpdate: data => dispatch(animatorUpdate(data)),
     toggleModal: modal => dispatch(toggleModal(modal)),
     onChartPointSelect: point => dispatch(chartPointSelect(point)),
     onChangeSelectedMetrics: data => dispatch(changeSelectedMetrics(data)),
@@ -275,7 +268,7 @@ export function mapDispatchToProps(dispatch) {
 const mapStateToProps = createStructuredSelector({
   status: makeSelectStatus(),
   jwt: makeSelectJwt(),
-  animator: makeSelectAnimator(),
+  fetching: makeSelectFetching(),
   menuState: makeSelectMenuState(),
   experiments: makeSelectExperiments(),
   user: makeSelectUserInfos(),

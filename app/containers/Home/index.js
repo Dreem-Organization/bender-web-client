@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import Title from 'components/Title';
 import Image from 'components/Image';
+import Button from 'components/Button';
 import logo from 'images/white.png';
 import LoginForm from 'components/LoginForm';
 import JoinForm from 'components/JoinForm';
@@ -37,7 +38,7 @@ const HomeView = styled.div`
     justify-content: center;
     align-items: center;
     height: 50vh;
-    min-height: 150px;
+    min-height: 300px;
     background-color: ${theme.main};
     flex-direction: column;
     .home-title {
@@ -46,6 +47,15 @@ const HomeView = styled.div`
     .home-sub-title {
       font-size: 1.6rem;
       color: ${theme.inverted};
+    }
+    .home-head-buttons {
+      .button {
+        font-weight: bold;
+        font-size: 1.3rem;
+        background-color: ${theme.inverted};
+        margin: 20px;
+        padding: 0 20px 2px 20px;
+      }
     }
     .bender-container {
       position: absolute;
@@ -64,22 +74,6 @@ const HomeView = styled.div`
       }
       .eyes-container {
         position: absolute;
-        .eye {
-          margin: 0 20px 5px 20px;
-          position: relative;
-          display: inline-block;
-          height: 40px;
-          width: 40px;
-        }
-        .pupil {
-          position: absolute;
-          bottom: 10px;
-          left: 10px;
-          width: 20px;
-          height: 20px;
-          background: #5eb0ef;
-          transition: 0.5s;
-        }
       }
     }
   }
@@ -89,8 +83,16 @@ const HomeView = styled.div`
     background-color: ${theme.grey};
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     z-index: 1;
+    .home-body-form-container {
+      margin-top: -50px;
+      opacity: 1;
+      transition: 0.3s;
+      &.hide {
+        opacity: 0;
+      }
+    }
   }
 `;
 
@@ -98,32 +100,107 @@ const HomeView = styled.div`
 export class Home extends React.PureComponent {
   constructor(props) {
     super(props);
+    this.state = {
+      visibleLogin: true,
+    };
     const token = LocalStorageManager.getUser();
     this.props.verifyUser(token);
     this.handleEyes = this.handleEyes.bind(this);
+    this.draweyes = this.draweyes.bind(this);
+    this.handleScrollToElement = this.handleScrollToElement.bind(this);
   }
 
   componentDidMount() {
+    window.addEventListener('scroll', this.handleScrollToElement);
     setTimeout(() => {
       this.props.loaded();
     }, 2000);
   }
 
-  handleEyes(event) {
-    const pupil1 = document.getElementById('pupil1');
-    const pupil2 = document.getElementById('pupil2');
-    const eye1 = document.getElementById('eye1');
-    const eye2 = document.getElementById('eye2');
-    const x = event.screenX;
-    const y = event.screenY;
-    pupil1.style.left = `${(x * eye1.offsetWidth) / window.innerWidth -
-      pupil1.offsetWidth / 2}px`;
-    pupil1.style.top = `${(y * eye1.offsetHeight) / window.innerHeight -
-      pupil1.offsetHeight / 2}px`;
-    pupil2.style.left = `${(x * eye2.offsetWidth) / window.innerWidth -
-      pupil2.offsetWidth / 2}px`;
-    pupil2.style.top = `${(y * eye2.offsetHeight) / window.innerHeight -
-      pupil2.offsetHeight / 2}px`;
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScrollToElement);
+  }
+
+  handleScrollToElement() {
+    const head = document.getElementById('head');
+    if (
+      this.props.status !== 'waiting' &&
+      window.scrollY === head.clientHeight
+    ) {
+      this.setState({ visibleLogin: false });
+    } else {
+      this.setState({ visibleLogin: true });
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.props.status !== 'waiting') {
+      this.c = document.getElementById('canvas');
+      if (this.c) {
+        this.ctx = this.c.getContext('2d');
+        this.centerX = this.c.width / 2;
+        this.centerY = this.c.height / 2;
+        this.radius = 100;
+        this.radiusEye = 10;
+        this.faceCenterX = this.centerX;
+        this.faceCenterY = this.c.height - 20;
+        this.radiusEyeIn = 10;
+        this.eyeYPosition = this.faceCenterY - 5;
+        this.reyedx = this.faceCenterX + this.radiusEyeIn / 2 + 35;
+        this.reyedy = this.eyeYPosition;
+        this.leyedx = this.faceCenterX - this.radiusEyeIn / 2 - 35;
+        this.leyedy = this.eyeYPosition;
+        this.eyesgap = 15;
+        this.draweyes(this.leyedx, this.leyedy, this.reyedx, this.reyedy);
+      }
+    }
+  }
+
+  draweyes(lEyeX, lEyeY, rEyeX, rEyeY) {
+    this.ctx.beginPath();
+    this.ctx.arc(rEyeX, rEyeY, this.radiusEyeIn, 0, 2 * Math.PI, false);
+    this.ctx.fillStyle = '#5eb0ef';
+    this.ctx.fill();
+    this.ctx.beginPath();
+    this.ctx.arc(lEyeX, lEyeY, this.radiusEyeIn, 0, 2 * Math.PI, false);
+    this.ctx.fillStyle = '#5eb0ef';
+    this.ctx.fill();
+  }
+
+  handleEyes(e) {
+    this.c = document.getElementById('canvas');
+    this.ctx = this.c.getContext('2d');
+    const head = document.getElementById('head');
+    const mouseX = e.pageX - (this.centerX + 50);
+    const mouseY = e.pageY - (head.clientHeight - 20);
+    const ratioX = Math.abs(mouseX) / (Math.abs(mouseX) + Math.abs(mouseY));
+    const ratioY = Math.abs(mouseY) / (Math.abs(mouseX) + Math.abs(mouseY));
+    let reyedxafter = 0;
+    let reyedyafter = 0;
+    let leyedxafter = 0;
+    let leyedyafter = 0;
+    if (mouseX > 0) {
+      reyedxafter = this.reyedx + ratioX * this.eyesgap;
+    } else {
+      reyedxafter = this.reyedx - ratioX * this.eyesgap;
+    }
+    if (mouseY > 0) {
+      reyedyafter = this.reyedy + ratioY * this.eyesgap;
+    } else {
+      reyedyafter = this.reyedy - ratioY * this.eyesgap;
+    }
+    if (mouseX > 0) {
+      leyedxafter = this.leyedx + ratioX * this.eyesgap;
+    } else {
+      leyedxafter = this.leyedx - ratioX * this.eyesgap;
+    }
+    if (mouseY > 0) {
+      leyedyafter = this.leyedy + ratioY * this.eyesgap;
+    } else {
+      leyedyafter = this.leyedy - ratioY * this.eyesgap;
+    }
+    this.ctx.clearRect(0, 0, this.c.width, this.c.height);
+    this.draweyes(leyedxafter, leyedyafter, reyedxafter, reyedyafter);
   }
 
   render() {
@@ -134,45 +211,56 @@ export class Home extends React.PureComponent {
     }
     return (
       <HomeView onMouseMove={this.handleEyes}>
-        <div className="home-head-container">
+        <div className="home-head-container" id="head">
           <Title className="home-title" content="Welcome to Bender" size={1} />
           <Title
             className="home-sub-title"
             content="The Free Hyper Parameters Optimizer"
             size={3}
           />
+          <div className="home-head-buttons">
+            <Button
+              content="DOCS"
+              onClick={() => this.props.history.push('eat-my-shiny-metal-doc')}
+            />
+            <Button
+              content="DEMO"
+              onClick={() => this.props.history.push('demo')}
+            />
+          </div>
           <div className="bender-container">
             <Image src={logo} />
             <div className="eyes-container">
-              <div className="eye" id="eye1">
-                <div className="pupil" id="pupil1" />
-              </div>
-              <div className="eye" id="eye2">
-                <div className="pupil" id="pupil2" />
-              </div>
+              <canvas id="canvas" width={250} height={250} />
             </div>
           </div>
         </div>
         <div className="home-body-container">
-          {this.props.from ? (
-            <div className="home-form-sub-container">
-              <LoginForm
-                animate={!this.props.firstViewLoaded}
-                onSubmit={this.props.onLogin}
-                onSocialLoginSucess={this.props.onSocialLoginSucess}
-                onToggleForm={this.props.toggleForm}
-              />
-            </div>
-          ) : (
-            <div className="home-form-sub-container">
-              <JoinForm
-                animate={!this.props.firstViewLoaded}
-                onSubmit={this.props.onJoin}
-                onSocialLoginSucess={this.props.onSocialLoginSucess}
-                onToggleForm={this.props.toggleForm}
-              />
-            </div>
-          )}
+          <div
+            className={`home-body-form-container ${
+              this.state.visibleLogin ? '' : 'hide'
+            }`}
+          >
+            {this.props.from ? (
+              <div className="home-body-form-sub-container">
+                <LoginForm
+                  animate={!this.props.firstViewLoaded}
+                  onSubmit={this.props.onLogin}
+                  onSocialLoginSucess={this.props.onSocialLoginSucess}
+                  onToggleForm={this.props.toggleForm}
+                />
+              </div>
+            ) : (
+              <div className="home-body-form-sub-container">
+                <JoinForm
+                  animate={!this.props.firstViewLoaded}
+                  onSubmit={this.props.onJoin}
+                  onSocialLoginSucess={this.props.onSocialLoginSucess}
+                  onToggleForm={this.props.toggleForm}
+                />
+              </div>
+            )}
+          </div>
         </div>
       </HomeView>
     );
@@ -181,6 +269,7 @@ export class Home extends React.PureComponent {
 
 Home.displayName = 'Home';
 Home.propTypes = {
+  history: PropTypes.object,
   status: PropTypes.string,
   onLogin: PropTypes.func,
   onJoin: PropTypes.func,
