@@ -60,10 +60,8 @@ export const api = {
   getTrials({ jwt, experiment, filters, callBack }) {
     return get(
       `${API_BASE_URL}/trials/?experiment=${experiment}&o_results=${
-        filters.sort === 'asc' ? '-' : ''
-      }${filters.order}&limit=${filters.limit}${
-        filters.algo !== 'all' ? '&algo=' : ''
-      }${filters.algo !== 'all' ? filters.algo : ''}`,
+        filters.order
+      }&limit=10000`,
       jwt,
     ).then(callBack);
   },

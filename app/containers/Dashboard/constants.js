@@ -1,3 +1,4 @@
+export const STAGE_UPDATE = 'Dashboard/STAGE_UPDATE';
 export const TOGGLE_MENU = 'Dashboard/TOGGLE_MENU';
 export const TOGGLE_MODAL = 'Dashboard/TOGGLE_MODAL';
 
@@ -22,7 +23,7 @@ export const FETCH_UPDATE_ALGO = 'Dashboard/FETCH_UPDATE_ALGO';
 export const CREATE_ALGO = 'Dashboard/CREATE_ALGO';
 export const UPDATE_ALGO = 'Dashboard/UPDATE_ALGO';
 
-export const CHANGE_FILTERS = 'Dashboard/CHANGE_SELECTED_ALGO';
+export const CHANGE_FILTERS = 'Dashboard/CHANGE_FILTERS';
 export const CHANGE_SELECTED_HYPER_PARAMETER =
   'Dashboard/CHANGE_SELECTED_HYPER_PARAMETER';
 export const CHART_POINT_SELECT = 'Dashboard/CHART_POINT_SELECT';

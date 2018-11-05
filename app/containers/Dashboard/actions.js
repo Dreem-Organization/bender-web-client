@@ -1,8 +1,8 @@
 import { LOGOUT } from 'containers/App/constants';
 import {
   TOGGLE_MENU,
+  STAGE_UPDATE,
   FETCH_EXPERIMENTS,
-  CHANGE_SELECTED_EXPERIMENT,
   FETCH_DELETE_EXPERIMENT,
   FETCH_CREATE_EXPERIMENT,
   FETCH_ALGOS,
@@ -70,7 +70,6 @@ export function createAlgo(jwt, raw, experiment, user) {
 }
 
 export function updateAlgo(jwt, raw, experiment, user) {
-  console.log(raw);
   const algoData = {
     experiment,
     name: raw.name,
@@ -145,13 +144,6 @@ export function deleteExperiment(jwt, experiment) {
   };
 }
 
-// LOCAL CHANGES ***
-export function changeSelectedExperiment(val) {
-  return {
-    type: CHANGE_SELECTED_EXPERIMENT,
-    payload: val,
-  };
-}
 // ########### ----------------------------------------------------------------
 
 // OTHERS ---------------------------------------------------------------------
@@ -195,6 +187,13 @@ export function toggleMenu() {
   return {
     type: TOGGLE_MENU,
     payload: null,
+  };
+}
+
+export function stageUpdate(newStage) {
+  return {
+    type: STAGE_UPDATE,
+    payload: newStage,
   };
 }
 

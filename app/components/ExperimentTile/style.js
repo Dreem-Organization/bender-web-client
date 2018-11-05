@@ -5,7 +5,6 @@ const ExperimentTile = styled.div`
   flex-direction: row;
   justify-content: space-between;
   padding: 10px;
-  margin: 0 10px;
   border-bottom: 2px solid ${props => props.theme.grey};
   font-family: ${props => props.theme.titleFont};
   .experiment-tile-info-container {

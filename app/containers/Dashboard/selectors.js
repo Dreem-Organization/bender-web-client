@@ -17,6 +17,11 @@ const makeSelectMenuState = () =>
     dashboardState.get('menuState'),
   );
 
+const makeSelectStage = () =>
+  createSelector(selectDashboard, dashboardState =>
+    dashboardState.get('stage').toJS(),
+  );
+
 const makeSelectExperiments = () =>
   createSelector(selectDashboard, dashboardState =>
     dashboardState.get('experiments').toJS(),
@@ -38,6 +43,7 @@ const makeSelectChartSelectedPoint = () =>
   );
 
 export {
+  makeSelectStage,
   makeSelectFetching,
   makeSelectDashboardErrors,
   makeSelectMenuState,

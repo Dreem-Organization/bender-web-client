@@ -4,7 +4,7 @@ const ExperimentsBoard = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding-top: 10px;
+  padding: 0px 20px 0 20px;
   .experiments-board-button-container {
     margin-top: 20px;
     display: flex;

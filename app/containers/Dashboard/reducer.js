@@ -1,7 +1,8 @@
 import { fromJS } from 'immutable';
-// import LocalStorageManager from 'utils/localStorageManager';
+import LocalStorageManager from 'utils/localStorageManager';
 import {
   TOGGLE_MENU,
+  STAGE_UPDATE,
   FEED_EXPERIMENTS,
   DELETE_EXPERIMENT,
   CREATE_EXPERIMENT,
@@ -39,6 +40,7 @@ export const initialState = fromJS({
   },
   fetching: [],
   menuState: true,
+  stage: [{ layer: 0, exp: '', algo: '' }],
   chartSelectedPoint: -1,
   error: null,
 });
@@ -47,6 +49,9 @@ function dashboardReducer(state = initialState, action) {
   switch (action.type) {
     case TOGGLE_MENU:
       return state.update('menuState', val => !val);
+    case STAGE_UPDATE:
+      LocalStorageManager.setStage(action.payload);
+      return state.updateIn(['stage'], arr => arr.unshift(action.payload));
     case SET_IS_FETCHING:
       return state.updateIn(['fetching'], arr => arr.push(action.payload));
     case FETCH_ERROR:
@@ -67,10 +72,6 @@ function dashboardReducer(state = initialState, action) {
         .mergeDeep({
           experiments: {
             loaded: true,
-            selected:
-              Object.keys(action.payload).length > 0
-                ? Object.keys(action.payload)[0]
-                : null,
             list: action.payload,
           },
         })
@@ -106,10 +107,7 @@ function dashboardReducer(state = initialState, action) {
         )
         .updateIn(['fetching'], arr => arr.pop());
     case CHANGE_SELECTED_EXPERIMENT:
-      return state
-        .set('chartSelectedPoint', -1)
-        .mergeDeep({ experiments: { selected: action.payload } })
-        .updateIn(['fetching'], arr => arr.pop());
+      return state.mergeDeep({ experiments: { selected: action.payload } });
     case FEED_ALGOS:
       return state
         .mergeDeep({ experiments: { list: action.payload } })
@@ -145,10 +143,7 @@ function dashboardReducer(state = initialState, action) {
         .updateIn(['fetching'], arr => arr.pop());
     case FEED_TRIALS:
       return state
-        .setIn(
-          ['experiments', 'list', action.meta, 'trials', 'list'],
-          action.payload,
-        )
+        .setIn(['experiments', 'list', action.meta, 'trials'], action.payload)
         .setIn(
           ['experiments', 'list', action.meta, 'hyperParametersAvailables'],
           action.hyperParameters,

@@ -1,19 +1,61 @@
 import styled from 'styled-components';
 
 const Chart = styled.div`
-  position: relative;
-  height: 100%;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   min-height: 150px;
-  .chart-sub-container {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    .chart-empty-container {
-      height: 100%;
+  .chart-filters-container {
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    i {
+      margin-right: 8px;
+      color: ${props => props.theme.main};
+      font-size: 1.1rem;
+    }
+    .chart-filters {
       display: flex;
-      justify-content: center;
+      flex-direction: row;
+      .select {
+        margin-left: 10px;
+      }
+    }
+  }
+  .chart-container {
+    position: relative;
+    flex-grow: 1;
+    .chart-sub-container {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      .chart-empty-container {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+  .chart-visualize-container {
+    .chart-visualize-sub-container {
+      min-height: 40px;
+      display: flex;
       align-items: center;
+      i {
+        margin-right: 8px;
+        color: ${props => props.theme.main};
+        font-size: 1.1rem;
+      }
+      .select {
+        margin-left: 10px;
+      }
+      .chart-checkboxes {
+        display: flex;
+        .checkbox {
+          margin-left: 10px;
+        }
+      }
     }
   }
   .custom-tooltip {

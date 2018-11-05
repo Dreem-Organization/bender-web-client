@@ -10,6 +10,7 @@ const ClipBoardButton = styled.button`
   padding: 0;
   overflow: hidden;
   input {
+    flex-grow: 1;
     color: ${props => props.theme.greyDark};
     font-weight: bold;
     padding: 0 5px;

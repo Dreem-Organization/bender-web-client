@@ -36,8 +36,9 @@ function* fetchExperiments(action) {
         },
         trials: {
           loaded: false,
-          list: [],
+          list: {},
         },
+        rankBy: e.metrics[0],
         selectedHyperParameter: 'time',
         hyperParametersAvailables: [],
         selectedMetrics: [e.metrics[0]],
@@ -163,7 +164,6 @@ function* fetchCreateAlgo(action) {
 }
 
 function* fetchUpdateAlgo(action) {
-  console.log(action);
   try {
     yield put({ type: SET_IS_FETCHING, payload: true });
     const data = yield call(api.updateAlgo, action.payload);
@@ -183,24 +183,26 @@ function* fetchTrials(action) {
   try {
     yield put({ type: SET_IS_FETCHING, payload: true });
     const trials = yield call(api.getTrials, action.payload);
-    const update = {};
+    const categorized = {};
     const hyperParameters = [];
     trials.results.forEach(trial => {
+      if (!categorized[trial.algo]) {
+        categorized[trial.algo] = [];
+      }
+      categorized[trial.algo].push(trial);
       Object.keys(trial.parameters).forEach(param => {
         if (!hyperParameters.includes(param)) {
           hyperParameters.push(param);
         }
       });
     });
-    update[action.payload.experiment] = {
-      trials: {
-        loaded: true,
-        list: trials.results,
-      },
+    const update = {
+      loaded: true,
+      list: categorized,
     };
     yield put({
       type: FEED_TRIALS,
-      payload: trials.results,
+      payload: update,
       meta: action.payload.experiment,
       hyperParameters,
     });

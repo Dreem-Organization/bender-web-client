@@ -3,13 +3,12 @@ import { PropTypes } from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
+import { CSSTransitionGroup } from 'react-transition-group';
 import WaitingWrapper from 'components/WaitingWrapper';
 import Menu from 'components/Menu';
-import Algos from 'components/Algos';
+import Board from 'components/Board';
 import Modals from 'components/Modals';
 import ExperimentsHeader from 'components/ExperimentsHeader';
-import TrialsBoard from 'components/TrialsBoard';
-import ExperimentsBoard from 'components/ExperimentsBoard';
 import {
   makeSelectStatus,
   makeSelectJwt,
@@ -20,11 +19,11 @@ import { compose } from 'redux';
 import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
 import LocalStorageManager from 'utils/localStorageManager';
-import theme from 'themeConfig';
 import { verifyUser } from 'containers/App/actions';
 import {
   logout,
   toggleMenu,
+  stageUpdate,
   fetchExperiments,
   createExperiment,
   deleteExperiment,
@@ -33,7 +32,6 @@ import {
   updateAlgo,
   deleteAlgo,
   fetchTrials,
-  changeSelectedExperiment,
   changeSelectedMetrics,
   filterChange,
   selectedHyperParameterChange,
@@ -42,6 +40,7 @@ import {
 } from './actions';
 import {
   makeSelectMenuState,
+  makeSelectStage,
   makeSelectExperiments,
   makeSelectFilters,
   makeSelectModalStates,
@@ -64,20 +63,21 @@ const DashboardView = styled.div`
     display: flex;
     flex-direction: column;
     overflow: scroll;
-    .board {
-      min-height: 500px;
-      background-color: white;
-      margin: 20px;
+    .boards {
+      position: relative;
+      flex-grow: 1;
       display: flex;
       flex-direction: row;
-      flex-grow: 1;
-      box-shadow: ${theme.secondaryShadow};
-      position: relative;
-      .trials-board {
-        flex-grow: 1;
-      }
     }
   }
+`;
+
+const BoardWrapper = styled.div`
+  position: relative;
+  margin: 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
 `;
 
 /* eslint-disable react/prefer-stateless-function */
@@ -85,9 +85,11 @@ export class Dashboard extends React.PureComponent {
   constructor(props) {
     super(props);
     const token = LocalStorageManager.getUser();
-    setTimeout(() => {
-      this.props.verifyUser(token);
-    }, 2000);
+    const stageData = LocalStorageManager.getStage();
+    if (stageData) {
+      this.props.onStageUpdate(stageData.stage);
+    }
+    this.props.verifyUser(token);
   }
 
   componentDidUpdate(prevProps) {
@@ -95,14 +97,14 @@ export class Dashboard extends React.PureComponent {
       this.props.fetchExperiments(this.props.jwt, this.props.user.username);
     }
     if (
-      this.props.experiments.selected !== '' &&
-      prevProps.experiments.selected !== this.props.experiments.selected &&
-      !this.props.experiments.list[this.props.experiments.selected].algos.loaded
+      this.props.experiments.loaded &&
+      this.props.stage[0].exp !== '' &&
+      !this.props.experiments.list[this.props.stage[0].exp].algos.loaded
     ) {
-      this.props.fetchAlgos(this.props.jwt, this.props.experiments.selected);
+      this.props.fetchAlgos(this.props.jwt, this.props.stage[0].exp);
       this.props.fetchTrials(
         this.props.jwt,
-        this.props.experiments.selected,
+        this.props.stage[0].exp,
         this.props.filters,
       );
     }
@@ -111,7 +113,7 @@ export class Dashboard extends React.PureComponent {
     ) {
       this.props.fetchTrials(
         this.props.jwt,
-        this.props.experiments.selected,
+        this.props.stage[0].exp,
         this.props.filters,
       );
     }
@@ -121,9 +123,8 @@ export class Dashboard extends React.PureComponent {
     if (this.props.status === 'out') {
       return <Redirect to="/" />;
     }
-    const condition =
-      this.props.experiments.selected !== '' &&
-      this.props.experiments.list[this.props.experiments.selected].algos.loaded;
+    const currentStageState = this.props.stage[0].layer;
+    const prevStageState = this.props.stage[1] ? this.props.stage[1].layer : -1;
     return (
       <WaitingWrapper
         timeout={1000}
@@ -138,56 +139,41 @@ export class Dashboard extends React.PureComponent {
           />
           <div className="dashboard-container">
             <ExperimentsHeader
+              stage={this.props.stage[0]}
               experiments={this.props.experiments}
-              resetSelected={() => this.props.onExperimentChangeSelected('')}
+              stageUpdate={data => this.props.onStageUpdate(data)}
             />
-            {condition ? (
-              <div className="board">
-                <TrialsBoard
-                  onFilterChange={this.props.onFilterChange}
-                  onSelectedHyperParameterChange={
-                    this.props.onSelectedHyperParameterChange
-                  }
-                  experiment={
-                    this.props.experiments.list[this.props.experiments.selected]
-                  }
-                  filters={this.props.filters}
-                  chartSelectedPoint={this.props.chartSelectedPoint}
-                  onChartPointSelect={this.props.onChartPointSelect}
-                  onChangeSelectedMetrics={this.props.onChangeSelectedMetrics}
-                />
-                <Algos
-                  algos={
-                    this.props.experiments.list[this.props.experiments.selected]
-                      .algos
-                  }
-                  openAlgoModal={() => this.props.toggleModal('algoCreate')}
-                  openUpdateAlgoModal={meta =>
-                    this.props.toggleModal('algoUpdate', meta)
-                  }
-                  onRemoveAlgo={id =>
-                    this.props.onRemoveAlgo(
-                      this.props.jwt,
-                      id,
-                      this.props.experiments.selected,
-                    )
-                  }
-                />
-              </div>
-            ) : (
-              <div className="board">
-                <ExperimentsBoard
-                  changeActiveExperiment={this.props.onExperimentChangeSelected}
-                  openExperimentModal={() =>
-                    this.props.toggleModal('experimentCreate')
-                  }
-                  experiments={this.props.experiments.list}
-                  onRemoveExperiment={id =>
-                    this.props.onRemoveExperiment(this.props.jwt, id)
-                  }
-                />
-              </div>
-            )}
+            {/* <Algos
+              algos={
+                this.props.experiments.list[this.props.stage[0].exp]
+                  .algos
+              }
+              openAlgoModal={() => this.props.toggleModal('algoCreate')}
+              openUpdateAlgoModal={meta =>
+                this.props.toggleModal('algoUpdate', meta)
+              }
+              onRemoveAlgo={id =>
+                this.props.onRemoveAlgo(
+                  this.props.jwt,
+                  id,
+                  this.props.stage[0].exp,
+                )
+              }
+            /> */}
+            <div className="boards">
+              <CSSTransitionGroup
+                transitionName={
+                  currentStageState > prevStageState
+                    ? 'slide-prev'
+                    : 'slide-next'
+                }
+                transitionEnterTimeout={500}
+                transitionLeaveTimeout={300}
+                component={BoardWrapper}
+              >
+                <Board key={this.props.stage[0].layer} {...this.props} />
+              </CSSTransitionGroup>
+            </div>
           </div>
           <Modals
             onClose={() => this.props.toggleModal('')}
@@ -203,7 +189,7 @@ export class Dashboard extends React.PureComponent {
               this.props.onCreateAlgo(
                 this.props.jwt,
                 data,
-                this.props.experiments.selected,
+                this.props.stage[0].exp,
                 this.props.user.username,
               )
             }
@@ -211,7 +197,7 @@ export class Dashboard extends React.PureComponent {
               this.props.onUpdateAlgo(
                 this.props.jwt,
                 data,
-                this.props.experiments.selected,
+                this.props.stage[0].exp,
                 this.props.user.username,
               );
             }}
@@ -230,6 +216,7 @@ Dashboard.propTypes = {
   verifyUser: PropTypes.func,
   onLogout: PropTypes.func,
   onToggleMenu: PropTypes.func,
+  onStageUpdate: PropTypes.func,
   toggleModal: PropTypes.func,
   fetchExperiments: PropTypes.func,
   onCreateExperiment: PropTypes.func,
@@ -237,11 +224,11 @@ Dashboard.propTypes = {
   onCreateAlgo: PropTypes.func,
   onUpdateAlgo: PropTypes.func,
   fetchTrials: PropTypes.func,
-  onExperimentChangeSelected: PropTypes.func,
   onRemoveExperiment: PropTypes.func,
   onRemoveAlgo: PropTypes.func,
   onFilterChange: PropTypes.func,
   menuState: PropTypes.bool,
+  stage: PropTypes.array,
   user: PropTypes.object,
   filters: PropTypes.object,
   modalStates: PropTypes.object,
@@ -256,6 +243,7 @@ export function mapDispatchToProps(dispatch) {
   return {
     onLogout: () => dispatch(logout()),
     onToggleMenu: () => dispatch(toggleMenu()),
+    onStageUpdate: stage => dispatch(stageUpdate(stage)),
     verifyUser: token => dispatch(verifyUser(token)),
     fetchExperiments: (jwt, user) => dispatch(fetchExperiments(jwt, user)),
     onCreateExperiment: (jwt, data, owner) =>
@@ -267,7 +255,6 @@ export function mapDispatchToProps(dispatch) {
       dispatch(updateAlgo(jwt, data, experiment, user)),
     fetchTrials: (jwt, experiment, filters) =>
       dispatch(fetchTrials(jwt, experiment, filters)),
-    onExperimentChangeSelected: val => dispatch(changeSelectedExperiment(val)),
     onRemoveExperiment: (jwt, id) => dispatch(deleteExperiment(jwt, id)),
     onRemoveAlgo: (jwt, id, experiment) =>
       dispatch(deleteAlgo(jwt, id, experiment)),
@@ -284,6 +271,7 @@ const mapStateToProps = createStructuredSelector({
   status: makeSelectStatus(),
   jwt: makeSelectJwt(),
   fetching: makeSelectFetching(),
+  stage: makeSelectStage(),
   menuState: makeSelectMenuState(),
   experiments: makeSelectExperiments(),
   user: makeSelectUserInfos(),

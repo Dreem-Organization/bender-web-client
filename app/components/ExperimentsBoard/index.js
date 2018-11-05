@@ -11,7 +11,7 @@ function ExperimentsBoard(props) {
     <StyledExperimentsBoard className="experiments-board" {...props}>
       {Object.values(props.experiments).map(e => (
         <ExperimentTile
-          onClick={() => props.changeActiveExperiment(e.id)}
+          onClick={() => props.stageUpdate({ layer: 1, exp: e.id, algo: '' })}
           key={e.id}
           experiment={e}
           onRemoveExperiment={props.onRemoveExperiment}
@@ -40,7 +40,7 @@ function ExperimentsBoard(props) {
 ExperimentsBoard.propTypes = {
   theme: PropTypes.object,
   experiments: PropTypes.object.isRequired,
-  changeActiveExperiment: PropTypes.func.isRequired,
+  stageUpdate: PropTypes.func.isRequired,
   openExperimentModal: PropTypes.func.isRequired,
   onRemoveExperiment: PropTypes.func.isRequired,
 };

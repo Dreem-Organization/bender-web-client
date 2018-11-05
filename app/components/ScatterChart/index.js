@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Label from 'components/Label';
+import Icon from 'components/Icon';
+import Checkbox from 'components/Checkbox';
+import Select from 'components/Select';
 import theme from 'themeConfig';
 import TimeAgo from 'react-timeago';
 import _ from 'lodash';
@@ -15,7 +18,6 @@ import {
   Scatter,
   XAxis,
   YAxis,
-  ZAxis,
 } from 'recharts';
 import StyledChart from './style';
 
@@ -31,7 +33,7 @@ const chartStyles = {
 };
 
 const colorWheel = {
-  0: '#108FE9', // #108EE9
+  0: '#108FE9',
   1: '#56B9FD',
   2: '#B69CFD',
   3: '#FFA2D6',
@@ -60,8 +62,10 @@ export default class Chart extends Component {
 
   componentDidUpdate(prevProps) {
     if (
-      JSON.stringify(this.props.experiment.trials.list) !==
-      JSON.stringify(prevProps.experiment.trials.list)
+      JSON.stringify(
+        this.props.experiment.trials.list[this.props.stage.algo],
+      ) !==
+      JSON.stringify(prevProps.experiment.trials.list[this.props.stage.algo])
     ) {
       this.setState({
         key: Math.floor(Math.random() * Math.floor(1000)),
@@ -72,7 +76,7 @@ export default class Chart extends Component {
   getLineData() {
     let data;
     if (this.props.experiment.selectedMetrics !== null) {
-      data = _.chain(this.props.experiment.trials.list)
+      data = _.chain(this.props.experiment.trials.list[this.props.stage.algo])
         .map(k => {
           const results = _.mapValues(k.results, r => _.round(r, 4));
           results.id = k.id;
@@ -81,7 +85,7 @@ export default class Chart extends Component {
         .reverse()
         .value();
     } else if (this.props.experiment.selectedHyperParameter !== null) {
-      data = _(this.props.experiment.trials.list)
+      data = _(this.props.experiment.trials.list[this.props.stage.algo])
         .map(k => ({
           id: k.id,
           value: _.round(
@@ -109,7 +113,7 @@ export default class Chart extends Component {
 
   getScatterData() {
     const algos = this.getAlgos();
-    const a = _.chain(this.props.experiment.trials.list)
+    const a = _.chain(this.props.experiment.trials.list[this.props.stage.algo])
       .filter(k => _.includes(algos, k.algo))
       .map(k => ({
         id: k.id,
@@ -122,7 +126,7 @@ export default class Chart extends Component {
   }
 
   getDiscreteParameters() {
-    const a = _.chain(this.props.experiment.trials.list)
+    const a = _.chain(this.props.experiment.trials.list[this.props.stage.algo])
       .filter(k => _.includes(this.getAlgos(), k.algo))
       .uniqBy(k => k.parameters[this.props.experiment.selectedHyperParameter])
       .map((k, i) => ({
@@ -138,7 +142,7 @@ export default class Chart extends Component {
   }
 
   getDiscreteData() {
-    _.chain(this.props.experiment.trials.list)
+    const z = _.chain(this.props.experiment.trials.list[this.props.stage.algo])
       .filter(k => _.includes(this.getAlgos(), k.algo))
       .map(k => ({
         id: k.id,
@@ -151,6 +155,7 @@ export default class Chart extends Component {
         param: k.parameters[this.props.experiment.selectedHyperParameter],
       }))
       .value();
+    return z;
   }
 
   displayParameter(tick) {
@@ -216,9 +221,9 @@ export default class Chart extends Component {
 
   lineCustomTooltip(item) {
     if (item.payload[0]) {
-      const trial = this.props.experiment.trials.list.filter(
-        k => k.id === item.payload[0].payload.id,
-      )[0];
+      const trial = this.props.experiment.trials.list[
+        this.props.stage.algo
+      ].filter(k => k.id === item.payload[0].payload.id)[0];
       return (
         <div className="custom-tooltip">
           <div className="custom-tooltip-header">
@@ -249,7 +254,7 @@ export default class Chart extends Component {
   }
 
   // scatterCustomTooltip(item) {
-  //   const trial = this.props.experiment.trials.list.filter(
+  //   const trial = this.props.experiment.trials.list[this.props.stage.algo].filter(
   //     k => k.id === item.payload[2].value,
   //   )[0];
   //
@@ -368,11 +373,11 @@ export default class Chart extends Component {
         </ComposedChart>
       );
     } else if (
-      this.props.experiment.trials.list[0] &&
-      typeof this.props.experiment.trials.list[0].parameters[
-        this.props.experiment.selectedHyperParameter
-      ] === 'string'
+      this.props.experiment.trials.list[this.props.stage.algo][0] &&
+      typeof this.props.experiment.trials.list[this.props.stage.algo][0]
+        .parameters[this.props.experiment.selectedHyperParameter] === 'string'
     ) {
+      console.log('DISCRETE', this.getDiscreteData());
       return (
         <ScatterChart
           style={chartStyles}
@@ -394,12 +399,13 @@ export default class Chart extends Component {
             interval={0}
             name={this.state.Y}
           />
-          <ZAxis dataKey="id" />
+          {/* <ZAxis dataKey="id" /> */}
           {/* <Tooltip content={this.scatterCustomTooltip} offset={25} /> */}
           <CartesianGrid strokeDasharray="3 3" style={{ opacity: 0.3 }} />
         </ScatterChart>
       );
     }
+    console.log('SCATTER', this.getScatterData());
     return (
       <ScatterChart
         style={chartStyles}
@@ -414,7 +420,7 @@ export default class Chart extends Component {
         <Scatter data={this.getScatterData()} fill="#008cec" r={2} />
         <YAxis dataKey="X" domain={['auto', 'auto']} name={this.state.X} />
         <XAxis dataKey="Y" domain={['auto', 'auto']} name={this.state.Y} />
-        <ZAxis dataKey="id" />
+        {/* <ZAxis dataKey="id" /> */}
         {/* <Tooltip content={this.scatterCustomTooltip} offset={25} /> */}
         <CartesianGrid strokeDasharray="3 3" style={{ opacity: 0.3 }} />
       </ScatterChart>
@@ -424,8 +430,59 @@ export default class Chart extends Component {
   render() {
     return (
       <StyledChart className="chart" {...this.props}>
-        <div className="chart-sub-container">
-          <ResponsiveContainer>{this.getChart()}</ResponsiveContainer>
+        <div className="chart-filters-container">
+          <Icon name="filter_list" />
+          <Label content="Filters :" size="tiny" type="important" />
+          <div className="chart-filters">
+            <Select
+              onSelectionChange={val =>
+                this.props.onFilterChange({ order: val })
+              }
+              selected="date"
+              label="ORDER BY"
+              values={[{ id: 'date', label: 'Date' }].concat(
+                this.props.experiment.metrics.map(m => ({
+                  id: m,
+                  label: m,
+                })),
+              )}
+            />
+          </div>
+        </div>
+        <div className="chart-container">
+          <div className="chart-sub-container">
+            <ResponsiveContainer>{this.getChart()}</ResponsiveContainer>
+          </div>
+        </div>
+        <div className="chart-visualize-container">
+          <div className="chart-visualize-sub-container">
+            <Icon name="visibility" />
+            <Label content="Visualization :" size="tiny" type="important" />
+            <div className="chart-checkboxes">
+              {this.props.experiment.metrics.map(metric => (
+                <Checkbox
+                  key={metric}
+                  name={metric}
+                  label={metric}
+                  value={metric}
+                  checked={this.props.experiment.selectedMetrics.includes(
+                    metric,
+                  )}
+                  onChange={() =>
+                    this.props.onChangeSelectedMetrics({
+                      action: this.props.experiment.selectedMetrics.includes(
+                        metric,
+                      )
+                        ? 'remove'
+                        : 'add',
+                      metric,
+                      experiment: this.props.experiment.id,
+                    })
+                  }
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </StyledChart>
     );
@@ -437,8 +494,11 @@ Chart.propTypes = {
   theme: PropTypes.object,
   filters: PropTypes.object.isRequired,
   onChartPointSelect: PropTypes.func.isRequired,
+  onFilterChange: PropTypes.func.isRequired,
+  onChangeSelectedMetrics: PropTypes.func.isRequired,
 
   experiment: PropTypes.object.isRequired,
+  stage: PropTypes.object.isRequired,
 };
 Chart.defaultProps = {
   theme,

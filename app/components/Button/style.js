@@ -32,6 +32,7 @@ const round = css`
 `;
 
 const normal = css`
+  min-height: 30px;
   height: 30px;
   margin: 0;
   padding: 0;
@@ -45,10 +46,27 @@ const normal = css`
   }
 `;
 
+const inverted = css`
+  min-height: 30px;
+  height: 30px;
+  margin: 0;
+  padding: 0;
+  color: ${props => props.theme.inverted};
+  box-shadow: inset 0 -30px 0 0 ${props => props.theme.main};
+  transition: 0.2s;
+  &:hover {
+    box-shadow: inset 0 -3px 0 0 ${props => props.theme.main};
+    color: ${props => props.theme.main};
+    cursor: pointer;
+  }
+`;
+
 const Button = styled.button`
   ${props => {
     if (props.type === 'round') {
       return round;
+    } else if (props.type === 'inverted') {
+      return inverted;
     }
     return normal;
   }};

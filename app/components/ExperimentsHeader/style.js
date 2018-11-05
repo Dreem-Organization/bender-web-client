@@ -8,9 +8,14 @@ const Experiments = styled.div`
   padding: 10px 20px;
   min-height: 80px;
   min-width: 1000px;
-  .link:hover {
-    color: ${props => props.theme.light};
-    cursor: pointer;
+  .title {
+    &.link {
+      color: ${props => props.theme.greyDark};
+      &:hover {
+        color: ${props => props.theme.grey};
+        cursor: pointer;
+      }
+    }
   }
   .selected {
     color: ${props => props.theme.greyDark};
@@ -25,6 +30,29 @@ const Experiments = styled.div`
     .experiments-head-sub-container {
       display: flex;
       align-items: center;
+      .experiments-head-portion {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        .experiments-home {
+          color: ${props => props.theme.main};
+          transition: 0.2s;
+          &:hover {
+            cursor: pointer;
+            color: ${props => props.theme.light};
+            transform: scale(1.1);
+          }
+        }
+        .experiments-link {
+          color: ${props => props.theme.greyDark};
+          margin: 0 5px;
+        }
+        .title {
+          &.link {
+            color: ${props => props.theme.greyDark};
+          }
+        }
+      }
     }
     .select {
       margin: 0 10px;
