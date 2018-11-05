@@ -7,6 +7,7 @@ import {
   FETCH_JOIN,
   JOIN,
 } from 'containers/App/constants';
+import { PUT_TOAST } from 'containers/Toaster/constants';
 import { api } from 'utils/api';
 // import { selectCredentials } from 'containers/App/selectors';
 
@@ -22,6 +23,13 @@ function* login(action) {
     yield put({ type: LOGIN, payload: data });
   } catch (error) {
     yield put({ type: FETCH_ERROR, payload: error });
+    yield put({
+      type: PUT_TOAST,
+      payload: {
+        message: error.message,
+        life: 10,
+      },
+    });
   }
 }
 
@@ -45,6 +53,13 @@ function* join(action) {
     yield put({ type: JOIN, payload: data });
   } catch (error) {
     yield put({ type: FETCH_ERROR, payload: error });
+    yield put({
+      type: PUT_TOAST,
+      payload: {
+        message: error.message,
+        life: 10,
+      },
+    });
   }
 }
 

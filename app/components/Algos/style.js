@@ -20,6 +20,11 @@ const Algos = styled.div`
     .algo-tile {
       border-bottom: 2px solid ${props => props.theme.grey};
     }
+    .algo-list-empty {
+      display: flex;
+      justify-content: center;
+      padding-top: 20px;
+    }
   }
   .algos-create-container {
     min-height: 60px;

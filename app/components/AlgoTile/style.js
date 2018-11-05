@@ -8,22 +8,26 @@ const AlgoTile = styled.div`
   flex-direction: column;
   justify-content: center;
   color: ${props => props.theme.greyDark};
-  .algo-tile-delete-container {
+  .algo-tile-ud-container {
     opacity: 0;
     position: absolute;
-    right: 2px;
+    right: 20px;
     top: 0;
     transition: 0.2s;
-    i {
+    .delete {
       color: ${props => props.theme.negative};
       font-size: 1rem;
     }
-    &:hover {
+    .update {
+      color: ${props => props.theme.main};
+      font-size: 1rem;
+    }
+    i:hover {
       cursor: pointer;
     }
   }
   &:hover {
-    .algo-tile-delete-container {
+    .algo-tile-ud-container {
       opacity: 1;
     }
   }
@@ -32,13 +36,23 @@ const AlgoTile = styled.div`
     align-items: center;
     .algo-tile-name {
       color: ${props => props.theme.main};
-      font-size: 1.1rem;
+      text-transform: capitalize;
+      font-size: 1.2rem;
       margin-right: 5px;
+      max-width: 50%;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
     }
     .algo-tile-trials {
       color: ${props => props.theme.greyDark};
-      font-size: 0.6rem;
+      font-size: 1.2rem;
+      font-weight: 100;
       margin-right: 5px;
+      max-width: 50%;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
     }
   }
   .algo-tile-hyper {
@@ -69,6 +83,15 @@ const AlgoTile = styled.div`
   }
   .clipboard-button {
     margin-top: 10px;
+  }
+  .algo-tile-buttons-container {
+    with: 100%;
+    display: flex;
+    flex-direction: column;
+    .button {
+      margin-top: 5px;
+      font-size: 0.8rem;
+    }
   }
 `;
 

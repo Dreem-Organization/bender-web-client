@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import theme from 'themeConfig';
 import ExperimentTile from 'components/ExperimentTile';
 import Button from 'components/Button';
+import Label from 'components/Label';
 import StyledExperimentsBoard from './style';
 
 function ExperimentsBoard(props) {
@@ -10,12 +11,19 @@ function ExperimentsBoard(props) {
     <StyledExperimentsBoard className="experiments-board" {...props}>
       {Object.values(props.experiments).map(e => (
         <ExperimentTile
-          onClick={() => props.changeActiveExperiment(e.id)}
+          onClick={() => props.stageUpdate({ layer: 1, exp: e.id, algo: '' })}
           key={e.id}
           experiment={e}
           onRemoveExperiment={props.onRemoveExperiment}
         />
       ))}
+      {Object.keys(props.experiments).length ? (
+        ''
+      ) : (
+        <div className="experiments-board-empty">
+          <Label content="No experiment yet, create one !" type="important" />
+        </div>
+      )}
       <div className="experiments-board-button-container">
         <Button
           className="spec"
@@ -32,7 +40,7 @@ function ExperimentsBoard(props) {
 ExperimentsBoard.propTypes = {
   theme: PropTypes.object,
   experiments: PropTypes.object.isRequired,
-  changeActiveExperiment: PropTypes.func.isRequired,
+  stageUpdate: PropTypes.func.isRequired,
   openExperimentModal: PropTypes.func.isRequired,
   onRemoveExperiment: PropTypes.func.isRequired,
 };

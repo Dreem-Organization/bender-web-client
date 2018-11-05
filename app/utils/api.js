@@ -1,4 +1,4 @@
-import { post, get, remove } from 'utils/request';
+import { post, get, remove, put } from 'utils/request';
 import { BASE_URL, API_BASE_URL } from 'utils/globals';
 
 export const api = {
@@ -52,13 +52,16 @@ export const api = {
   createAlgo({ jwt, algoData, callBack }) {
     return post(`${API_BASE_URL}/algos.json`, algoData, jwt).then(callBack);
   },
+  updateAlgo({ jwt, algoData, callBack, algoId }) {
+    return put(`${API_BASE_URL}/algos/${algoId}/`, algoData, jwt).then(
+      callBack,
+    );
+  },
   getTrials({ jwt, experiment, filters, callBack }) {
     return get(
       `${API_BASE_URL}/trials/?experiment=${experiment}&o_results=${
-        filters.sort === 'asc' ? '-' : ''
-      }${filters.order}&limit=${filters.limit}${
-        filters.algo !== 'all' ? '&algo=' : ''
-      }${filters.algo !== 'all' ? filters.algo : ''}`,
+        filters.order
+      }&limit=10000`,
       jwt,
     ).then(callBack);
   },

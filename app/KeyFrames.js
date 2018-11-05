@@ -34,7 +34,23 @@ export const slideInRight = keyframes`
 
 /**
  * ----------------------------------------
- * animation slide-in-right
+ * animation slide-in-left
+ * ----------------------------------------
+ */
+export const slideInLeft = keyframes`
+   0% {
+     transform: translateX(-1000px);
+     opacity: 0;
+   }
+   100% {
+     transform: translateX(0);
+     opacity: 1;
+   }
+`;
+
+/**
+ * ----------------------------------------
+ * animation slide-out-right
  * ----------------------------------------
  */
 export const slideOutRight = keyframes`
@@ -44,6 +60,22 @@ export const slideOutRight = keyframes`
    }
    100% {
      transform: translateX(1000px);
+     opacity: 0;
+   }
+`;
+
+/**
+ * ----------------------------------------
+ * animation slide-out-left
+ * ----------------------------------------
+ */
+export const slideOutLeft = keyframes`
+   0% {
+     transform: translateX(0);
+     opacity: 1;
+   }
+   100% {
+     transform: translateX(-1000px);
      opacity: 0;
    }
 `;

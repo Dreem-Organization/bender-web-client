@@ -1,19 +1,61 @@
 import styled from 'styled-components';
 
-const Chart = styled.div`
-  position: relative;
-  height: 100%;
-  width: 100%;
+const ScatterChart = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   min-height: 150px;
-  .chart-sub-container {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    .chart-empty-container {
-      height: 100%;
+  .scatterchart-filters-container {
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    i {
+      margin-right: 8px;
+      color: ${props => props.theme.main};
+      font-size: 1.1rem;
+    }
+    .scatterchart-filters {
       display: flex;
-      justify-content: center;
+      flex-direction: row;
+      .select {
+        margin-left: 10px;
+      }
+    }
+  }
+  .scatterchart-container {
+    position: relative;
+    flex-grow: 1;
+    .scatterchart-sub-container {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      .scatterchart-empty-container {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+  .scatterchart-visualize-container {
+    .scatterchart-visualize-sub-container {
+      min-height: 40px;
+      display: flex;
       align-items: center;
+      i {
+        margin-right: 8px;
+        color: ${props => props.theme.main};
+        font-size: 1.1rem;
+      }
+      .select {
+        margin-left: 10px;
+      }
+      .scatterchart-checkboxes {
+        display: flex;
+        .checkbox {
+          margin-left: 10px;
+        }
+      }
     }
   }
   .custom-tooltip {
@@ -70,4 +112,4 @@ const Chart = styled.div`
   }
 `;
 
-export default Chart;
+export default ScatterChart;

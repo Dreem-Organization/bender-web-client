@@ -1,26 +1,43 @@
-/**
- * NotFoundPage
- *
- * This is the page we show when the user visits a url that doesn't have a route
- *
- * NOTE: while this component should technically be a stateless functional
- * component (SFC), hot reloading does not currently support SFCs. If hot
- * reloading is not a necessity for you then you can refactor it and remove
- * the linting exception.
- */
-
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import PropTypes from 'prop-types';
+import Title from 'components/Title';
+import Image from 'components/Image';
+import Button from 'components/Button';
+import styled from 'styled-components';
+import bender from 'images/nope.png';
 
-import messages from './messages';
+const NotFoundView = styled.div`
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  .image {
+    width: 300px;
+    height: auto;
+  }
+  .button {
+    padding: 0 20px;
+  }
+`;
 
 /* eslint-disable react/prefer-stateless-function */
 export default class NotFound extends React.PureComponent {
   render() {
     return (
-      <h1>
-        <FormattedMessage {...messages.header} />
-      </h1>
+      <NotFoundView>
+        <Image src={bender} />
+        <Title>Pretty much nothing here...</Title>
+        <Button
+          content="GO BACK"
+          onClick={() => this.props.history.push('/')}
+        />
+      </NotFoundView>
     );
   }
 }
+
+NotFound.displayName = 'NotFound';
+NotFound.propTypes = {
+  history: PropTypes.object,
+};

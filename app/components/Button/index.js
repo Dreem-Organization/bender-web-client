@@ -7,9 +7,11 @@ import StyledButton from './style';
 function Button(props) {
   return (
     <StyledButton className="button" {...props}>
-      {props.icon ? <Icon name={props.icon} /> : ''}
-      {Children.toArray(props.children)}
-      {props.content}
+      {props.icon ? (
+        <Icon name={props.icon} />
+      ) : (
+        (Children.toArray(props.children), props.content)
+      )}
     </StyledButton>
   );
 }

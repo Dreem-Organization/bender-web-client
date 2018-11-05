@@ -1,4 +1,4 @@
-/* eslint-disable */
+// /* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 import theme from 'themeConfig';
@@ -17,38 +17,62 @@ const validate = values => {
   if (!values.description) {
     errors.description = 'Required';
   }
+  errors.metrics = [];
+  if (values.metrics) {
+    values.metrics.forEach(m => {
+      let childError = '';
+      if (!m) {
+        childError = 'Required';
+      }
+      errors.metrics.push(childError);
+    });
+  }
+  if (!values.dataset) {
+    errors.dataset = 'Required';
+  }
   return errors;
 };
 
-const renderMembers = ({ fields, meta: { error } }) => (
-  <div className="metrics-list">
-    {fields.map((metric, index) => (
-      <div className="metric" key={`metric-${index}`}>
-        <Icon name="close" onClick={() => fields.remove(index)} />
-        <Field
-          key={index}
-          name={metric}
-          type="text"
-          component={Input}
-          placeholder={`Metric ${index + 1}`}
+class renderMembers extends React.PureComponent {
+  componentWillMount() {
+    const { fields } = this.props;
+    if (!fields.length) fields.push();
+  }
+
+  render() {
+    return (
+      <div className="metrics-list">
+        {this.props.fields.map((metric, index) => (
+          <div className="metric" key={`metric-${index}`}>
+            <Icon
+              name="close"
+              onClick={() => this.props.fields.remove(index)}
+            />
+            <Field
+              key={index}
+              name={metric}
+              type="text"
+              component={Input}
+              placeholder={`Metric ${index + 1}`}
+            />
+          </div>
+        ))}
+        <Button
+          className="spec"
+          type="round"
+          icon="add_circle_outline"
+          color="positive"
+          onClick={e => {
+            e.preventDefault();
+            this.props.fields.push();
+          }}
         />
       </div>
-    ))}
-    <Button
-      className="spec"
-      type="round"
-      icon="add_circle_outline"
-      color="positive"
-      onClick={e => {
-        e.preventDefault();
-        fields.push();
-      }}
-    />
-  </div>
-);
+    );
+  }
+}
 
 renderMembers.propTypes = {
-  meta: PropTypes.object,
   fields: PropTypes.object,
 };
 

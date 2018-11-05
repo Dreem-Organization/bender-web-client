@@ -12,14 +12,19 @@ import {
   FETCH_ALGOS,
   FETCH_DELETE_ALGO,
   FETCH_CREATE_ALGO,
+  FETCH_UPDATE_ALGO,
   DELETE_ALGO,
   CREATE_ALGO,
+  UPDATE_ALGO,
   FEED_ALGOS,
   FEED_TRIALS,
+  SET_IS_FETCHING,
+  FETCH_ERROR,
 } from './constants';
 
 function* fetchExperiments(action) {
   try {
+    yield put({ type: SET_IS_FETCHING, payload: true });
     const data = yield call(api.getExperiments, action.payload);
     const experiments = {};
     data.results.forEach(e => {
@@ -31,8 +36,9 @@ function* fetchExperiments(action) {
         },
         trials: {
           loaded: false,
-          list: [],
+          list: {},
         },
+        rankBy: e.metrics[0],
         selectedHyperParameter: 'time',
         hyperParametersAvailables: [],
         selectedMetrics: [e.metrics[0]],
@@ -40,7 +46,7 @@ function* fetchExperiments(action) {
     });
     yield put({ type: FEED_EXPERIMENTS, payload: experiments });
   } catch (error) {
-    console.log(error);
+    yield put({ type: FETCH_ERROR, payload: error });
     yield put({
       type: PUT_TOAST,
       payload: {
@@ -53,9 +59,11 @@ function* fetchExperiments(action) {
 
 function* fetchDeleteExperiment(action) {
   try {
+    yield put({ type: SET_IS_FETCHING, payload: true });
     yield call(api.deleteExperiment, action.payload);
     yield put({ type: DELETE_EXPERIMENT, payload: action.payload.experiment });
   } catch (error) {
+    yield put({ type: FETCH_ERROR, payload: error });
     yield put({
       type: PUT_TOAST,
       payload: {
@@ -68,6 +76,7 @@ function* fetchDeleteExperiment(action) {
 
 function* fetchCreateExperiment(action) {
   try {
+    yield put({ type: SET_IS_FETCHING, payload: true });
     const data = yield call(api.createExperiment, action.payload);
     yield put({
       type: CREATE_EXPERIMENT,
@@ -75,6 +84,7 @@ function* fetchCreateExperiment(action) {
       meta: action.payload.experimentData.owner,
     });
   } catch (error) {
+    yield put({ type: FETCH_ERROR, payload: error });
     yield put({
       type: PUT_TOAST,
       payload: {
@@ -87,6 +97,7 @@ function* fetchCreateExperiment(action) {
 
 function* fetchAlgos(action) {
   try {
+    yield put({ type: SET_IS_FETCHING, payload: true });
     const data = yield call(api.getAlgos, action.payload);
     const algos = {};
     data.results.forEach(a => {
@@ -104,6 +115,7 @@ function* fetchAlgos(action) {
       payload: update,
     });
   } catch (error) {
+    yield put({ type: FETCH_ERROR, payload: error });
     yield put({
       type: PUT_TOAST,
       payload: {
@@ -116,6 +128,7 @@ function* fetchAlgos(action) {
 
 function* fetchDeleteAlgo(action) {
   try {
+    yield put({ type: SET_IS_FETCHING, payload: true });
     yield call(api.deleteAlgo, action.payload);
     yield put({
       type: DELETE_ALGO,
@@ -123,6 +136,7 @@ function* fetchDeleteAlgo(action) {
       meta: action.payload.experiment,
     });
   } catch (error) {
+    yield put({ type: FETCH_ERROR, payload: error });
     yield put({
       type: PUT_TOAST,
       payload: {
@@ -135,6 +149,7 @@ function* fetchDeleteAlgo(action) {
 
 function* fetchCreateAlgo(action) {
   try {
+    yield put({ type: SET_IS_FETCHING, payload: true });
     const data = yield call(api.createAlgo, action.payload);
     yield put({ type: CREATE_ALGO, payload: data, meta: action.payload.user });
   } catch (error) {
@@ -148,31 +163,51 @@ function* fetchCreateAlgo(action) {
   }
 }
 
+function* fetchUpdateAlgo(action) {
+  try {
+    yield put({ type: SET_IS_FETCHING, payload: true });
+    const data = yield call(api.updateAlgo, action.payload);
+    yield put({ type: UPDATE_ALGO, payload: data, meta: action.payload.user });
+  } catch (error) {
+    yield put({
+      type: PUT_TOAST,
+      payload: {
+        message: error.message,
+        life: 10,
+      },
+    });
+  }
+}
+
 function* fetchTrials(action) {
   try {
+    yield put({ type: SET_IS_FETCHING, payload: true });
     const trials = yield call(api.getTrials, action.payload);
-    const update = {};
+    const categorized = {};
     const hyperParameters = [];
     trials.results.forEach(trial => {
+      if (!categorized[trial.algo]) {
+        categorized[trial.algo] = [];
+      }
+      categorized[trial.algo].push(trial);
       Object.keys(trial.parameters).forEach(param => {
         if (!hyperParameters.includes(param)) {
           hyperParameters.push(param);
         }
       });
     });
-    update[action.payload.experiment] = {
-      trials: {
-        loaded: true,
-        list: trials.results,
-      },
+    const update = {
+      loaded: true,
+      list: categorized,
     };
     yield put({
       type: FEED_TRIALS,
-      payload: trials.results,
+      payload: update,
       meta: action.payload.experiment,
       hyperParameters,
     });
   } catch (error) {
+    yield put({ type: FETCH_ERROR, payload: error });
     yield put({
       type: PUT_TOAST,
       payload: {
@@ -231,6 +266,13 @@ function* createAlgoWatcher() {
   }
 }
 
+function* updateAlgoWatcher() {
+  while (true) {
+    const data = yield take(FETCH_UPDATE_ALGO);
+    yield call(fetchUpdateAlgo, data);
+  }
+}
+
 function* fetchTrialsWatcher() {
   while (true) {
     const data = yield take(FETCH_TRIALS);
@@ -246,6 +288,7 @@ export default function* rootSaga() {
     fork(fetchAlgosWatcher),
     fork(delAlgoWatcher),
     fork(createAlgoWatcher),
+    fork(updateAlgoWatcher),
     fork(fetchTrialsWatcher),
   ]);
 }

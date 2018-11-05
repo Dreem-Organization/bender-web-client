@@ -11,6 +11,7 @@ const Toast = styled.div`
   height: 70px;
   font-size: 0.9rem;
   overflow: hidden;
+  box-shadow: ${props => props.theme.shadow};
   &:hover {
     opacity: 0.5;
     cursor: pointer;

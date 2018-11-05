@@ -27,8 +27,8 @@ export default function App() {
       <Toaster />
       <Switch>
         <Route exact path="/dashboard" component={Dashboard} />
-        <Route path="/" component={Home} />
-        <Route path="/verify/:code" component={Validation} />
+        <Route exact path="/" component={Home} />
+        <Route exact path="/verify/:code" component={Validation} />
         {/* <Route path="/bite-my-shiny-metal-docs" component={Docs} />
         <Route path="/demo" component={Demo} /> */}
         <Route component={NotFoundPage} />

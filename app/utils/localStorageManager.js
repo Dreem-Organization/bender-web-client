@@ -10,4 +10,16 @@ export default class LocalStorageManager {
   static getUser() {
     return JSON.parse(localStorage.getItem('dreem-bender-user'));
   }
+
+  static setStage(stage) {
+    localStorage.setItem('dreem-bender-stage', JSON.stringify({ stage }));
+  }
+
+  static removeStage() {
+    localStorage.removeItem('dreem-bender-stage');
+  }
+
+  static getStage() {
+    return JSON.parse(localStorage.getItem('dreem-bender-stage'));
+  }
 }

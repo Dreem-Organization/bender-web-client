@@ -4,30 +4,9 @@ const TrialsBoard = styled.div`
   display: flex;
   flex-direction: column;
   padding: 10px 20px;
-  .trials-board-head-container {
-    min-height: 40px;
-    display: flex;
-    align-items: center;
-  }
-  .trials-board-filters-container {
-    min-height: 40px;
-    display: flex;
-    align-items: center;
-    i {
-      margin-right: 8px;
-      color: ${props => props.theme.main};
-      font-size: 1.1rem;
-    }
-    .trials-board-filters {
-      display: flex;
-      flex-direction: row;
-      .select {
-        margin-left: 10px;
-      }
-    }
-  }
+  flex-grow: 1;
   .trials-board-body-container {
-    height: 100%;
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     .trials-board-graph-title-container {
@@ -45,28 +24,8 @@ const TrialsBoard = styled.div`
       }
     }
     .trials-board-graph-container {
-      height: 100%;
-    }
-    .trials-board-visualize-container {
-      .trials-board-visualize-sub-container {
-        min-height: 40px;
-        display: flex;
-        align-items: center;
-        i {
-          margin-right: 8px;
-          color: ${props => props.theme.main};
-          font-size: 1.1rem;
-        }
-        .select {
-          margin-left: 10px;
-        }
-        .trials-board-checkboxes {
-          display: flex;
-          .checkbox {
-            margin-left: 10px;
-          }
-        }
-      }
+      flex-grow: 1;
+      display: flex;
     }
     .trials-board-details-cointainer {
       padding-top: 10px;
@@ -79,6 +38,9 @@ const TrialsBoard = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  svg {
+    overflow: show;
   }
 `;
 
