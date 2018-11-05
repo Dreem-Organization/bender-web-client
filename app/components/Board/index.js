@@ -19,6 +19,7 @@ function Board(props) {
     props.experiments.loaded &&
     props.stage[0].exp !== '' &&
     props.stage[0].algo !== '' &&
+    props.experiments.list[props.stage[0].exp].algos.loaded &&
     props.experiments.list[props.stage[0].exp].trials.loaded;
   let displayedBoard = <div />;
   if (props.stage[0].layer === 0 && showExperimentBoardIf) {
@@ -42,7 +43,7 @@ function Board(props) {
         openUpdateAlgoModal={meta => props.toggleModal('algoUpdate', meta)}
       />
     );
-  } else if (props.stage[0].layer === 2 && showTrialsBoardIf) {
+  } else if (props.stage[0].layer >= 2 && showTrialsBoardIf) {
     name = `${
       props.experiments.list[props.stage[0].exp].algos.list[props.stage[0].algo]
         .name

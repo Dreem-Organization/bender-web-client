@@ -39,6 +39,9 @@ const TrialsBoard = styled.div`
     justify-content: center;
     align-items: center;
   }
+  svg {
+    overflow: show;
+  }
 `;
 
 export default TrialsBoard;

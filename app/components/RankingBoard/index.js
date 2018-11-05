@@ -75,9 +75,9 @@ function RankingBoard(props) {
                 algo={ranked.algo}
                 onUpdateAlgo={props.openUpdateAlgoModal}
                 onRemoveAlgo={props.onRemoveAlgo}
-                onVisualizeTrials={algo =>
+                onVisualizeTrials={(algo, isLine) =>
                   props.stageUpdate({
-                    layer: 2,
+                    layer: isLine ? 2 : 3,
                     exp: props.experiment.id,
                     algo,
                   })

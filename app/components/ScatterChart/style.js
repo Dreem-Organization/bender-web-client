@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
-const Chart = styled.div`
+const ScatterChart = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   min-height: 150px;
-  .chart-filters-container {
+  .scatterchart-filters-container {
     min-height: 40px;
     display: flex;
     align-items: center;
@@ -14,7 +14,7 @@ const Chart = styled.div`
       color: ${props => props.theme.main};
       font-size: 1.1rem;
     }
-    .chart-filters {
+    .scatterchart-filters {
       display: flex;
       flex-direction: row;
       .select {
@@ -22,14 +22,14 @@ const Chart = styled.div`
       }
     }
   }
-  .chart-container {
+  .scatterchart-container {
     position: relative;
     flex-grow: 1;
-    .chart-sub-container {
+    .scatterchart-sub-container {
       position: absolute;
       height: 100%;
       width: 100%;
-      .chart-empty-container {
+      .scatterchart-empty-container {
         height: 100%;
         display: flex;
         justify-content: center;
@@ -37,8 +37,8 @@ const Chart = styled.div`
       }
     }
   }
-  .chart-visualize-container {
-    .chart-visualize-sub-container {
+  .scatterchart-visualize-container {
+    .scatterchart-visualize-sub-container {
       min-height: 40px;
       display: flex;
       align-items: center;
@@ -50,7 +50,7 @@ const Chart = styled.div`
       .select {
         margin-left: 10px;
       }
-      .chart-checkboxes {
+      .scatterchart-checkboxes {
         display: flex;
         .checkbox {
           margin-left: 10px;
@@ -112,4 +112,4 @@ const Chart = styled.div`
   }
 `;
 
-export default Chart;
+export default ScatterChart;

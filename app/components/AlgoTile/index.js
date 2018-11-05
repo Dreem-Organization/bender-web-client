@@ -39,9 +39,13 @@ function AlgoTile(props) {
           <Button
             type="inverted"
             content="Visualize Trials"
-            onClick={() => props.onVisualizeTrials(props.algo.id)}
+            onClick={() => props.onVisualizeTrials(props.algo.id, true)}
           />
-          <Button type="inverted" content="Explore Hyper Parameters" />
+          <Button
+            type="inverted"
+            content="Explore Hyper Parameters"
+            onClick={() => props.onVisualizeTrials(props.algo.id, false)}
+          />
         </div>
       ) : (
         <div className="algo-tile-buttons-container">

@@ -1,11 +1,7 @@
-/* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 import theme from 'themeConfig';
 import Title from 'components/Title';
-import Icon from 'components/Icon';
-import Label from 'components/Label';
-import Select from 'components/Select';
 import LineChart from 'components/LineChart';
 import ScatterChart from 'components/ScatterChart';
 import Details from 'components/Details';
@@ -17,9 +13,8 @@ function TrialsBoard(props) {
       {props.experiment.trials.list[props.stage.algo].length > 0 ? (
         <div className="trials-board-body-container">
           <div className="trials-board-graph-container">
-            {true ? (
+            {props.stage.layer === 2 ? (
               <LineChart
-                algo={props.experiment.algos.list[props.stage.algo]}
                 experiment={props.experiment}
                 filters={props.filters}
                 onFilterChange={props.onFilterChange}
@@ -29,8 +24,9 @@ function TrialsBoard(props) {
               />
             ) : (
               <ScatterChart
+                trials={props.experiment.trials.list[props.stage.algo]}
+                algo={props.experiment.algos.list[props.stage.algo]}
                 experiment={props.experiment}
-                filters={props.filters}
                 stage={props.stage}
                 onChartPointSelect={props.onChartPointSelect}
               />
