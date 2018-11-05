@@ -1,11 +1,21 @@
-FROM node:8.12
-MAINTAINER Dylan Heirstraeten <dylan@dreem.com>
-ENV NPM_CONFIG_LOGLEVEL warn
+# This is the builder container
+FROM registry.rythm.co/bender-front-builder:745519c as builder
 
-EXPOSE 8000
-ADD . /app
-WORKDIR /app
+WORKDIR /usr/src/app
+COPY . .
+
 RUN yarn install
 RUN yarn build
 
-CMD [ "yarn", "start:prod" ]
+FROM registry.rythm.co/caddy-server:v0.11.0
+
+ENV NPM_CONFIG_LOGLEVEL warn
+
+VOLUME ["/var/www"]
+WORKDIR /var/www
+
+COPY Caddyfile /etc/caddy/Caddyfile
+COPY --from=builder /usr/src/app/build /var/www/
+
+ENTRYPOINT ["/sbin/tini", "--"]
+CMD ["caddy", "-agree", "--conf", "/etc/caddy/Caddyfile"]
