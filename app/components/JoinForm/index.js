@@ -14,8 +14,27 @@ const validate = values => {
   if (!values.username) {
     errors.username = 'Required';
   }
-  if (!values.password) {
-    errors.password = 'Required';
+  if (!values.email) {
+    errors.email = 'Required';
+  }
+  if (
+    values.email &&
+    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+  ) {
+    errors.email = 'Invalid email address';
+  }
+  if (!values.password1) {
+    errors.password1 = 'Required';
+  }
+  if (!values.password2) {
+    errors.password2 = 'Required';
+  }
+  if (
+    values.password1 &&
+    values.password2 &&
+    values.password1 !== values.password2
+  ) {
+    errors.password2 = 'Passwords are not matching';
   }
   return errors;
 };

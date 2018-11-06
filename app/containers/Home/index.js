@@ -254,7 +254,9 @@ export class Home extends React.PureComponent {
               <div className="home-body-form-sub-container">
                 <JoinForm
                   animate={!this.props.firstViewLoaded}
-                  onSubmit={this.props.onJoin}
+                  onSubmit={data =>
+                    this.props.onJoin({ history: this.props.history, ...data })
+                  }
                   onSocialLoginSucess={this.props.onSocialLoginSucess}
                   onToggleForm={this.props.toggleForm}
                 />
@@ -294,12 +296,12 @@ export function mapDispatchToProps(dispatch) {
     onJoin: data =>
       dispatch(
         join({
-          username: data.form.username,
-          firstName: data.form.firstName,
-          lastName: data.form.lastName,
-          email: data.form.email,
-          password1: data.form.password1,
-          password2: data.form.password2,
+          username: data.username,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: data.email,
+          password1: data.password1,
+          password2: data.password2,
           history: data.history,
         }),
       ),

@@ -51,7 +51,7 @@ export class Validation extends React.PureComponent {
             content="ACTIVATE MY ACCOUNT"
             onClick={() =>
               this.props.onValidate(this.props.match.params.code, () =>
-                this.props.history.push('/login'),
+                this.props.history.push('/'),
               )
             }
           />
