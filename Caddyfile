@@ -9,3 +9,8 @@ log / stdout "\{\"time\": \"{when_iso}\",\"lang\": \"{>Detected-Locale}\", \"hos
 errors stdout
 
 root /var/www/
+
+rewrite {
+    r ^/(.*)$
+    to /{1} /
+}
