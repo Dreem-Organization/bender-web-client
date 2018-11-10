@@ -16,11 +16,17 @@ const ModalCreateExperiment = styled.div`
       display: flex;
       flex-wrap: wrap;
       .metric {
+        display: flex;
         position: relative;
+        input {
+          padding-left: 5px;
+          max-width: 80px;
+        }
         i {
+          z-index: 10;
           opacity: 0;
           top: 0;
-          right: 0;
+          right: 60px;
           font-size: 0.8rem;
           position: absolute;
           transition: 0.3s;
@@ -35,9 +41,7 @@ const ModalCreateExperiment = styled.div`
           }
         }
         .switch {
-          position: absolute;
-          top: 0;
-          right: 0;
+          width: 60px;
         }
       }
     }

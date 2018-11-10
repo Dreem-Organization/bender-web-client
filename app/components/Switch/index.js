@@ -7,8 +7,14 @@ function Switch(props) {
   return (
     <StyledSwitch className="switch" {...props}>
       {props.options.map(o => (
-        <div className="switch-option" key={o}>
-          <span>{o}</span>
+        <div
+          className={`switch-option ${
+            props.input.value === o.value ? 'selected' : ''
+          }`}
+          onClick={() => props.input.onChange(o.value)}
+          key={o.label}
+        >
+          <span>{o.label}</span>
         </div>
       ))}
     </StyledSwitch>
@@ -18,6 +24,7 @@ function Switch(props) {
 Switch.propTypes = {
   options: PropTypes.array.isRequired,
   theme: PropTypes.object,
+  input: PropTypes.object,
 };
 
 Switch.defaultProps = {
