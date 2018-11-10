@@ -92,7 +92,7 @@ export class Dashboard extends React.PureComponent {
     this.props.verifyUser(token);
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate() {
     if (this.props.status === 'in' && !this.props.experiments.loaded) {
       this.props.fetchExperiments(this.props.jwt, this.props.user.username);
     }
@@ -108,15 +108,15 @@ export class Dashboard extends React.PureComponent {
         this.props.filters,
       );
     }
-    if (
-      JSON.stringify(prevProps.filters) !== JSON.stringify(this.props.filters)
-    ) {
-      this.props.fetchTrials(
-        this.props.jwt,
-        this.props.stage[0].exp,
-        this.props.filters,
-      );
-    }
+    // if (
+    //   JSON.stringify(prevProps.filters) !== JSON.stringify(this.props.filters)
+    // ) {
+    //   this.props.fetchTrials(
+    //     this.props.jwt,
+    //     this.props.stage[0].exp,
+    //     this.props.filters,
+    //   );
+    // }
   }
 
   render() {

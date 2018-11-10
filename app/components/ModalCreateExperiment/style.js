@@ -34,6 +34,11 @@ const ModalCreateExperiment = styled.div`
             opacity: 1;
           }
         }
+        .switch {
+          position: absolute;
+          top: 0;
+          right: 0;
+        }
       }
     }
     .spec {
