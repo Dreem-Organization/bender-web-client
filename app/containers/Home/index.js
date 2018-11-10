@@ -20,11 +20,7 @@ import injectSaga from 'utils/injectSaga';
 import saga from 'containers/App/saga';
 import reducer from 'containers/App/reducer';
 import LocalStorageManager from 'utils/localStorageManager';
-import {
-  verifyUser,
-  firstViewLoaded,
-  socialLogin,
-} from 'containers/App/actions';
+import { verifyUser, firstViewLoaded } from 'containers/App/actions';
 import theme from 'themeConfig';
 // import { ParallaxProvider, Parallax } from 'react-scroll-parallax';
 import homeReducer from './reducer';
@@ -305,7 +301,6 @@ export function mapDispatchToProps(dispatch) {
           history: data.history,
         }),
       ),
-    onSocialLoginSucess: data => dispatch(socialLogin(data)),
     loaded: () => dispatch(firstViewLoaded()),
     verifyUser: token => dispatch(verifyUser(token)),
     toggleForm: () => dispatch(toggleForm()),

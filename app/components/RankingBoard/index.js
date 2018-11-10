@@ -56,8 +56,10 @@ function RankingBoard(props) {
               <Label
                 size="tiny"
                 className="label"
-                type={m === props.experiment.rankBy ? 'important' : ''}
-                content={m.replace(new RegExp('_', 'g'), ' ')}
+                type={
+                  m.metric_name === props.experiment.rankBy ? 'important' : ''
+                }
+                content={m.metric_name.replace(new RegExp('_', 'g'), ' ')}
                 key={`head-${i}`}
               />
             </div>
@@ -86,10 +88,12 @@ function RankingBoard(props) {
               {props.experiment.metrics.map((m, j) => (
                 <Title
                   className={`tile stats ${
-                    m === props.experiment.rankBy ? '' : 'inactive'
+                    m.metric_name === props.experiment.rankBy ? '' : 'inactive'
                   }`}
                   content={
-                    ranked.trial ? ranked.trial.results[m].toFixed(2) : '--'
+                    ranked.trial
+                      ? ranked.trial.results[m.metric_name].toFixed(2)
+                      : '--'
                   }
                   key={`metric-value-${j}`}
                 />

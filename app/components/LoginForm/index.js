@@ -61,10 +61,7 @@ function LoginForm(props) {
       <div className="login-form-container">
         <div className="login-form-head">
           <Title size={2} content="Login" />
-          <GithubButton
-            onSuccess={props.onSocialLoginSucess}
-            // onFailure={error => console.log(error)}
-          />
+          <GithubButton />
         </div>
         <RForm login={props.onSubmit} />
         <Label type="link" size="mini" onClick={props.onToggleForm}>
@@ -77,7 +74,6 @@ function LoginForm(props) {
 
 LoginForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  onSocialLoginSucess: PropTypes.func.isRequired,
   theme: PropTypes.object,
   onToggleForm: PropTypes.func.isRequired,
 };

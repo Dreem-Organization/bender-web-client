@@ -34,14 +34,11 @@ function* login(action) {
 }
 
 function* socialLogin(data) {
-  console.log(data.payload.code);
   try {
-    const response = yield call(api.socialLogin, data.payload.code);
-    console.log(response);
-    // yield put({ type: LOGIN, payload: data });
+    const response = yield call(api.socialLogin, data.payload);
+    yield put({ type: LOGIN, payload: response });
   } catch (error) {
-    console.log(error);
-    // yield put({ type: FETCH_ERROR, payload: error });
+    yield put({ type: FETCH_ERROR, payload: error });
   }
 }
 

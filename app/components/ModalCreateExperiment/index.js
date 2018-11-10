@@ -5,6 +5,7 @@ import theme from 'themeConfig';
 import Input from 'components/Input';
 import Label from 'components/Label';
 import Icon from 'components/Icon';
+import Switch from 'components/Switch';
 import Button from 'components/Button';
 import { Field, FieldArray, reduxForm } from 'redux-form/immutable';
 import StyledModalCreateExperiment from './style';
@@ -55,6 +56,7 @@ class renderMembers extends React.PureComponent {
               component={Input}
               placeholder={`Metric ${index + 1}`}
             />
+            <Switch options={['MAXIMIZE', 'MINIMIZE']} />
           </div>
         ))}
         <Button

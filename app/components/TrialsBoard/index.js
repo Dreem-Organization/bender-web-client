@@ -15,6 +15,7 @@ function TrialsBoard(props) {
           <div className="trials-board-graph-container">
             {props.stage.layer === 2 ? (
               <LineChart
+                trials={props.experiment.trials.list[props.stage.algo]}
                 experiment={props.experiment}
                 filters={props.filters}
                 onFilterChange={props.onFilterChange}

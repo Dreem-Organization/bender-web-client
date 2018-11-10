@@ -152,7 +152,10 @@ function dashboardReducer(state = initialState, action) {
     case CHANGE_FILTERS:
       return state
         .set('chartSelectedPoint', -1)
-        .mergeDeep({ filters: action.payload });
+        .updateIn(
+          ['experiments', 'list', action.payload.exp, 'filters'],
+          () => action.payload.data,
+        );
     case CHANGE_SELECTED_HYPER_PARAMETER:
       return state.setIn(
         [
@@ -169,11 +172,11 @@ function dashboardReducer(state = initialState, action) {
       if (
         !state
           .getIn(['experiments', 'list', action.meta, 'selectedMetrics'])
-          .includes(action.payload)
+          .some(m => action.payload.metric_name === m.toJS().metric_name)
       ) {
         return state.updateIn(
           ['experiments', 'list', action.meta, 'selectedMetrics'],
-          arr => arr.push(action.payload),
+          arr => arr.push(fromJS(action.payload)),
         );
       }
       return state;
@@ -181,11 +184,17 @@ function dashboardReducer(state = initialState, action) {
       if (
         state
           .getIn(['experiments', 'list', action.meta, 'selectedMetrics'])
-          .includes(action.payload)
+          .some(m => action.payload.metric_name === m.toJS().metric_name)
       ) {
         return state.updateIn(
           ['experiments', 'list', action.meta, 'selectedMetrics'],
-          arr => arr.splice(arr.indexOf(action.payload), 1),
+          arr =>
+            arr.splice(
+              arr.findIndex(
+                m => action.payload.metric_name === m.toJS().metric_name,
+              ),
+              1,
+            ),
         );
       }
       return state;

@@ -33,9 +33,9 @@ export function firstViewLoaded() {
   };
 }
 
-export function socialLogin(data) {
+export function socialLogin(code) {
   return {
     type: SOCIAL_LOGIN,
-    payload: data,
+    payload: code,
   };
 }
