@@ -40,7 +40,7 @@ export default class MyScatterChart extends Component {
     super(props);
     this.state = {
       selectedX: this.props.algo.parameters[0].name,
-      selectedY: this.props.experiment.metrics[0],
+      selectedY: this.props.experiment.metrics[0].metric_name,
       isCategorical: this.props.algo.parameters[0].category === 'categorical',
     };
 
@@ -69,18 +69,18 @@ export default class MyScatterChart extends Component {
     });
   }
 
-  generateTableData(obj) {
-    return Object.keys(obj).map(k => {
-      if (!_.isNull(obj[k]) || obj[k] === '') {
+  generateTableData(params) {
+    return Object.keys(params).map(p => {
+      if (!_.isNull(params[p]) || params[p] === '') {
         return (
-          <div className="data-table" key={k}>
-            <Label className="left" content={k} type="simple" />
+          <div className="data-table" key={p}>
+            <Label className="left" content={p} type="simple" />
             <Label
               className="right"
               content={
-                _.isNumber(obj[k])
-                  ? _.round(+obj[k], 4).toString()
-                  : obj[k].toString()
+                _.isNumber(params[p])
+                  ? _.round(+params[p], 4).toString()
+                  : params[p].toString()
               }
             />
           </div>
@@ -90,39 +90,33 @@ export default class MyScatterChart extends Component {
     });
   }
 
-  generateTableMetrics(obj) {
+  generateTableMetrics(results) {
     const metrics = this.props.experiment.metrics; // eslint-disable-line
-    return metrics.map(k => {
-      const id = metrics.indexOf(k) % _.size(colorWheel);
-      if (!_.isNull(obj[k]) || obj[k] === '') {
-        return (
-          <div className="data-table" key={k}>
-            <div className="left coloured">
-              <div
-                style={{
-                  display: 'inline-block',
-                  borderRadius: '50%',
-                  marginRight: '5px',
-                  width: '10px',
-                  height: '10px',
-                  backgroundColor: colorWheel[id],
-                }}
-              />
-              <Label content={k} type="simple" />
-            </div>
-            <Label
-              className="right"
-              content={
-                _.isNumber(obj[k])
-                  ? _.round(+obj[k], 4).toString()
-                  : obj[k].toString()
-              }
-            />
-          </div>
-        );
-      }
-      return null;
-    });
+    return metrics.map((m, i) => (
+      <div className="data-table" key={m.metric_name}>
+        <div className="left coloured">
+          <div
+            style={{
+              display: 'inline-block',
+              borderRadius: '50%',
+              marginRight: '5px',
+              width: '10px',
+              height: '10px',
+              backgroundColor: colorWheel[i],
+            }}
+          />
+          <Label content={m.metric_name} type="simple" />
+        </div>
+        <Label
+          className="right"
+          content={
+            _.isNumber(results[m.metric_name])
+              ? _.round(+results[m.metric_name], 4).toString()
+              : results[m.metric_name].toString()
+          }
+        />
+      </div>
+    ));
   }
 
   lineCustomTooltip(item) {
@@ -215,8 +209,8 @@ export default class MyScatterChart extends Component {
               selected="date"
               label="Y AXIS"
               values={this.props.experiment.metrics.map(m => ({
-                id: m,
-                label: m,
+                id: m.metric_name,
+                label: m.metric_name,
               }))}
             />
             <Select

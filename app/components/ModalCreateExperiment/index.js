@@ -21,9 +21,12 @@ const validate = values => {
   errors.metrics = [];
   if (values.metrics) {
     values.metrics.forEach(m => {
-      let childError = '';
-      if (!m) {
-        childError = 'Required';
+      const childError = {};
+      if (m && !m.type) {
+        childError.type = 'Required';
+      }
+      if (m && !m.metric_name) {
+        childError.metric_name = 'Required';
       }
       errors.metrics.push(childError);
     });
@@ -50,13 +53,20 @@ class renderMembers extends React.PureComponent {
               onClick={() => this.props.fields.remove(index)}
             />
             <Field
-              key={index}
-              name={metric}
+              name={`${metric}.metric_name`}
               type="text"
               component={Input}
               placeholder={`Metric ${index + 1}`}
             />
-            <Switch options={['MAXIMIZE', 'MINIMIZE']} />
+            <Field
+              name={`${metric}.type`}
+              type="text"
+              component={Switch}
+              options={[
+                { label: 'MAXIMIZE', value: 'reward' },
+                { label: 'MINIMIZE', value: 'loss' },
+              ]}
+            />
           </div>
         ))}
         <Button
@@ -129,7 +139,6 @@ function ModalCreateExperiment(props) {
 
 ModalCreateExperiment.propTypes = {
   theme: PropTypes.object,
-  onClose: PropTypes.func,
   onValidate: PropTypes.func,
 };
 

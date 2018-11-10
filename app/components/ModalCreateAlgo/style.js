@@ -58,6 +58,7 @@ const ModalCreateAlgo = styled.div`
                 width: 100%;
               }
               i {
+                z-index: 10;
                 opacity: 0;
                 top: 0;
                 right: 0;

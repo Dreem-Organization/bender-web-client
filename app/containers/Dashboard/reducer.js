@@ -10,6 +10,7 @@ import {
   FEED_ALGOS,
   DELETE_ALGO,
   CREATE_ALGO,
+  UPDATE_ALGO,
   FEED_TRIALS,
   CHANGE_FILTERS,
   CHANGE_SELECTED_HYPER_PARAMETER,
@@ -105,6 +106,14 @@ function dashboardReducer(state = initialState, action) {
             },
           }),
         )
+        .set(
+          'modals',
+          fromJS({
+            open: false,
+            name: '',
+            meta: null,
+          }),
+        )
         .updateIn(['fetching'], arr => arr.pop());
     case CHANGE_SELECTED_EXPERIMENT:
       return state.mergeDeep({ experiments: { selected: action.payload } });
@@ -139,6 +148,40 @@ function dashboardReducer(state = initialState, action) {
             owner: action.meta,
             ...action.payload,
           },
+        )
+        .set(
+          'modals',
+          fromJS({
+            open: false,
+            name: '',
+            meta: null,
+          }),
+        )
+        .updateIn(['fetching'], arr => arr.pop());
+    case UPDATE_ALGO:
+      return state
+        .setIn(
+          [
+            'experiments',
+            'list',
+            action.payload.experiment,
+            'algos',
+            'list',
+            action.payload.id,
+          ],
+          {
+            trial_count: 0,
+            owner: action.meta,
+            ...action.payload,
+          },
+        )
+        .set(
+          'modals',
+          fromJS({
+            open: false,
+            name: '',
+            meta: null,
+          }),
         )
         .updateIn(['fetching'], arr => arr.pop());
     case FEED_TRIALS:
