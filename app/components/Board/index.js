@@ -38,7 +38,9 @@ function Board(props) {
       <RankingBoard
         stageUpdate={props.onStageUpdate}
         experiment={props.experiments.list[props.stage[0].exp]}
-        onRemoveAlgo={props.onRemoveAlgo}
+        onRemoveAlgo={id =>
+          props.onRemoveAlgo(props.jwt, id, props.stage[0].exp)
+        }
         openCreateAlgoModal={() => props.toggleModal('algoCreate')}
         openUpdateAlgoModal={meta => props.toggleModal('algoUpdate', meta)}
       />
@@ -53,6 +55,11 @@ function Board(props) {
         onFilterChange={props.onFilterChange}
         onSelectedHyperParameterChange={props.onSelectedHyperParameterChange}
         experiment={props.experiments.list[props.stage[0].exp]}
+        algo={
+          props.experiments.list[props.stage[0].exp].algos.list[
+            props.stage[0].algo
+          ]
+        }
         filters={props.filters}
         stage={props.stage[0]}
         chartSelectedPoint={props.chartSelectedPoint}

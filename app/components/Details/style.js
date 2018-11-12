@@ -67,6 +67,9 @@ const Details = styled.div`
             border-radius: 5px;
             color: ${props => props.theme.greyDark};
             font-size: 0.7rem;
+            &:hover {
+              cursor: pointer;
+            }
           }
         }
       }

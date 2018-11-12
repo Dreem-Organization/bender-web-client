@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import theme from 'themeConfig';
 import AlgoTile from 'components/AlgoTile';
-import Title from 'components/Title';
+import ResultTile from 'components/ResultTile';
 import Button from 'components/Button';
 import RankTile from 'components/RankTile';
 import Label from 'components/Label';
@@ -86,15 +86,15 @@ function RankingBoard(props) {
                 }
               />
               {props.experiment.metrics.map((m, j) => (
-                <Title
-                  className={`tile stats ${
-                    m.metric_name === props.experiment.rankBy ? '' : 'inactive'
-                  }`}
+                <ResultTile
                   content={
                     ranked.trial
                       ? ranked.trial.results[m.metric_name].toFixed(2)
                       : '--'
                   }
+                  metric={m}
+                  trial={ranked.trial}
+                  rankBy={props.experiment.rankBy}
                   key={`metric-value-${j}`}
                 />
               ))}
@@ -102,13 +102,15 @@ function RankingBoard(props) {
           ))}
         </div>
       </div>
-      <Button
-        className="spec"
-        type="round"
-        icon="add_circle_outline"
-        color="positive"
-        onClick={props.openCreateAlgoModal}
-      />
+      <div className="ranking-board-add-algo">
+        <Button
+          className="spec"
+          type="round"
+          icon="add_circle_outline"
+          color="positive"
+          onClick={props.openCreateAlgoModal}
+        />
+      </div>
     </StyledRankingBoard>
   );
 }
