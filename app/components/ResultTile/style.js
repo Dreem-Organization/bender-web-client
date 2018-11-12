@@ -7,7 +7,6 @@ const RankTile = styled.div`
   flex-direction: column;
   align-items: center;
   min-width: 200px;
-  overflow-y: scroll;
   &.inactive {
     .title,
     .label,
@@ -19,6 +18,7 @@ const RankTile = styled.div`
     display: flex;
     flex-direction: column;
     margin-top: 10px;
+    overflow-y: scroll;
     .rank-tile-hp {
       display: flex;
       flex-direction: row;

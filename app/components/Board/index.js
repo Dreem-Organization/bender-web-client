@@ -41,6 +41,7 @@ function Board(props) {
         onRemoveAlgo={id =>
           props.onRemoveAlgo(props.jwt, id, props.stage[0].exp)
         }
+        onRankByChange={props.onRankByChange}
         openCreateAlgoModal={() => props.toggleModal('algoCreate')}
         openUpdateAlgoModal={meta => props.toggleModal('algoUpdate', meta)}
       />
@@ -86,6 +87,7 @@ Board.propTypes = {
   chartSelectedPoint: PropTypes.number.isRequired,
   experiments: PropTypes.object.isRequired,
   onStageUpdate: PropTypes.func.isRequired,
+  onRankByChange: PropTypes.func.isRequired,
   toggleModal: PropTypes.func.isRequired,
   onRemoveExperiment: PropTypes.func.isRequired,
   onFilterChange: PropTypes.func.isRequired,

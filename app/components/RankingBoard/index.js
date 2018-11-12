@@ -10,12 +10,19 @@ import StyledRankingBoard from './style';
 
 function RankingBoard(props) {
   const getBestTrial = (trials, algo, metric) => {
-    let ret = null;
-    let max = -1000;
+    let ret = trials[0];
+    let max = trials[0].results[metric.metric_name];
+    let min = trials[0].results[metric.metric_name];
     trials.forEach(t => {
-      if (t.results[metric] > max) {
+      if (metric.type === 'reward' && t.results[metric.metric_name] > max) {
         ret = t;
-        max = t.results[metric];
+        max = t.results[metric.metric_name];
+      } else if (
+        metric.type === 'loss' &&
+        t.results[metric.metric_name] < min
+      ) {
+        ret = t;
+        min = t.results[metric.metric_name];
       }
     });
     return { algo, trial: ret, metric };
@@ -35,7 +42,11 @@ function RankingBoard(props) {
       unranked.push({ algo: a, trial: null, metric: props.experiment.rankBy });
     }
   });
-  ranking.sort((a, b) => b.trial.results[b.metric] - a.trial.results[a.metric]);
+  ranking.sort(
+    (a, b) =>
+      b.trial.results[b.metric.metric_name] -
+      a.trial.results[a.metric.metric_name],
+  );
   ranking = ranking.concat(unranked);
   return (
     <StyledRankingBoard className="ranking-board" {...props}>
@@ -57,9 +68,12 @@ function RankingBoard(props) {
                 size="tiny"
                 className="label"
                 type={
-                  m.metric_name === props.experiment.rankBy ? 'important' : ''
+                  m.metric_name === props.experiment.rankBy.metric_name
+                    ? 'important'
+                    : ''
                 }
                 content={m.metric_name.replace(new RegExp('_', 'g'), ' ')}
+                onClick={() => props.onRankByChange(m, props.experiment.id)}
                 key={`head-${i}`}
               />
             </div>
@@ -94,7 +108,7 @@ function RankingBoard(props) {
                   }
                   metric={m}
                   trial={ranked.trial}
-                  rankBy={props.experiment.rankBy}
+                  rankBy={props.experiment.rankBy.metric_name}
                   key={`metric-value-${j}`}
                 />
               ))}
@@ -118,6 +132,7 @@ function RankingBoard(props) {
 RankingBoard.propTypes = {
   theme: PropTypes.object,
   experiment: PropTypes.object.isRequired,
+  onRankByChange: PropTypes.func.isRequired,
   onRemoveAlgo: PropTypes.func.isRequired,
   openUpdateAlgoModal: PropTypes.func.isRequired,
   openCreateAlgoModal: PropTypes.func.isRequired,

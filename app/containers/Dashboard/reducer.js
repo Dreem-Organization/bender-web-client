@@ -15,6 +15,7 @@ import {
   CHANGE_FILTERS,
   CHANGE_SELECTED_HYPER_PARAMETER,
   TOGGLE_MODAL,
+  CHANGE_RANK_BY,
   CHART_POINT_SELECT,
   ADD_SELECTED_METRIC,
   REMOVE_SELECTED_METRIC,
@@ -50,6 +51,11 @@ function dashboardReducer(state = initialState, action) {
   switch (action.type) {
     case TOGGLE_MENU:
       return state.update('menuState', val => !val);
+    case CHANGE_RANK_BY:
+      return state.setIn(
+        ['experiments', 'list', action.meta, 'rankBy'],
+        action.payload,
+      );
     case STAGE_UPDATE:
       LocalStorageManager.setStage(action.payload);
       return state.updateIn(['stage'], arr => arr.unshift(action.payload));

@@ -3,27 +3,30 @@ import PropTypes from 'prop-types';
 import theme from 'themeConfig';
 import Title from 'components/Title';
 import Label from 'components/Label';
-import StyledRankTile from './style';
+import StyledResultTile from './style';
 
-function RankTile(props) {
-  const hps = Object.keys(props.trial.results).map(k => (
-    <div key={k} className="rank-tile-hp">
-      <input
-        className="left"
-        onFocus={e => e.target.select()}
-        value={k}
-        readOnly
-      />
-      <input
-        className="right"
-        onFocus={e => e.target.select()}
-        value={parseFloat(props.trial.results[k].toFixed(4))}
-        readOnly
-      />
-    </div>
-  ));
+function ResultTile(props) {
+  let hps = '';
+  if (props.trial) {
+    hps = Object.keys(props.trial.results).map(k => (
+      <div key={k} className="rank-tile-hp">
+        <input
+          className="left"
+          onFocus={e => e.target.select()}
+          value={k}
+          readOnly
+        />
+        <input
+          className="right"
+          onFocus={e => e.target.select()}
+          value={parseFloat(props.trial.results[k].toFixed(4))}
+          readOnly
+        />
+      </div>
+    ));
+  }
   return (
-    <StyledRankTile
+    <StyledResultTile
       className={`rank-tile ${
         props.metric.metric_name === props.rankBy ? '' : 'inactive'
       }`}
@@ -35,12 +38,12 @@ function RankTile(props) {
       ) : (
         ''
       )}
-      <div className="rank-tile-hp-container">{props.trial ? hps : ''}</div>
-    </StyledRankTile>
+      <div className="rank-tile-hp-container">{hps}</div>
+    </StyledResultTile>
   );
 }
 
-RankTile.propTypes = {
+ResultTile.propTypes = {
   theme: PropTypes.object,
   rankBy: PropTypes.string.isRequired,
   metric: PropTypes.object.isRequired,
@@ -48,8 +51,8 @@ RankTile.propTypes = {
   content: PropTypes.string,
 };
 
-RankTile.defaultProps = {
+ResultTile.defaultProps = {
   theme,
 };
 
-export default RankTile;
+export default ResultTile;
