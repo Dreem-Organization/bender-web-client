@@ -7,6 +7,7 @@ import StyledClipBoardButton from './style';
 function ClipBoardButton(props) {
   return (
     <StyledClipBoardButton className="clipboard-button" {...props}>
+      <span>ID |</span>
       <input onFocus={e => e.target.select()} value={props.value} readOnly />
       <div
         onClick={() => {

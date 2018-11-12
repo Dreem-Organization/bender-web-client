@@ -65,21 +65,32 @@ function ExperimentsHeader(props) {
             ''
           )}
         </div>
-        {props.stage.layer === 3 ? (
+        {props.stage.layer === 1 ? (
           <div className="experiments-head-sub-container">
             <ClipBoardButton value={props.stage.exp} />
           </div>
         ) : (
           ''
         )}
+        {props.stage.layer === 2 || props.stage.layer === 3 ? (
+          <div className="experiments-head-sub-container">
+            <ClipBoardButton value={props.stage.algo} />
+          </div>
+        ) : (
+          ''
+        )}
       </div>
-      {props.stage.layer === 200 ? (
+      {props.stage.layer === 1 ? (
         <div className="experiments-infos-container">
           <Icon name="info" />
           <div className="experiments-infos-sub-container">
             <Label content="Owner :" size="tiny" type="important" />
             <Label
-              content={props.experiments.list[props.stage.exp].owner}
+              content={
+                props.experiments.list[props.stage.exp]
+                  ? props.experiments.list[props.stage.exp].owner
+                  : ''
+              }
               size="tiny"
               type="simple"
             />
@@ -87,7 +98,11 @@ function ExperimentsHeader(props) {
           <div className="experiments-infos-sub-container">
             <Label content="Dataset :" size="tiny" type="important" />
             <Label
-              content={props.experiments.list[props.stage.exp].dataset}
+              content={
+                props.experiments.list[props.stage.exp]
+                  ? props.experiments.list[props.stage.exp].dataset
+                  : ''
+              }
               size="tiny"
               type="simple"
             />
@@ -95,10 +110,45 @@ function ExperimentsHeader(props) {
           <div className="experiments-infos-sub-container">
             <Label content="About :" size="tiny" type="important" />
             <Label
-              content={props.experiments.list[props.stage.exp].description}
+              content={
+                props.experiments.list[props.stage.exp]
+                  ? props.experiments.list[props.stage.exp].description
+                  : ''
+              }
               size="tiny"
               type="simple"
             />
+          </div>
+        </div>
+      ) : (
+        ''
+      )}
+      {props.stage.layer === 2 || props.stage.layer === 3 ? (
+        <div className="experiments-infos-container">
+          <Icon name="info" />
+          <div className="experiments-infos-sub-container">
+            <Label content="Owner :" size="tiny" type="important" />
+            <Label
+              content={
+                props.experiments.list[props.stage.exp].algos.list[
+                  props.stage.algo
+                ].owner
+              }
+              size="tiny"
+              type="simple"
+            />
+          </div>
+          <div className="experiments-infos-sub-container">
+            <Label content="Hyper-Parameters :" size="tiny" type="important" />
+            {props.experiments.list[props.stage.exp].algos.list[
+              props.stage.algo
+            ].parameters.map((p, i) => (
+              <Label
+                content={`${i === 0 ? '' : '-'} ${p.name}`}
+                size="tiny"
+                type="simple"
+              />
+            ))}
           </div>
         </div>
       ) : (
