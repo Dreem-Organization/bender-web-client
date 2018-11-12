@@ -41,7 +41,7 @@ function* fetchExperiments(action) {
         filters: {
           order: e.metrics[0].metric_name,
         },
-        rankBy: e.metrics[0].metric_name,
+        rankBy: e.metrics[0],
         selectedHyperParameter: 'time',
         hyperParametersAvailables: [],
         selectedMetrics: [e.metrics[0]],

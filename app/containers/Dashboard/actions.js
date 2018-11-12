@@ -13,6 +13,7 @@ import {
   CHANGE_SELECTED_HYPER_PARAMETER,
   FETCH_TRIALS,
   TOGGLE_MODAL,
+  CHANGE_RANK_BY,
   CHART_POINT_SELECT,
   REMOVE_SELECTED_METRIC,
   ADD_SELECTED_METRIC,
@@ -180,6 +181,14 @@ export function chartPointSelect(point) {
   return {
     type: CHART_POINT_SELECT,
     payload: point,
+  };
+}
+
+export function changeRankBy(metric, id) {
+  return {
+    type: CHANGE_RANK_BY,
+    payload: metric,
+    meta: id,
   };
 }
 

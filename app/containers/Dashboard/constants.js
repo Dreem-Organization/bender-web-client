@@ -1,5 +1,6 @@
 export const STAGE_UPDATE = 'Dashboard/STAGE_UPDATE';
 export const TOGGLE_MENU = 'Dashboard/TOGGLE_MENU';
+export const CHANGE_RANK_BY = 'Dashboard/CHANGE_RANK_BY';
 export const TOGGLE_MODAL = 'Dashboard/TOGGLE_MODAL';
 
 export const FETCH_ERROR = 'Dashboard/FETCH_ERROR';

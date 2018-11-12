@@ -35,6 +35,7 @@ import {
   changeSelectedMetrics,
   filterChange,
   selectedHyperParameterChange,
+  changeRankBy,
   toggleModal,
   chartPointSelect,
 } from './actions';
@@ -227,6 +228,7 @@ Dashboard.propTypes = {
   onRemoveExperiment: PropTypes.func,
   onRemoveAlgo: PropTypes.func,
   onFilterChange: PropTypes.func,
+  onRankByChange: PropTypes.func,
   menuState: PropTypes.bool,
   stage: PropTypes.array,
   user: PropTypes.object,
@@ -261,6 +263,7 @@ export function mapDispatchToProps(dispatch) {
     onFilterChange: data => dispatch(filterChange(data)),
     onSelectedHyperParameterChange: (experiment, metric) =>
       dispatch(selectedHyperParameterChange(experiment, metric)),
+    onRankByChange: (metric, exp) => dispatch(changeRankBy(metric, exp)),
     toggleModal: (modal, meta) => dispatch(toggleModal(modal, meta)),
     onChartPointSelect: point => dispatch(chartPointSelect(point)),
     onChangeSelectedMetrics: data => dispatch(changeSelectedMetrics(data)),
