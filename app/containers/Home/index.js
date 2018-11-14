@@ -39,12 +39,13 @@ import { login, join, toggleForm } from './actions';
 
 const HomeView = styled.div`
   .home-head-container {
+    padding-top: 50px;
     display: flex;
     position: relative;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     height: calc(100vh - 200px);
-    min-height: 300px;
+    min-height: 690px;
     background-color: ${theme.main};
     flex-direction: column;
     .home-title {
@@ -200,7 +201,6 @@ export class Home extends React.PureComponent {
     this.props.verifyUser(token);
     this.handleEyes = this.handleEyes.bind(this);
     this.draweyes = this.draweyes.bind(this);
-    this.handleScrollToElement = this.handleScrollToElement.bind(this);
   }
 
   componentDidMount() {
