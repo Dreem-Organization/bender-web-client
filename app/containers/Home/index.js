@@ -6,9 +6,19 @@ import styled from 'styled-components';
 import Title from 'components/Title';
 import Image from 'components/Image';
 import Button from 'components/Button';
+import Label from 'components/Label';
+import HomeStepCard from 'components/HomeStepCard';
+import BlackBox from 'components/BlackBox';
 import logo from 'images/white.png';
+import bender from 'images/logo.png';
+import mathlab from 'images/mathlab.png';
+import python from 'images/py.png';
+import screen from 'images/screen.png';
+import r from 'images/r.png';
+import FakeChart from 'components/FakeChart';
 import LoginForm from 'components/LoginForm';
 import JoinForm from 'components/JoinForm';
+import { slideInBottom } from 'KeyFrames';
 import {
   makeSelectStatus,
   makeSelectFirstViewLoaded,
@@ -33,18 +43,24 @@ const HomeView = styled.div`
     position: relative;
     justify-content: center;
     align-items: center;
-    height: 50vh;
+    height: calc(100vh - 200px);
     min-height: 300px;
     background-color: ${theme.main};
     flex-direction: column;
     .home-title {
+      position: relative;
+      z-index: 1;
       color: ${theme.inverted};
     }
     .home-sub-title {
+      position: relative;
+      z-index: 1;
       font-size: 1.6rem;
       color: ${theme.inverted};
     }
     .home-head-buttons {
+      position: relative;
+      z-index: 1;
       .button {
         font-weight: bold;
         font-size: 1.3rem;
@@ -63,6 +79,7 @@ const HomeView = styled.div`
       flex-direction: row;
       justify-content: center;
       align-items: flex-end;
+      animation: ${slideInBottom} 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
       img {
         width: 100%;
         height: auto;
@@ -72,21 +89,104 @@ const HomeView = styled.div`
         position: absolute;
       }
     }
+    .home-graph-container {
+      position: absolute;
+      z-index: 0;
+      bottom: 0;
+      right: 0;
+      height: 70%;
+      width: 90%;
+      opacity: 0.3;
+      margin: 0 -150px -35px 0;
+    }
+    .home-form-container {
+      position: relative;
+      z-index: 1;
+      margin-top: 40px;
+    }
   }
   .home-body-container {
     position: relative;
     height: 100vh;
     background-color: ${theme.grey};
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    flex-direction: column;
     z-index: 1;
-    .home-body-form-container {
-      margin-top: -50px;
-      opacity: 1;
-      transition: 0.3s;
-      &.hide {
-        opacity: 0;
+    .home-body-top {
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      .home-body-top-about {
+        text-align: center;
+        .text-about,
+        .text-bender {
+          font-size: 4rem;
+          margin: 0 10px;
+        }
+      }
+      .text-about {
+        font-weight: thin;
+        color: ${theme.greyDark};
+      }
+      .text-bender {
+        color: ${theme.main};
+      }
+      .home-body-top-steps {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+        margin-bottom: 20px;
+        span {
+          text-align: center;
+          font-weight: 700;
+          line-height: 1.5rem;
+          width: 2rem;
+          height: 2rem;
+          color: ${theme.main};
+          border: 3px solid ${theme.main};
+          border-radius: 2rem;
+        }
+        .sep {
+          margin: 0 10px;
+          width: 20px;
+          height: 0px;
+          border: 1px solid ${theme.main};
+        }
+      }
+    }
+    .home-body-main {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      position: relative;
+      .home-body-left,
+      .home-body-step-container,
+      .home-body-right {
+        justify-content: center;
+      }
+      .home-body-left,
+      .home-body-middle,
+      .home-body-right {
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+      }
+      .home-body-middle {
+        .home-body-step-container {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          height: 100%;
+        }
       }
     }
   }
@@ -96,9 +196,6 @@ const HomeView = styled.div`
 export class Home extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.state = {
-      visibleLogin: true,
-    };
     const token = LocalStorageManager.getUser();
     this.props.verifyUser(token);
     this.handleEyes = this.handleEyes.bind(this);
@@ -111,22 +208,6 @@ export class Home extends React.PureComponent {
     setTimeout(() => {
       this.props.loaded();
     }, 2000);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScrollToElement);
-  }
-
-  handleScrollToElement() {
-    const head = document.getElementById('head');
-    if (
-      this.props.status !== 'waiting' &&
-      window.scrollY === head.clientHeight
-    ) {
-      this.setState({ visibleLogin: false });
-    } else {
-      this.setState({ visibleLogin: true });
-    }
   }
 
   componentDidUpdate() {
@@ -211,7 +292,7 @@ export class Home extends React.PureComponent {
           <Title className="home-title" content="Welcome to Bender" size={1} />
           <Title
             className="home-sub-title"
-            content="The Free Hyper Parameters Optimizer"
+            content="Hyper-Parameters Optimization"
             size={3}
           />
           <div className="home-head-buttons">
@@ -230,15 +311,12 @@ export class Home extends React.PureComponent {
               <canvas id="canvas" width={250} height={250} />
             </div>
           </div>
-        </div>
-        <div className="home-body-container">
-          <div
-            className={`home-body-form-container ${
-              this.state.visibleLogin ? '' : 'hide'
-            }`}
-          >
+          <div className="home-graph-container">
+            <FakeChart />
+          </div>
+          <div className="home-form-container">
             {this.props.from ? (
-              <div className="home-body-form-sub-container">
+              <div className="home-form-sub-container">
                 <LoginForm
                   animate={!this.props.firstViewLoaded}
                   onSubmit={this.props.onLogin}
@@ -247,7 +325,7 @@ export class Home extends React.PureComponent {
                 />
               </div>
             ) : (
-              <div className="home-body-form-sub-container">
+              <div className="home-form-sub-container">
                 <JoinForm
                   animate={!this.props.firstViewLoaded}
                   onSubmit={data =>
@@ -258,6 +336,69 @@ export class Home extends React.PureComponent {
                 />
               </div>
             )}
+          </div>
+        </div>
+        <div className="home-body-container">
+          <div className="home-body-top">
+            <div className="home-body-top-about">
+              <span className="text-about">About</span>
+              <span className="text-bender">Bender</span>
+            </div>
+            <div className="home-body-top-steps">
+              <span>1</span>
+              <div className="sep" />
+              <span>2</span>
+              <div className="sep" />
+              <span>3</span>
+            </div>
+            <Label
+              content="3 Steps To Optimize Your Blackbox Algorithm"
+              size="sandard"
+            />
+          </div>
+          <div className="home-body-main">
+            <div className="home-body-left">
+              <HomeStepCard
+                number="1"
+                title="Plug Bender into your favorite solution"
+                desc="We support a variety of existing softwares, but dont hesitate to make some suggestions : we are constantly improving Bender !"
+              >
+                <Image
+                  className="image grey"
+                  src={mathlab}
+                  height="50px"
+                  width="auto"
+                />
+                <Image src={python} height="50px" width="auto" />
+                <Image
+                  className="image grey"
+                  src={r}
+                  height="50px"
+                  width="auto"
+                />
+              </HomeStepCard>
+            </div>
+            <div className="home-body-middle">
+              <BlackBox />
+              <div className="home-body-step-container">
+                <HomeStepCard
+                  number="2"
+                  title="Feed Bender your results or ask him some new ones to try"
+                  desc="The more you feed Bender with pairs of [Hyper-Parameters / Alrorithm Results], the more he will become efficient."
+                >
+                  <Image src={bender} height="50px" width="auto" />
+                </HomeStepCard>
+              </div>
+            </div>
+            <div className="home-body-right">
+              <HomeStepCard
+                number="3"
+                title="Use the web client to explore the results and get the best set of Hyper Parameters"
+                desc=""
+              >
+                <Image src={screen} height="250px" width="auto" />
+              </HomeStepCard>
+            </div>
           </div>
         </div>
       </HomeView>
