@@ -11,6 +11,9 @@ function ExperimentsHeader(props) {
   const experimentName = props.experiments.list[props.stage.exp]
     ? props.experiments.list[props.stage.exp].name
     : '';
+  const fullyLoaded =
+    props.experiments.list[props.stage.exp] &&
+    props.experiments.list[props.stage.exp].algos.list[props.stage.algo];
   return (
     <StyledExperiments className="experiments" {...props}>
       <div className="experiments-head-container">
@@ -123,7 +126,7 @@ function ExperimentsHeader(props) {
       ) : (
         ''
       )}
-      {props.stage.layer === 2 || props.stage.layer === 3 ? (
+      {fullyLoaded && (props.stage.layer === 2 || props.stage.layer === 3) ? (
         <div className="experiments-infos-container">
           <Icon name="info" />
           <div className="experiments-infos-sub-container">
@@ -147,6 +150,7 @@ function ExperimentsHeader(props) {
                 content={`${i === 0 ? '' : '-'} ${p.name}`}
                 size="tiny"
                 type="simple"
+                key={p.name}
               />
             ))}
           </div>

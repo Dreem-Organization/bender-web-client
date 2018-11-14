@@ -18,7 +18,7 @@ import r from 'images/r.png';
 import FakeChart from 'components/FakeChart';
 import LoginForm from 'components/LoginForm';
 import JoinForm from 'components/JoinForm';
-import { slideInBottom } from 'KeyFrames';
+import { slideInBottom, scrollIndicator } from 'KeyFrames';
 import {
   makeSelectStatus,
   makeSelectFirstViewLoaded,
@@ -157,6 +157,40 @@ const HomeView = styled.div`
           border: 1px solid ${theme.main};
         }
       }
+      .home-scroll {
+        position: absolute;
+        top: 80px;
+        &.left {
+          left: 15%;
+        }
+        &.right {
+          right: 15%;
+        }
+        span {
+          position: absolute;
+          top: 0;
+          width: 24px;
+          height: 24px;
+          margin-left: -12px;
+          border-left: 2px solid ${theme.main};
+          border-bottom: 2px solid ${theme.main};
+          transform: rotate(-45deg);
+          animation: ${scrollIndicator} 2s infinite;
+          opacity: 0;
+          box-sizing: border-box;
+        }
+        span:nth-of-type(1) {
+          animation-delay: 0s;
+        }
+        span:nth-of-type(2) {
+          top: 16px;
+          animation-delay: 0.15s;
+        }
+        span:nth-of-type(3) {
+          top: 32px;
+          animation-delay: 0.3s;
+        }
+      }
     }
     .home-body-main {
       width: 100%;
@@ -197,10 +231,14 @@ const HomeView = styled.div`
 export class Home extends React.PureComponent {
   constructor(props) {
     super(props);
+    this.state = {
+      visibleScroll: true,
+    };
     const token = LocalStorageManager.getUser();
     this.props.verifyUser(token);
     this.handleEyes = this.handleEyes.bind(this);
     this.draweyes = this.draweyes.bind(this);
+    this.handleScrollToElement = this.handleScrollToElement.bind(this);
   }
 
   componentDidMount() {
@@ -208,6 +246,21 @@ export class Home extends React.PureComponent {
     setTimeout(() => {
       this.props.loaded();
     }, 2000);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScrollToElement);
+  }
+  handleScrollToElement() {
+    const head = document.getElementById('head');
+    if (
+      this.props.status !== 'waiting' &&
+      window.scrollY > head.clientHeight / 2
+    ) {
+      this.setState({ visibleScroll: false });
+    } else {
+      this.setState({ visibleScroll: true });
+    }
   }
 
   componentDidUpdate() {
@@ -355,6 +408,24 @@ export class Home extends React.PureComponent {
               content="3 Steps To Optimize Your Blackbox Algorithm"
               size="sandard"
             />
+            {this.state.visibleScroll ? (
+              <div className="home-scroll left">
+                <span />
+                <span />
+                <span />
+              </div>
+            ) : (
+              ''
+            )}
+            {this.state.visibleScroll ? (
+              <div className="home-scroll right">
+                <span />
+                <span />
+                <span />
+              </div>
+            ) : (
+              ''
+            )}
           </div>
           <div className="home-body-main">
             <div className="home-body-left">
