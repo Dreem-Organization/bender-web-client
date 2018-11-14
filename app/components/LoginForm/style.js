@@ -36,6 +36,9 @@ const LoginForm = styled.div`
     .label {
       margin-top: 5px;
       text-align: center;
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
 `;

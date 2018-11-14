@@ -5,6 +5,23 @@ import { keyframes } from 'styled-components';
  * animation slide-in-bottom
  * ----------------------------------------
  */
+export const scrollIndicator = keyframes`
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+`;
+
+/**
+ * ----------------------------------------
+ * animation slide-in-bottom
+ * ----------------------------------------
+ */
 export const slideInBottom = keyframes`
   0% {
     transform: translateY(1000px);
