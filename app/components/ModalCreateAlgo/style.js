@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const ModalCreateAlgo = styled.div`
   padding: 20px;
-  width: 650px;
+  width: 750px;
   display: flex;
   flex-direction: column;
   form {
@@ -42,7 +42,11 @@ const ModalCreateAlgo = styled.div`
           display: flex;
           flex-direction: row;
           .input {
-            width: 50px;
+            width: 73px;
+          }
+          .sigmu {
+            display: flex;
+            flex-direction: row;
           }
         }
         .categoricals {
@@ -52,9 +56,13 @@ const ModalCreateAlgo = styled.div`
             flex-direction: row;
             flex-wrap: wrap;
             .categorical {
-              max-width: 100px;
+              max-width: 128px;
               position: relative;
+              display: flex;
+              flex-direction: row;
+              margin-left: 10px;
               input {
+                margin: 0;
                 width: 100%;
               }
               i {

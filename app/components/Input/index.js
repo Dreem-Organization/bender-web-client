@@ -8,19 +8,23 @@ const Wrapper = styled.div`
   position: relative;
   display: flex;
   .input-error {
-    width: 200px;
+    white-space: nowrap;
     position: absolute;
     z-index: 10000;
-    right: -200px;
+    top: -30px;
+    left: 0px;
     display: flex;
     flex-direction: row;
     align-items: center;
     .input-error-arrow {
+      position: absolute;
       width: 0;
       height: 0;
-      border-top: 5px solid transparent;
-      border-bottom: 5px solid transparent;
-      border-right: 5px solid ${theme.negative};
+      bottom: -5px;
+      left: 10px;
+      border-right: 5px solid transparent;
+      border-top: 5px solid ${theme.negative};
+      border-left: 5px solid transparent;
     }
     span {
       font-size: 0.7rem;

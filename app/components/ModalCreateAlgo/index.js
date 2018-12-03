@@ -185,7 +185,7 @@ class renderMembers extends React.PureComponent {
       toDisplay = (
         <div className="non-categoricals">
           {['normal', 'lognormal'].includes(cat) ? (
-            <div>
+            <div className="sigmu">
               <Field
                 name={`${param}.search_space.mu`}
                 parse={parser}
