@@ -57,6 +57,12 @@ function AlgoTile(props) {
             type="inverted"
             content="How to add trials ?"
             theme={props.theme}
+            onClick={() =>
+              window.open(
+                'https://bender-optimizer.readthedocs.io/en/latest/use_webapp.html#the-ranking-board',
+                '_blank',
+              )
+            }
           />
         </div>
       )}
