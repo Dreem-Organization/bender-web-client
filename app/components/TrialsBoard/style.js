@@ -30,6 +30,7 @@ const TrialsBoard = styled.div`
     .trials-board-details-cointainer {
       padding-top: 10px;
       border-top: 2px solid ${props => props.theme.grey};
+      transition: 0.3s;
       height: 150px;
     }
   }

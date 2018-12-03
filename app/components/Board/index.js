@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import theme from 'themeConfig';
+import { light as theme } from 'themeConfig';
 import Title from 'components/Title';
 import TrialsBoard from 'components/TrialsBoard';
 import RankingBoard from 'components/RankingBoard';
@@ -30,6 +30,7 @@ function Board(props) {
         openExperimentModal={() => props.toggleModal('experimentCreate')}
         experiments={props.experiments.list}
         onRemoveExperiment={id => props.onRemoveExperiment(props.jwt, id)}
+        theme={props.theme}
       />
     );
   } else if (props.stage[0].layer === 1 && showRankBoardIf) {
@@ -44,6 +45,8 @@ function Board(props) {
         onRankByChange={props.onRankByChange}
         openCreateAlgoModal={() => props.toggleModal('algoCreate')}
         openUpdateAlgoModal={meta => props.toggleModal('algoUpdate', meta)}
+        onOpenHpModal={meta => props.toggleModal('hp', meta)}
+        theme={props.theme}
       />
     );
   } else if (props.stage[0].layer >= 2 && showTrialsBoardIf) {
@@ -66,13 +69,14 @@ function Board(props) {
         chartSelectedPoint={props.chartSelectedPoint}
         onChartPointSelect={props.onChartPointSelect}
         onChangeSelectedMetrics={props.onChangeSelectedMetrics}
+        theme={props.theme}
       />
     );
   }
   return (
     <StyledBoard className="board" {...props}>
       <div className="board-title">
-        <Title content={name} />
+        <Title content={name} theme={props.theme} />
       </div>
       {displayedBoard}
     </StyledBoard>

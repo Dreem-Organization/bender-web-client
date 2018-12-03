@@ -6,6 +6,7 @@ const ExperimentTile = styled.div`
   justify-content: space-between;
   padding: 10px;
   border-bottom: 2px solid ${props => props.theme.grey};
+  transition: 0.3s;
   font-family: ${props => props.theme.titleFont};
   .experiment-tile-info-container {
     display: flex;

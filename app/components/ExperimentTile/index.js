@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
-import theme from 'themeConfig';
+import { light as theme } from 'themeConfig';
 import StyledExperimentTile from './style';
 
 function ExperimentTile(props) {
@@ -11,7 +11,7 @@ function ExperimentTile(props) {
       <div className="experiment-tile-info-container">
         <span className="experiment-tile-name">{props.experiment.name}</span>
         <span className="experiment-tile-owner">
-          <Icon name="person_outline" />
+          <Icon name="person_outline" theme={props.theme} />
           {props.experiment.owner}
         </span>
       </div>
@@ -36,6 +36,7 @@ function ExperimentTile(props) {
             e.stopPropagation();
             props.onRemoveExperiment(props.experiment.id);
           }}
+          theme={props.theme}
         />
       </div>
     </StyledExperimentTile>

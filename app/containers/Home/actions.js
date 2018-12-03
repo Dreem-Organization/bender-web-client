@@ -1,4 +1,4 @@
-import { FETCH_LOGIN, FETCH_JOIN } from 'containers/App/constants';
+import { FETCH_LOGIN, FETCH_JOIN, FETCH_RESET } from 'containers/App/constants';
 import { TOGGLE_FORM } from './constants';
 
 export function login(payload) {
@@ -15,9 +15,16 @@ export function join(payload) {
   };
 }
 
-export function toggleForm() {
+export function reset(payload) {
+  return {
+    type: FETCH_RESET,
+    payload,
+  };
+}
+
+export function toggleForm(data) {
   return {
     type: TOGGLE_FORM,
-    payload: null,
+    payload: data,
   };
 }

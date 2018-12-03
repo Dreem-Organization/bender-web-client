@@ -4,6 +4,7 @@ const Algos = styled.div`
   background-color: white;
   min-width: 200px;
   border-left: 2px solid ${props => props.theme.grey};
+  transition: 0.3s;
   display: flex;
   flex-direction: column;
   overflow: scroll;
@@ -13,6 +14,7 @@ const Algos = styled.div`
     flex-direction: column;
     align-items: center;
     padding: 10px 20px;
+    transition: 0.3s;
     border-bottom: 2px solid ${props => props.theme.grey};
   }
   .algo-list {

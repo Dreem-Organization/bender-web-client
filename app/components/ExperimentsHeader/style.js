@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 const Experiments = styled.div`
-  background-color: white;
+  background-color: ${props => props.theme.inverted};
+  transition: 0.3s;
   box-shadow: ${props => props.theme.secondaryShadow};
   display: flex;
   flex-direction: column;

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Image from 'components/Image';
 import github from 'images/github.png';
-import theme from 'themeConfig';
+import { light as theme } from 'themeConfig';
 import StyledGithubButton from './style';
 
 const GithubButton = props => (

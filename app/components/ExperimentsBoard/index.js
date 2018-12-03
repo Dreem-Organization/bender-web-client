@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import theme from 'themeConfig';
+import { light as theme } from 'themeConfig';
 import ExperimentTile from 'components/ExperimentTile';
 import Button from 'components/Button';
 import Label from 'components/Label';
@@ -15,13 +15,18 @@ function ExperimentsBoard(props) {
           key={e.id}
           experiment={e}
           onRemoveExperiment={props.onRemoveExperiment}
+          theme={props.theme}
         />
       ))}
       {Object.keys(props.experiments).length ? (
         ''
       ) : (
         <div className="experiments-board-empty">
-          <Label content="No experiment yet, create one !" type="important" />
+          <Label
+            content="No experiment yet, create one !"
+            type="important"
+            theme={props.theme}
+          />
         </div>
       )}
       <div className="experiments-board-button-container">
@@ -31,6 +36,7 @@ function ExperimentsBoard(props) {
           icon="add_circle_outline"
           color="positive"
           onClick={props.openExperimentModal}
+          theme={props.theme}
         />
       </div>
     </StyledExperimentsBoard>

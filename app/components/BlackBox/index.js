@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import theme from 'themeConfig';
+import { light as theme } from 'themeConfig';
 import Label from 'components/Label';
 import Volume from './volume';
 import StyledBlackBox from './style';

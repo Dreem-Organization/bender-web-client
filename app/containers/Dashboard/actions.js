@@ -41,28 +41,18 @@ export function createAlgo(jwt, raw, experiment, user) {
   const algoData = {
     experiment,
     name: raw.name,
-    parameters: [],
+    parameters: raw.parameters,
   };
-  raw.parameters.forEach(p => {
-    if (p.type === 'categorical') {
-      algoData.parameters.push({
-        category: p.type,
-        name: p.hpName,
-        search_space: {
-          values: p.select,
-        },
-      });
-    } else {
-      algoData.parameters.push({
-        category: p.type,
-        name: p.hpName,
-        search_space: {
-          step: parseFloat(p.step),
-          low: parseFloat(p.low),
-          high: parseFloat(p.high),
-        },
-      });
-    }
+  algoData.parameters.forEach((e, i) => {
+    Object.keys(algoData.parameters[i].search_space).forEach(key => {
+      if (
+        (Array.isArray(algoData.parameters[i].search_space[key]) &&
+          algoData.parameters[i].search_space[key].length === 0) ||
+        !algoData.parameters[i].search_space[key]
+      ) {
+        delete algoData.parameters[i].search_space[key];
+      }
+    });
   });
   return {
     type: FETCH_CREATE_ALGO,

@@ -16,6 +16,9 @@ const makeSelectStatus = () =>
 const makeSelectJwt = () =>
   createSelector(selectGlobal, globalState => globalState.get('jwt'));
 
+const makeSelectTheme = () =>
+  createSelector(selectGlobal, globalState => globalState.get('theme').toJS());
+
 const makeSelectUserInfos = () =>
   createSelector(selectGlobal, globalState => globalState.get('user').toJS());
 
@@ -40,6 +43,7 @@ export {
   makeSelectAnimator,
   makeSelectJwt,
   makeSelectStatus,
+  makeSelectTheme,
   makeSelectUserInfos,
   selectCredentials,
   makeSelectLocation,

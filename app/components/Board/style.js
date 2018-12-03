@@ -8,7 +8,8 @@ import {
 
 const Board = styled.div`
   position: absolute;
-  background-color: white;
+  background-color: ${props => props.theme.inverted};
+  transition: 0.3s;
   display: flex;
   flex-direction: column;
   box-shadow: ${props => props.theme.secondaryShadow};
@@ -16,6 +17,7 @@ const Board = styled.div`
   width: 100%;
   .board-title {
     margin: 10px 20px 0 20px;
+    transition: 0.3s;
     border-bottom: 2px solid ${props => props.theme.grey};
     padding-bottom: 10px;
     text-transform: capitalize;

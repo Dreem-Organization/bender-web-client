@@ -4,6 +4,7 @@ import {
   LOGOUT,
   FIRST_VIEW_LOADED,
   SOCIAL_LOGIN,
+  TOGGLE_THEME,
 } from './constants';
 
 export function animatorUpdate(data) {
@@ -37,5 +38,12 @@ export function socialLogin(code) {
   return {
     type: SOCIAL_LOGIN,
     payload: code,
+  };
+}
+
+export function toggleTheme(theme) {
+  return {
+    type: TOGGLE_THEME,
+    payload: theme,
   };
 }

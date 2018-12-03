@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'components/Icon';
 import Label from 'components/Label';
-import theme from 'themeConfig';
+import { light as theme } from 'themeConfig';
 import StyledDetails from './style';
 
 function Details(props) {
@@ -14,13 +14,28 @@ function Details(props) {
     <StyledDetails className="details" {...props}>
       <div className="details-head">
         <div className="details-head-sub">
-          <Icon name="bar_chart" />
-          <Label content="Point Details :" size="tiny" type="important" />
+          <Icon name="bar_chart" theme={props.theme} />
+          <Label
+            content="Point Details :"
+            size="tiny"
+            type="important"
+            theme={props.theme}
+          />
         </div>
         {point ? (
           <div className="details-head-under">
-            <Label content={point.algo_name} size="mini" type="important" />
-            <Label content={point.owner} size="mini" type="important" />
+            <Label
+              content={point.algo_name}
+              size="mini"
+              type="important"
+              theme={props.theme}
+            />
+            <Label
+              content={point.owner}
+              size="mini"
+              type="important"
+              theme={props.theme}
+            />
           </div>
         ) : (
           ''
@@ -35,10 +50,16 @@ function Details(props) {
                 content="Parameters"
                 size="tiny"
                 type="important"
+                theme={props.theme}
               />
               {Object.keys(point.parameters).map(k => (
                 <div className="details-line" key={k}>
-                  <Label content={k} size="mini" type="simple" />
+                  <Label
+                    content={k}
+                    size="mini"
+                    type="simple"
+                    theme={props.theme}
+                  />
                   <input
                     onFocus={e => e.target.select()}
                     value={point.parameters[k]}
@@ -53,10 +74,16 @@ function Details(props) {
                 content="Metrics"
                 size="tiny"
                 type="important"
+                theme={props.theme}
               />
               {Object.keys(point.results).map(k => (
                 <div className="details-line" key={k}>
-                  <Label content={k} size="mini" type="simple" />
+                  <Label
+                    content={k}
+                    size="mini"
+                    type="simple"
+                    theme={props.theme}
+                  />
                   <input
                     onFocus={e => e.target.select()}
                     value={point.results[k]}
@@ -71,6 +98,7 @@ function Details(props) {
             content="Please click on a point to display infos here."
             size="tiny"
             type="simple"
+            theme={props.theme}
           />
         )}
       </div>

@@ -13,13 +13,14 @@ import {
   makeSelectStatus,
   makeSelectJwt,
   makeSelectUserInfos,
+  makeSelectTheme,
 } from 'containers/App/selectors';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
 import LocalStorageManager from 'utils/localStorageManager';
-import { verifyUser } from 'containers/App/actions';
+import { verifyUser, toggleTheme } from 'containers/App/actions';
 import {
   logout,
   toggleMenu,
@@ -52,6 +53,8 @@ import saga from './saga';
 import reducer from './reducer';
 
 const DashboardView = styled.div`
+  background-color: ${props => props.theme.pageBackground};
+  transition: 0.3s;
   display: flex;
   .dashboard-container,
   .sub-container {
@@ -130,19 +133,23 @@ export class Dashboard extends React.PureComponent {
       <WaitingWrapper
         timeout={1000}
         show={this.props.status === 'waiting' || !this.props.experiments.loaded}
+        theme={this.props.theme}
       >
-        <DashboardView>
+        <DashboardView theme={this.props.theme}>
           <Menu
             onLogout={this.props.onLogout}
             visible={this.props.menuState}
             toggle={this.props.onToggleMenu}
             fetching={this.props.fetching}
+            onOpenProfile={() => this.props.toggleModal('profile')}
+            theme={this.props.theme}
           />
           <div className="dashboard-container">
             <ExperimentsHeader
               stage={this.props.stage[0]}
               experiments={this.props.experiments}
               stageUpdate={data => this.props.onStageUpdate(data)}
+              theme={this.props.theme}
             />
             {/* <Algos
               algos={
@@ -202,6 +209,9 @@ export class Dashboard extends React.PureComponent {
                 this.props.user.username,
               );
             }}
+            onToggleTheme={this.props.toggleTheme}
+            user={this.props.user}
+            theme={this.props.theme}
           />
         </DashboardView>
       </WaitingWrapper>
@@ -211,6 +221,7 @@ export class Dashboard extends React.PureComponent {
 
 Dashboard.displayName = 'Dashboard';
 Dashboard.propTypes = {
+  theme: PropTypes.object,
   status: PropTypes.string,
   jwt: PropTypes.string,
   experiments: PropTypes.object,
@@ -239,6 +250,7 @@ Dashboard.propTypes = {
   onSelectedHyperParameterChange: PropTypes.func,
   onChangeSelectedMetrics: PropTypes.func,
   fetching: PropTypes.array,
+  toggleTheme: PropTypes.func,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -267,6 +279,7 @@ export function mapDispatchToProps(dispatch) {
     toggleModal: (modal, meta) => dispatch(toggleModal(modal, meta)),
     onChartPointSelect: point => dispatch(chartPointSelect(point)),
     onChangeSelectedMetrics: data => dispatch(changeSelectedMetrics(data)),
+    toggleTheme: theme => dispatch(toggleTheme(theme)),
   };
 }
 
@@ -277,6 +290,7 @@ const mapStateToProps = createStructuredSelector({
   stage: makeSelectStage(),
   menuState: makeSelectMenuState(),
   experiments: makeSelectExperiments(),
+  theme: makeSelectTheme(),
   user: makeSelectUserInfos(),
   filters: makeSelectFilters(),
   modalStates: makeSelectModalStates(),

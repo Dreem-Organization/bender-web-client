@@ -7,7 +7,7 @@ import Button from 'components/Button';
 import Label from 'components/Label';
 import { light as theme } from 'themeConfig';
 import { Field, reduxForm } from 'redux-form/immutable';
-import StyledLoginForm from './style';
+import StyledRetrieveForm from './style';
 
 const validate = values => {
   const errors = {};
@@ -29,18 +29,12 @@ const validate = values => {
 const Form = ({ handleSubmit, submitting, login }) => (
   <form onSubmit={handleSubmit(login)}>
     <Field
-      name="username"
+      name="email"
       type="text"
       component={Input}
-      placeholder="Username or E-Mail"
+      placeholder="Your E-Mail"
     />
-    <Field
-      name="password"
-      type="password"
-      component={Input}
-      placeholder="Password"
-    />
-    <Button content="Go" type="submit" disabled={submitting} />
+    <Button content="Reset" type="submit" disabled={submitting} />
   </form>
 );
 
@@ -51,48 +45,39 @@ Form.propTypes = {
 };
 
 const RForm = reduxForm({
-  form: 'loginform',
+  form: 'retrieveform',
   validate,
 })(Form);
 
-function LoginForm(props) {
+function RetrieveForm(props) {
   return (
-    <StyledLoginForm className="login-form" {...props}>
+    <StyledRetrieveForm className="login-form" {...props}>
       <div className="login-form-container">
         <div className="login-form-head">
-          <Title size={2} content="Login" theme={props.theme} />
-          {/* <GithubButton /> */}
+          <Title size={2} content="Reset Password" theme={props.theme} />
         </div>
         <RForm login={props.onSubmit} />
         <Label
           type="link"
           size="mini"
-          onClick={() => props.onToggleForm('join')}
+          onClick={() => props.onToggleForm('login')}
           theme={props.theme}
         >
-          Join Us
-        </Label>
-        <Label
-          type="link"
-          size="mini"
-          onClick={() => props.onToggleForm('reset')}
-          theme={props.theme}
-        >
-          Reset Password
+          Log In
         </Label>
       </div>
-    </StyledLoginForm>
+    </StyledRetrieveForm>
   );
 }
 
-LoginForm.propTypes = {
+RetrieveForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   theme: PropTypes.object,
   onToggleForm: PropTypes.func.isRequired,
 };
 
-LoginForm.defaultProps = {
+RetrieveForm.defaultProps = {
   theme,
 };
 
-export default LoginForm;
+export default RetrieveForm;

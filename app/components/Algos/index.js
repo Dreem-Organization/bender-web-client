@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import theme from 'themeConfig';
+import { light as theme } from 'themeConfig';
 import Title from 'components/Title';
 import Label from 'components/Label';
 import AlgoTile from 'components/AlgoTile';
@@ -20,13 +20,18 @@ function Algos(props) {
             algo={a}
             onRemoveAlgo={props.onRemoveAlgo}
             onUpdateAlgo={props.openUpdateAlgoModal}
+            theme={props.theme}
           />
         ))}
         {Object.keys(props.algos.list).length ? (
           ''
         ) : (
           <div className="algo-list-empty">
-            <Label content="No algo yet, create one !" type="important" />
+            <Label
+              content="No algo yet, create one !"
+              type="important"
+              theme={props.theme}
+            />
           </div>
         )}
       </div>
@@ -37,6 +42,7 @@ function Algos(props) {
           icon="add_circle_outline"
           color="positive"
           onClick={props.openAlgoModal}
+          theme={props.theme}
         />
       </div>
     </StyledAlgos>

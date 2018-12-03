@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import theme from 'themeConfig';
+import { light as theme } from 'themeConfig';
 import Title from 'components/Title';
 import LineChart from 'components/LineChart';
 import ScatterChart from 'components/ScatterChart';
@@ -22,6 +22,7 @@ function TrialsBoard(props) {
                 stage={props.stage}
                 onChartPointSelect={props.onChartPointSelect}
                 onChangeSelectedMetrics={props.onChangeSelectedMetrics}
+                theme={props.theme}
               />
             ) : (
               <ScatterChart
@@ -30,6 +31,7 @@ function TrialsBoard(props) {
                 experiment={props.experiment}
                 stage={props.stage}
                 onChartPointSelect={props.onChartPointSelect}
+                theme={props.theme}
               />
             )}
           </div>
@@ -37,12 +39,17 @@ function TrialsBoard(props) {
             <Details
               trials={props.experiment.trials.list[props.stage.algo]}
               selectedPoint={props.chartSelectedPoint}
+              theme={props.theme}
             />
           </div>
         </div>
       ) : (
         <div className="trials-board-no-trials">
-          <Title content="No trials for the moment !" size={5} />
+          <Title
+            content="No trials for the moment !"
+            size={5}
+            theme={props.theme}
+          />
         </div>
       )}
     </StyledTrialsBoard>

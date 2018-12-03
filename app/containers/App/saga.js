@@ -3,6 +3,8 @@ import {
   FETCH_ERROR,
   FETCH_LOGIN,
   LOGIN,
+  FETCH_RESET,
+  RESET,
   SOCIAL_LOGIN,
   FETCH_JOIN,
   JOIN,
@@ -21,6 +23,29 @@ function* login(action) {
     // const credentials = yield select(selectCredentials);
     const data = yield call(api.login, action.payload);
     yield put({ type: LOGIN, payload: data });
+  } catch (error) {
+    yield put({ type: FETCH_ERROR, payload: error });
+    yield put({
+      type: PUT_TOAST,
+      payload: {
+        message: error.message,
+        life: 10,
+      },
+    });
+  }
+}
+
+function* resetPassword(action) {
+  try {
+    const data = yield call(api.reset, action.payload, action.payload.callback);
+    yield put({ type: RESET, payload: data });
+    yield put({
+      type: PUT_TOAST,
+      payload: {
+        message: 'Email successfully sent.',
+        life: 10,
+      },
+    });
   } catch (error) {
     yield put({ type: FETCH_ERROR, payload: error });
     yield put({
@@ -73,6 +98,13 @@ function* loginWatcher() {
   }
 }
 
+function* resetWatcher() {
+  while (true) {
+    const data = yield take(FETCH_RESET);
+    yield call(resetPassword, data);
+  }
+}
+
 function* socialLoginWatcher() {
   while (true) {
     const data = yield take(SOCIAL_LOGIN);
@@ -88,5 +120,10 @@ function* joinWatcher() {
 }
 
 export default function* rootSaga() {
-  yield all([fork(loginWatcher), fork(socialLoginWatcher), fork(joinWatcher)]);
+  yield all([
+    fork(loginWatcher),
+    fork(resetWatcher),
+    fork(socialLoginWatcher),
+    fork(joinWatcher),
+  ]);
 }

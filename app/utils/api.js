@@ -21,6 +21,11 @@ export const api = {
       email,
     }).then(callBack);
   },
+  reset({ email }, callBack) {
+    return post(`${BASE_URL}/password/reset/`, {
+      email,
+    }).then(callBack);
+  },
   validate({ key, callBack }) {
     return post(`${BASE_URL}/registration/verify-email/`, {
       key,
