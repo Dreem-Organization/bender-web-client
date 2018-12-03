@@ -9,6 +9,7 @@ const RankingBoard = styled.div`
     .ranking-board-head {
       display: flex;
       flex-direction: row;
+      transition: 0.3s;
       border-bottom: 2px solid ${props => props.theme.grey};
       .label {
         text-align: center;
@@ -36,8 +37,10 @@ const RankingBoard = styled.div`
         min-height: 175px;
         max-height: 175px;
         padding: 10px 0;
+        transition: 0.3s;
         border-bottom: 2px solid ${props => props.theme.grey};
         .tile {
+          transition: 0.3s;
           border-left: 2px solid ${props => props.theme.grey};
           &.stats {
             display: flex;
@@ -55,6 +58,7 @@ const RankingBoard = styled.div`
   }
   .ranking-board-add-algo {
     width: 100%;
+    transition: 0.3s;
     border-top: 2px solid ${props => props.theme.grey};
     display: flex;
     justify-content: center;

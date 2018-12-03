@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import theme from 'themeConfig';
+import { light as theme } from 'themeConfig';
 import Title from 'components/Title';
 import Label from 'components/Label';
 import StyledRankTile from './style';
@@ -28,11 +28,13 @@ function RankTile(props) {
       <Title
         className={props.rank === '?' ? 'title unranked' : 'title'}
         content={props.rank.toString()}
+        theme={props.theme}
       />
       <Label
         size="tiny"
         type={props.rank !== '?' ? 'important' : ''}
         content={letters}
+        theme={props.theme}
       />
     </StyledRankTile>
   );

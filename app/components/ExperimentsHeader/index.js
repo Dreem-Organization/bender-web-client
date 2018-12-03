@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import theme from 'themeConfig';
+import { light as theme } from 'themeConfig';
 import Title from 'components/Title';
 import Icon from 'components/Icon';
 import Label from 'components/Label';
@@ -19,7 +19,7 @@ function ExperimentsHeader(props) {
       <div className="experiments-head-container">
         <div className="experiments-head-sub-container">
           {props.stage.layer === 0 ? (
-            <Title content="Welcome" size={2} />
+            <Title content="Welcome" size={2} theme={props.theme} />
           ) : (
             <div className="experiments-head-portion">
               <Icon
@@ -28,10 +28,12 @@ function ExperimentsHeader(props) {
                 onClick={() =>
                   props.stageUpdate({ layer: 0, exp: '', algo: '' })
                 }
+                theme={props.theme}
               />
               <Icon
                 className="material-icons experiments-link"
                 name="linear_scale"
+                theme={props.theme}
               />
               <Title
                 className={`${
@@ -46,6 +48,7 @@ function ExperimentsHeader(props) {
                     algo: '',
                   })
                 }
+                theme={props.theme}
               />
             </div>
           )}
@@ -54,6 +57,7 @@ function ExperimentsHeader(props) {
               <Icon
                 className="material-icons experiments-link"
                 name="linear_scale"
+                theme={props.theme}
               />
               <Title
                 className={`${props.stage.layer !== 3 ? 'link' : ''}`}
@@ -62,6 +66,7 @@ function ExperimentsHeader(props) {
                 onClick={() =>
                   props.stageUpdate({ layer: 0, exp: '', algo: '' })
                 }
+                theme={props.theme}
               />
             </div>
           ) : (
@@ -70,14 +75,14 @@ function ExperimentsHeader(props) {
         </div>
         {props.stage.layer === 1 ? (
           <div className="experiments-head-sub-container">
-            <ClipBoardButton value={props.stage.exp} />
+            <ClipBoardButton value={props.stage.exp} theme={props.theme} />
           </div>
         ) : (
           ''
         )}
         {props.stage.layer === 2 || props.stage.layer === 3 ? (
           <div className="experiments-head-sub-container">
-            <ClipBoardButton value={props.stage.algo} />
+            <ClipBoardButton value={props.stage.algo} theme={props.theme} />
           </div>
         ) : (
           ''
@@ -85,9 +90,14 @@ function ExperimentsHeader(props) {
       </div>
       {props.stage.layer === 1 ? (
         <div className="experiments-infos-container">
-          <Icon name="info" />
+          <Icon name="info" theme={props.theme} />
           <div className="experiments-infos-sub-container">
-            <Label content="Owner :" size="tiny" type="important" />
+            <Label
+              content="Owner :"
+              size="tiny"
+              type="important"
+              theme={props.theme}
+            />
             <Label
               content={
                 props.experiments.list[props.stage.exp]
@@ -96,10 +106,16 @@ function ExperimentsHeader(props) {
               }
               size="tiny"
               type="simple"
+              theme={props.theme}
             />
           </div>
           <div className="experiments-infos-sub-container">
-            <Label content="Dataset :" size="tiny" type="important" />
+            <Label
+              content="Dataset :"
+              size="tiny"
+              type="important"
+              theme={props.theme}
+            />
             <Label
               content={
                 props.experiments.list[props.stage.exp]
@@ -108,10 +124,16 @@ function ExperimentsHeader(props) {
               }
               size="tiny"
               type="simple"
+              theme={props.theme}
             />
           </div>
           <div className="experiments-infos-sub-container">
-            <Label content="About :" size="tiny" type="important" />
+            <Label
+              content="About :"
+              size="tiny"
+              type="important"
+              theme={props.theme}
+            />
             <Label
               content={
                 props.experiments.list[props.stage.exp]
@@ -120,6 +142,7 @@ function ExperimentsHeader(props) {
               }
               size="tiny"
               type="simple"
+              theme={props.theme}
             />
           </div>
         </div>
@@ -128,9 +151,14 @@ function ExperimentsHeader(props) {
       )}
       {fullyLoaded && (props.stage.layer === 2 || props.stage.layer === 3) ? (
         <div className="experiments-infos-container">
-          <Icon name="info" />
+          <Icon name="info" theme={props.theme} />
           <div className="experiments-infos-sub-container">
-            <Label content="Owner :" size="tiny" type="important" />
+            <Label
+              content="Owner :"
+              size="tiny"
+              type="important"
+              theme={props.theme}
+            />
             <Label
               content={
                 props.experiments.list[props.stage.exp].algos.list[
@@ -139,10 +167,16 @@ function ExperimentsHeader(props) {
               }
               size="tiny"
               type="simple"
+              theme={props.theme}
             />
           </div>
           <div className="experiments-infos-sub-container">
-            <Label content="Hyper-Parameters :" size="tiny" type="important" />
+            <Label
+              content="Hyper-Parameters :"
+              size="tiny"
+              type="important"
+              theme={props.theme}
+            />
             {props.experiments.list[props.stage.exp].algos.list[
               props.stage.algo
             ].parameters.map((p, i) => (
@@ -151,6 +185,7 @@ function ExperimentsHeader(props) {
                 size="tiny"
                 type="simple"
                 key={p.name}
+                theme={props.theme}
               />
             ))}
           </div>

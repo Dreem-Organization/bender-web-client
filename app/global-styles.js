@@ -20,7 +20,6 @@ injectGlobal`
   #app, #app-container {
     display: block;
     position: relative;
-    background-color: #F4F1F1;
     height: 100vh;
     min-width: 100%;
   }

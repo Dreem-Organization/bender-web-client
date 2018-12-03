@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import theme from 'themeConfig';
+import { light as theme } from 'themeConfig';
 import Icon from 'components/Icon';
 import StyledClipBoardButton from './style';
 
@@ -20,7 +20,7 @@ function ClipBoardButton(props) {
         }}
         className="clipboard-button-copy"
       >
-        <Icon name="file_copy" />
+        <Icon name="file_copy" theme={props.theme} />
       </div>
     </StyledClipBoardButton>
   );

@@ -1,7 +1,7 @@
 // /* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
-import theme from 'themeConfig';
+import { light as theme } from 'themeConfig';
 import Input from 'components/Input';
 import Label from 'components/Label';
 import Icon from 'components/Icon';
@@ -131,7 +131,12 @@ const RForm = reduxForm({
 function ModalCreateExperiment(props) {
   return (
     <StyledModalCreateExperiment className="modal-create-experiment" {...props}>
-      <Label content="Create a new experiment" type="important" size="big" />
+      <Label
+        content="Create a new experiment"
+        type="important"
+        size="big"
+        theme={props.theme}
+      />
       <RForm onCreate={props.onValidate} />
     </StyledModalCreateExperiment>
   );

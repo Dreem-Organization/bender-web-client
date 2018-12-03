@@ -1,6 +1,6 @@
 import React, { Children } from 'react';
 import PropTypes from 'prop-types';
-import theme from 'themeConfig';
+import { light as theme } from 'themeConfig';
 import Label from 'components/Label';
 import StyledHomeStepCard from './style';
 
@@ -14,11 +14,17 @@ function HomeStepCard(props) {
           content={props.title}
           size="sandard"
           type="important"
+          theme={props.theme}
         />
         <div className="step-content-container">
           {Children.toArray(props.children)}
         </div>
-        <Label className="label step-desc" content={props.desc} size="small" />
+        <Label
+          className="label step-desc"
+          content={props.desc}
+          size="small"
+          theme={props.theme}
+        />
       </div>
     </StyledHomeStepCard>
   );

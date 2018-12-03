@@ -1,3 +1,5 @@
+import { light } from 'themeConfig';
+
 export default class LocalStorageManager {
   static setUser(jwt, user) {
     localStorage.setItem('dreem-bender-user', JSON.stringify({ jwt, user }));
@@ -21,5 +23,17 @@ export default class LocalStorageManager {
 
   static getStage() {
     return JSON.parse(localStorage.getItem('dreem-bender-stage'));
+  }
+
+  static setTheme(theme) {
+    localStorage.setItem('dreem-bender-theme', JSON.stringify(theme));
+  }
+
+  static getTheme() {
+    let ret = JSON.parse(localStorage.getItem('dreem-bender-theme'));
+    if (!ret) {
+      ret = light;
+    }
+    return ret;
   }
 }

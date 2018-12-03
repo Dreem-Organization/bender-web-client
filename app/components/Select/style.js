@@ -17,6 +17,7 @@ const Select = styled.div`
         }
         span {
           background-color: ${props.theme.inverted};
+          transition: 0.3s;
           padding: 0 4px;
           font-size: 0.5rem;
           font-family: ${props.theme.titleFont};

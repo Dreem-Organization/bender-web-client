@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import theme from 'themeConfig';
+import { light as theme } from 'themeConfig';
 import Icon from 'components/Icon';
 import Button from 'components/Button';
 import ClipBoardButton from 'components/ClipBoardButton';
@@ -17,6 +17,7 @@ function AlgoTile(props) {
             e.stopPropagation();
             props.onUpdateAlgo(props.algo);
           }}
+          theme={props.theme}
         />
         <Icon
           className="material-icons delete"
@@ -25,6 +26,7 @@ function AlgoTile(props) {
             e.stopPropagation();
             props.onRemoveAlgo(props.algo.id);
           }}
+          theme={props.theme}
         />
       </div>
       <div className="algo-tile-head">
@@ -33,23 +35,35 @@ function AlgoTile(props) {
           props.algo.trial_count
         } Trials`}</span>
       </div>
-      <ClipBoardButton value={props.algo.id} />
+      <ClipBoardButton value={props.algo.id} theme={props.theme} />
       {props.algo.trial_count > 0 ? (
         <div className="algo-tile-buttons-container">
           <Button
             type="inverted"
             content="Visualize Trials"
             onClick={() => props.onVisualizeTrials(props.algo.id, true)}
+            theme={props.theme}
           />
           <Button
             type="inverted"
             content="Explore Hyper Parameters"
             onClick={() => props.onVisualizeTrials(props.algo.id, false)}
+            theme={props.theme}
           />
         </div>
       ) : (
         <div className="algo-tile-buttons-container">
-          <Button type="inverted" content="How to add trials ?" />
+          <Button
+            type="inverted"
+            content="How to add trials ?"
+            theme={props.theme}
+            onClick={() =>
+              window.open(
+                'https://bender-optimizer.readthedocs.io/en/latest/use_webapp.html#the-ranking-board',
+                '_blank',
+              )
+            }
+          />
         </div>
       )}
     </StyledAlgoTile>

@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import theme from 'themeConfig';
+import { light as theme } from 'themeConfig';
 import ModalCreateExperiment from 'components/ModalCreateExperiment';
 import ModalCreateAlgo from 'components/ModalCreateAlgo';
+import ModalProfile from 'components/ModalProfile';
+import ModalHyperParameters from 'components/ModalHyperParameters';
 import Icon from 'components/Icon';
 import StyledModals from './style';
 
@@ -10,14 +12,38 @@ function Modals(props) {
   let toRender = '';
   if (props.modalStates.open) {
     switch (props.modalStates.name) {
+      case 'profile':
+        toRender = (
+          <ModalProfile
+            onToggleTheme={props.onToggleTheme}
+            user={props.user}
+            theme={props.theme}
+          />
+        );
+        break;
+      case 'hp':
+        toRender = (
+          <ModalHyperParameters
+            trial={props.modalStates.meta}
+            theme={props.theme}
+          />
+        );
+        break;
       case 'experimentCreate':
         toRender = (
-          <ModalCreateExperiment onValidate={props.onCreateExperiment} />
+          <ModalCreateExperiment
+            onValidate={props.onCreateExperiment}
+            theme={props.theme}
+          />
         );
         break;
       case 'algoCreate':
         toRender = (
-          <ModalCreateAlgo onValidate={props.onCreateAlgo} update={false} />
+          <ModalCreateAlgo
+            onValidate={props.onCreateAlgo}
+            update={false}
+            theme={props.theme}
+          />
         );
         break;
       case 'algoUpdate':
@@ -27,6 +53,7 @@ function Modals(props) {
               props.onUpdateAlgo({ id: props.modalStates.meta.id, ...data })
             }
             update
+            theme={props.theme}
             algo={props.modalStates.meta}
           />
         );
@@ -44,7 +71,7 @@ function Modals(props) {
       <div className="modal-container" onClick={e => e.stopPropagation()}>
         <div className="modal">{toRender}</div>
         <div onClick={props.onClose} className="modal-close">
-          <Icon name="clear" />
+          <Icon name="clear" theme={props.theme} />
         </div>
       </div>
     </StyledModals>
@@ -53,6 +80,8 @@ function Modals(props) {
 
 Modals.propTypes = {
   theme: PropTypes.object,
+  user: PropTypes.object,
+  onToggleTheme: PropTypes.func,
   modalStates: PropTypes.object.isRequired,
   onClose: PropTypes.func,
   onCreateExperiment: PropTypes.func.isRequired,

@@ -4,7 +4,7 @@ import Label from 'components/Label';
 import Icon from 'components/Icon';
 import Checkbox from 'components/Checkbox';
 import Select from 'components/Select';
-import theme from 'themeConfig';
+import { light as theme } from 'themeConfig';
 import TimeAgo from 'react-timeago';
 import _ from 'lodash';
 import {
@@ -299,6 +299,7 @@ export default class LineChart extends Component {
                 id: m.metric_name,
                 label: m.metric_name,
               }))}
+              theme={this.props.theme}
             />
           </div>
         </div>
@@ -309,8 +310,13 @@ export default class LineChart extends Component {
         </div>
         <div className="chart-visualize-container">
           <div className="chart-visualize-sub-container">
-            <Icon name="visibility" />
-            <Label content="Visualization :" size="tiny" type="important" />
+            <Icon name="visibility" theme={this.props.theme} />
+            <Label
+              content="Visualization :"
+              size="tiny"
+              type="important"
+              theme={this.props.theme}
+            />
             <div className="chart-checkboxes">
               {this.props.experiment.metrics.map(metric => (
                 <Checkbox

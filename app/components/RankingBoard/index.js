@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import theme from 'themeConfig';
+import { light as theme } from 'themeConfig';
 import AlgoTile from 'components/AlgoTile';
 import ResultTile from 'components/ResultTile';
 import Button from 'components/Button';
@@ -56,11 +56,13 @@ function RankingBoard(props) {
             size="tiny"
             className="label ranking-board-rank"
             content="RANK"
+            theme={props.theme}
           />
           <Label
             size="tiny"
             className="label ranking-board-algo"
             content="ALGO"
+            theme={props.theme}
           />
           {props.experiment.metrics.map((m, i) => (
             <div className="ranking-board-listing" key={`board-listing-${i}`}>
@@ -75,6 +77,7 @@ function RankingBoard(props) {
                 content={m.metric_name.replace(new RegExp('_', 'g'), ' ')}
                 onClick={() => props.onRankByChange(m, props.experiment.id)}
                 key={`head-${i}`}
+                theme={props.theme}
               />
             </div>
           ))}
@@ -85,6 +88,7 @@ function RankingBoard(props) {
               <RankTile
                 className="rank-tile ranking-board-rank"
                 rank={ranked.trial ? (i + 1).toString() : '?'}
+                theme={props.theme}
               />
               <AlgoTile
                 className="tile ranking-board-algo"
@@ -98,6 +102,7 @@ function RankingBoard(props) {
                     algo,
                   })
                 }
+                theme={props.theme}
               />
               {props.experiment.metrics.map((m, j) => (
                 <ResultTile
@@ -110,6 +115,8 @@ function RankingBoard(props) {
                   trial={ranked.trial}
                   rankBy={props.experiment.rankBy.metric_name}
                   key={`metric-value-${j}`}
+                  onOpenHpModal={props.onOpenHpModal}
+                  theme={props.theme}
                 />
               ))}
             </div>
@@ -123,6 +130,7 @@ function RankingBoard(props) {
           icon="add_circle_outline"
           color="positive"
           onClick={props.openCreateAlgoModal}
+          theme={props.theme}
         />
       </div>
     </StyledRankingBoard>
@@ -136,6 +144,7 @@ RankingBoard.propTypes = {
   onRemoveAlgo: PropTypes.func.isRequired,
   openUpdateAlgoModal: PropTypes.func.isRequired,
   openCreateAlgoModal: PropTypes.func.isRequired,
+  onOpenHpModal: PropTypes.func.isRequired,
 };
 
 RankingBoard.defaultProps = {

@@ -1,5 +1,6 @@
 import { fromJS } from 'immutable';
 import LocalStorageManager from 'utils/localStorageManager';
+import { light, dark } from 'themeConfig';
 import {
   ANIMATOR_UPDATE,
   LOGOUT,
@@ -7,6 +8,7 @@ import {
   LOGIN,
   SOCIAL_LOGIN,
   FIRST_VIEW_LOADED,
+  TOGGLE_THEME,
   JOIN,
 } from './constants';
 
@@ -20,6 +22,7 @@ export const initialState = fromJS({
     lastName: '',
     username: '',
   },
+  theme: light,
   animator: {
     pageLoader: '',
   },
@@ -38,6 +41,7 @@ function appReducer(state = initialState, action) {
       return state
         .set('status', 'in')
         .set('jwt', action.payload.token)
+        .set('theme', fromJS(LocalStorageManager.getTheme()))
         .mergeDeep({
           user: {
             email: action.payload.user.email,
@@ -61,6 +65,14 @@ function appReducer(state = initialState, action) {
       return state.mergeDeep({
         animator: action.payload,
       });
+    case TOGGLE_THEME:
+      LocalStorageManager.setTheme(
+        action.payload.name === 'light' ? dark : light,
+      );
+      return state.set(
+        'theme',
+        fromJS(action.payload.name === 'light' ? dark : light),
+      );
     default:
       return state;
   }

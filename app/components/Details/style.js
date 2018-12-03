@@ -63,6 +63,7 @@ const Details = styled.div`
           input {
             height: 20px;
             background-color: ${props => props.theme.grey};
+            transition: 0.3s;
             font-weight: bold;
             border-radius: 5px;
             color: ${props => props.theme.greyDark};

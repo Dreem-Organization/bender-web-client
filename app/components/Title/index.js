@@ -1,6 +1,6 @@
 import React, { Children } from 'react';
 import PropTypes from 'prop-types';
-import theme from 'themeConfig';
+import { light as theme } from 'themeConfig';
 import StyledTitle from './style';
 
 function Title(props) {

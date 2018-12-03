@@ -69,6 +69,7 @@ module.exports = {
     'react/no-did-update-set-state': 0,
     'react/no-multi-comp': 0,
     'no-throw-literal': 0,
+    'no-restricted-globals': 0,
   },
   settings: {
     'import/resolver': {

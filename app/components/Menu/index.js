@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import theme from 'themeConfig';
+import { light as theme } from 'themeConfig';
 import animated from 'images/animation.gif';
 import logo from 'images/logo.png';
 import Image from 'components/Image';
@@ -16,28 +16,51 @@ function Menu(props) {
           src={animated}
           width="40px"
           height="40px"
+          theme={props.theme}
         />
-        <Image className="image fixed" src={logo} width="40px" height="40px" />
+        <Image
+          className="image fixed"
+          src={logo}
+          width="40px"
+          height="40px"
+          theme={props.theme}
+        />
       </div>
       <Button
         type="round"
         icon="settings"
-        onClick={() => {}}
+        onClick={props.onOpenProfile}
         content="PROFILE"
+        theme={props.theme}
       />
       <Button
         type="round"
         icon="power_settings_new"
         onClick={props.onLogout}
         content="LOGOUT"
+        theme={props.theme}
       />
-      <Button type="round" icon="bug_report" onClick={() => {}} content="BUG" />
-      <Button
-        type="round"
-        icon="contact_support"
-        onClick={() => {}}
-        content="CONTACT"
-      />
+      <a href="mailto:dylan@dreem.com?Subject=[BENDER BUG] - " target="_top">
+        <Button
+          type="round"
+          icon="bug_report"
+          onClick={() => {}}
+          content="BUG"
+          theme={props.theme}
+        />
+      </a>
+      <a
+        href="mailto:dylan@dreem.com?Subject=[BENDER CONTACT] - "
+        target="_top"
+      >
+        <Button
+          type="round"
+          icon="contact_support"
+          onClick={() => {}}
+          content="CONTACT"
+          theme={props.theme}
+        />
+      </a>
       <span
         className={props.visible ? 'hide' : 'hide hidden'}
         onClick={props.toggle}
@@ -52,6 +75,7 @@ Menu.propTypes = {
   visible: PropTypes.bool,
   toggle: PropTypes.func,
   fetching: PropTypes.array,
+  onOpenProfile: PropTypes.func,
 };
 
 Menu.defaultProps = {

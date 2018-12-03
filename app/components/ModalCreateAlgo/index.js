@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import theme from 'themeConfig';
+import { light as theme } from 'themeConfig';
 import Input from 'components/Input';
 import Label from 'components/Label';
 import Icon from 'components/Icon';
@@ -17,6 +17,9 @@ import {
 } from 'redux-form/immutable';
 import StyledModalCreateAlgo from './style';
 
+const parser = value =>
+  isNaN(parseFloat(value, 10)) ? null : parseFloat(value, 10);
+
 const validate = values => {
   const errors = {};
   if (!values.name) {
@@ -25,49 +28,71 @@ const validate = values => {
   errors.parameters = [];
   if (values.parameters) {
     values.parameters.forEach(p => {
-      let error = {};
-      if (!p) {
-        error = { hpName: 'Required' };
-      } else {
-        if (!p.hpName) {
-          error = { hpName: 'Required', type: 'Must define a type' };
+      const error = { search_space: {} };
+      if (!p.name) {
+        error.name = 'Required';
+      }
+      if (!p.category) {
+        error.category = 'Must define a category';
+      }
+      if (p.category && p.category === 'categorical') {
+        error.search_space.values = [];
+        p.search_space.values.forEach(v => {
+          error.search_space.values.push(!v ? 'Required' : undefined);
+        });
+        let s = 0;
+        p.search_space.probabilities.forEach(prob => {
+          s += prob || 0;
+        });
+        error.search_space.probabilities = p.search_space.probabilities.map(
+          () => undefined,
+        );
+        if (s !== 0 && s !== 1) {
+          error.search_space.probabilities[
+            error.search_space.probabilities.length - 1
+          ] =
+            'Sum of probabilities must be equal to 1';
         }
-        if (!p.type) {
-          error = { type: 'Must define a type' };
+        let undef = 0;
+        p.search_space.probabilities.forEach(pr => {
+          undef += pr ? 0 : 1;
+        });
+        if (undef > 0 && undef !== p.search_space.probabilities.length) {
+          error.search_space.probabilities[
+            error.search_space.probabilities.length - 1
+          ] =
+            'If using probabilities, fill everything';
         }
-        error.select = [];
-        if (p.type && p.type === 'categorical') {
-          if (p.select) {
-            p.select.forEach(c => {
-              let childError = {};
-              if (!c) {
-                childError = { category: 'Required' };
-              } else if (!c.category) {
-                childError = { category: 'Required' };
-              }
-              error.select.push(childError);
-            });
-          }
+      }
+      if (
+        ['uniform', 'loguniform', 'normal', 'lognormal'].includes(p.category)
+      ) {
+        if (p.search_space.base && p.search_space.base < 2) {
+          error.search_space.base = 'Must be greater or equal to 2';
+        }
+        if (!p.search_space.step) {
+          error.search_space.step = 'Required';
+        }
+        if (!p.search_space.high) {
+          error.search_space.high = 'Required';
+        }
+        if (!p.search_space.low) {
+          error.search_space.low = 'Required';
         }
         if (
-          p.type &&
-          (p.type === 'normal' ||
-            p.type === 'uniform' ||
-            p.type === 'lognormal' ||
-            p.type === 'loguniform')
+          p.search_space.high &&
+          p.search_space.low &&
+          p.search_space.high < p.search_space.low
         ) {
-          if (!p.step) {
-            error = { step: 'Required' };
-          }
-          if (!p.high) {
-            error = { high: 'Required' };
-          }
-          if (!p.low) {
-            error = { low: 'Required' };
-          }
-          if (p.high && p.low && p.high < p.low) {
-            error = { high: 'Must be smaller than "high"' };
-          }
+          error.search_space.high = 'Must be smaller than "high"';
+        }
+      }
+      if (['normal', 'lognormal'].includes(p.category)) {
+        if (!p.search_space.mu) {
+          error.search_space.mu = 'Required';
+        }
+        if (!p.search_space.sigma) {
+          error.search_space.sigma = 'Required';
         }
       }
       errors.parameters.push(error);
@@ -79,7 +104,7 @@ const validate = values => {
 class renderChildMembers extends React.PureComponent {
   componentWillMount() {
     const { fields } = this.props;
-    if (!fields.length && !this.props.isUpdate) fields.push();
+    if (fields.length === 0 && !this.props.isUpdate) fields.push();
   }
 
   render() {
@@ -90,12 +115,23 @@ class renderChildMembers extends React.PureComponent {
             <Icon
               name="close"
               onClick={() => this.props.fields.remove(index)}
+              theme={this.props.theme}
             />
             <Field
-              name={`${metric}.category`}
+              name={metric.replace('select', 'search_space.values')}
               type="text"
               component={Input}
               placeholder={`Cat. ${index + 1}`}
+              theme={this.props.theme}
+            />
+            <Field
+              name={metric.replace('select', 'search_space.probabilities')}
+              parse={parser}
+              type="number"
+              step="0.1"
+              component={Input}
+              placeholder="Proba"
+              theme={this.props.theme}
             />
           </div>
         ))}
@@ -108,6 +144,7 @@ class renderChildMembers extends React.PureComponent {
             e.preventDefault();
             this.props.fields.push();
           }}
+          theme={this.props.theme}
         />
       </div>
     );
@@ -115,6 +152,7 @@ class renderChildMembers extends React.PureComponent {
 }
 
 renderChildMembers.propTypes = {
+  theme: PropTypes.object,
   fields: PropTypes.object,
   isUpdate: PropTypes.bool,
 };
@@ -122,43 +160,106 @@ renderChildMembers.propTypes = {
 class renderMembers extends React.PureComponent {
   componentWillMount() {
     const { fields } = this.props;
-    if (!fields.length) fields.push();
+    if (fields.length === 0)
+      fields.push({
+        name: '',
+        category: '',
+        search_space: {
+          mu: '',
+          sigma: '',
+          low: '',
+          high: '',
+          step: '',
+          base: '',
+          values: [],
+          probabilities: [],
+        },
+      });
     this.getConditionalFields = this.getConditionalFields.bind(this);
   }
 
   getConditionalFields(param, index) {
-    let toDisplay = (
-      <div className="categoricals">
-        <FieldArray
-          name={`${param}.select`}
-          component={renderChildMembers}
-          isUpdate={this.props.isUpdate}
-        />
-      </div>
-    );
-    if (this.props.allValues.parameters[index].type !== 'categorical') {
+    let toDisplay = '';
+    const cat = this.props.allValues.parameters[index].category;
+    if (['uniform', 'loguniform', 'normal', 'lognormal'].includes(cat)) {
       toDisplay = (
         <div className="non-categoricals">
+          {['normal', 'lognormal'].includes(cat) ? (
+            <div className="sigmu">
+              <Field
+                name={`${param}.search_space.mu`}
+                parse={parser}
+                type="number"
+                step="0.1"
+                component={Input}
+                placeholder="Mu"
+                theme={this.props.theme}
+              />
+              <Field
+                name={`${param}.search_space.sigma`}
+                parse={parser}
+                type="number"
+                step="0.1"
+                component={Input}
+                placeholder="Sigma"
+                theme={this.props.theme}
+              />
+            </div>
+          ) : (
+            ''
+          )}
           <Field
-            name={`${param}.low`}
+            name={`${param}.search_space.low`}
+            parse={parser}
             type="number"
             step="0.1"
             component={Input}
             placeholder="Low"
+            theme={this.props.theme}
           />
           <Field
-            name={`${param}.high`}
+            name={`${param}.search_space.high`}
+            parse={parser}
             type="number"
             step="0.1"
             component={Input}
             placeholder="High"
+            theme={this.props.theme}
           />
           <Field
-            name={`${param}.step`}
+            name={`${param}.search_space.step`}
+            parse={parser}
             type="number"
             step="0.1"
             component={Input}
-            placeholder="Step"
+            placeholder="Step (def. continuous)"
+            theme={this.props.theme}
+          />
+          {['loguniform', 'lognormal'].includes(cat) ? (
+            <Field
+              name={`${param}.search_space.base`}
+              parse={parser}
+              type="number"
+              step="1"
+              component={Input}
+              placeholder="Base (def. 10)"
+              theme={this.props.theme}
+            />
+          ) : (
+            ''
+          )}
+        </div>
+      );
+    } else if (
+      this.props.allValues.parameters[index].category === 'categorical'
+    ) {
+      toDisplay = (
+        <div className="categoricals">
+          <FieldArray
+            name={`${param}.select`}
+            component={renderChildMembers}
+            isUpdate={this.props.isUpdate}
+            theme={this.props.theme}
           />
         </div>
       );
@@ -170,7 +271,12 @@ class renderMembers extends React.PureComponent {
     return (
       <div className="parameters-list">
         <div className="parameters-head">
-          <Label content="Hyper-Parameters" type="simple" size="normal" />
+          <Label
+            content="Hyper-Parameters"
+            type="simple"
+            size="normal"
+            theme={this.props.theme}
+          />
           <Button
             className={
               this.props.isUpdate ? 'create-algo-no-update spec' : 'spec'
@@ -180,8 +286,32 @@ class renderMembers extends React.PureComponent {
             color="positive"
             onClick={e => {
               e.preventDefault();
-              this.props.fields.push();
+              this.props.fields.push({
+                name: '',
+                category: '',
+                search_space: {
+                  mu: '',
+                  sigma: '',
+                  low: '',
+                  high: '',
+                  step: '',
+                  base: '',
+                  values: [],
+                  probabilities: [],
+                },
+              });
             }}
+            theme={this.props.theme}
+          />
+          <Button
+            style={{ margin: '-5px 0 0 10px', padding: '0 5px' }}
+            content="See Documentation"
+            onClick={() =>
+              window.open(
+                'https://bender-optimizer.readthedocs.io/en/latest/documentation/general.html#hyper-parameters',
+                '_blank',
+              )
+            }
           />
         </div>
         {this.props.fields.map((param, index) => (
@@ -196,16 +326,18 @@ class renderMembers extends React.PureComponent {
               <Icon
                 name="close"
                 onClick={() => this.props.fields.remove(index)}
+                theme={this.props.theme}
               />
             </div>
             <Field
               className={
                 this.props.isUpdate ? 'input create-algo-no-update' : 'input'
               }
-              name={`${param}.hpName`}
+              name={`${param}.name`}
               type="text"
               component={Input}
               placeholder={`Hyper-Parameter ${index + 1}`}
+              theme={this.props.theme}
             />
             {this.props.isUpdate ? (
               <Label
@@ -213,9 +345,10 @@ class renderMembers extends React.PureComponent {
                 size="tiny"
                 content={
                   this.props.allValues.parameters[index]
-                    ? this.props.allValues.parameters[index].hpName
+                    ? this.props.allValues.parameters[index].name
                     : ''
                 }
+                theme={this.props.theme}
               />
             ) : (
               ''
@@ -234,12 +367,12 @@ class renderMembers extends React.PureComponent {
               className={
                 this.props.isUpdate ? 'create-algo-no-update select' : 'select'
               }
-              name={`${param}.type`}
+              name={`${param}.category`}
               selected=""
               component={Select}
               onSelectionChange={() => {}}
               values={[
-                { id: '', label: 'Select type' },
+                { id: '', label: 'Select category' },
                 { id: 'categorical', label: 'Categorical' },
                 { id: 'uniform', label: 'Uniform' },
                 { id: 'loguniform', label: 'Log-Uniform' },
@@ -247,6 +380,7 @@ class renderMembers extends React.PureComponent {
                 { id: 'lognormal', label: 'Log-Normal' },
               ]}
               label="VARIABLE TYPE"
+              theme={this.props.theme}
             />
             {this.props.allValues.parameters[index] ? (
               <div>{this.getConditionalFields(param, index)}</div>
@@ -261,6 +395,7 @@ class renderMembers extends React.PureComponent {
 }
 
 renderMembers.propTypes = {
+  theme: PropTypes.object,
   allValues: PropTypes.object,
   fields: PropTypes.object,
   isUpdate: PropTypes.bool,
@@ -283,18 +418,21 @@ let Form = class FormClass extends React.PureComponent {
           component={Input}
           placeholder="Choose wisely"
           value="toto"
+          theme={this.props.theme}
         />
         <FieldArray
           allValues={this.props.allValues}
           name="parameters"
           component={renderMembers}
           isUpdate={this.props.isUpdate}
+          theme={this.props.theme}
         />
         <Button
           className="submit"
           content={this.props.isUpdate ? 'Update' : 'Create'}
           type="submit"
           disabled={this.props.submitting}
+          theme={this.props.theme}
         />
       </form>
     );
@@ -302,6 +440,7 @@ let Form = class FormClass extends React.PureComponent {
 };
 
 Form.propTypes = {
+  theme: PropTypes.object,
   initializeForm: PropTypes.func,
   allValues: PropTypes.object,
   handleSubmit: PropTypes.func,
@@ -344,21 +483,11 @@ function ModalCreateAlgo(props) {
       parameters: [],
     };
     props.algo.parameters.forEach(p => {
-      if (p.category === 'categorical') {
-        initialValues.parameters.push({
-          type: p.category,
-          hpName: p.name,
-          select: p.search_space.values,
-        });
-      } else {
-        initialValues.parameters.push({
-          type: p.category,
-          hpName: p.name,
-          low: p.search_space.low,
-          high: p.search_space.high,
-          step: p.search_space.step,
-        });
-      }
+      initialValues.parameters.push({
+        category: p.category,
+        name: p.name,
+        search_space: p.search_space,
+      });
     });
   }
   return (
@@ -367,11 +496,13 @@ function ModalCreateAlgo(props) {
         content={props.update ? 'Update Algo' : 'Create a new algo'}
         type="important"
         size="big"
+        theme={props.theme}
       />
       <FormContainer
         onCreate={props.onValidate}
         isUpdate={props.update}
         values={initialValues}
+        theme={props.theme}
       />
     </StyledModalCreateAlgo>
   );

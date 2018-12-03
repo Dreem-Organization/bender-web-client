@@ -85,7 +85,7 @@ const AlgoTile = styled.div`
     margin-top: 10px;
   }
   .algo-tile-buttons-container {
-    with: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     .button {

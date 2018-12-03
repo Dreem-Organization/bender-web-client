@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Label from 'components/Label';
 import Select from 'components/Select';
-import theme from 'themeConfig';
+import { light as theme } from 'themeConfig';
 import TimeAgo from 'react-timeago';
 import _ from 'lodash';
 import {
@@ -212,6 +212,7 @@ export default class MyScatterChart extends Component {
                 id: m.metric_name,
                 label: m.metric_name,
               }))}
+              theme={this.props.theme}
             />
             <Select
               onSelectionChange={this.onXChange}
@@ -221,6 +222,7 @@ export default class MyScatterChart extends Component {
                 id: p.name,
                 label: p.name,
               }))}
+              theme={this.props.theme}
             />
           </div>
         </div>

@@ -7,6 +7,7 @@ const ClipBoardButton = styled.button`
   font-size: 0.7rem;
   height: 1.5rem;
   background-color: ${props => props.theme.grey};
+  transition: 0.3s;
   padding: 0 0 0 5px;
   color: ${props => props.theme.greyDark};
   font-weight: bold;

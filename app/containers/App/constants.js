@@ -9,3 +9,8 @@ export const LOGIN = 'App/LOGIN';
 
 export const FETCH_JOIN = 'App/FETCH_JOIN';
 export const JOIN = 'App/JOIN';
+
+export const FETCH_RESET = 'App/FETCH_RESET';
+export const RESET = 'App/RESET';
+
+export const TOGGLE_THEME = 'App/TOGGLE_THEME';

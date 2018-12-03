@@ -17,6 +17,7 @@ import screen from 'images/screen.png';
 import r from 'images/r.png';
 import FakeChart from 'components/FakeChart';
 import LoginForm from 'components/LoginForm';
+import RetrieveForm from 'components/RetrieveForm';
 import JoinForm from 'components/JoinForm';
 import { slideInBottom, scrollIndicator } from 'KeyFrames';
 import {
@@ -31,11 +32,11 @@ import saga from 'containers/App/saga';
 import reducer from 'containers/App/reducer';
 import LocalStorageManager from 'utils/localStorageManager';
 import { verifyUser, firstViewLoaded } from 'containers/App/actions';
-import theme from 'themeConfig';
+import { light as theme } from 'themeConfig';
 // import { ParallaxProvider, Parallax } from 'react-scroll-parallax';
 import homeReducer from './reducer';
 import { makeSelectForm } from './selectors';
-import { login, join, toggleForm } from './actions';
+import { login, join, toggleForm, reset } from './actions';
 
 const HomeView = styled.div`
   .home-head-container {
@@ -339,6 +340,52 @@ export class Home extends React.PureComponent {
     } else if (this.props.status === 'waiting') {
       return <div>Loading...</div>;
     }
+    let form = '';
+
+    console.log(this.props.form);
+    switch (this.props.form) {
+      case 'login':
+        form = (
+          <div className="home-form-sub-container">
+            <LoginForm
+              animate={!this.props.firstViewLoaded}
+              onSubmit={this.props.onLogin}
+              onSocialLoginSucess={this.props.onSocialLoginSucess}
+              onToggleForm={this.props.toggleForm}
+            />
+          </div>
+        );
+        break;
+      case 'join':
+        form = (
+          <div className="home-form-sub-container">
+            <JoinForm
+              animate={!this.props.firstViewLoaded}
+              onSubmit={data =>
+                this.props.onJoin({ history: this.props.history, ...data })
+              }
+              onSocialLoginSucess={this.props.onSocialLoginSucess}
+              onToggleForm={this.props.toggleForm}
+            />
+          </div>
+        );
+        break;
+      default:
+        form = (
+          <div className="home-form-sub-container">
+            <RetrieveForm
+              animate={!this.props.firstViewLoaded}
+              onSubmit={data =>
+                this.props.onReset({
+                  callback: () => this.props.toggleForm('login'),
+                  ...data,
+                })
+              }
+              onToggleForm={this.props.toggleForm}
+            />
+          </div>
+        );
+    }
     return (
       <HomeView onMouseMove={this.handleEyes}>
         <div className="home-head-container" id="head">
@@ -351,7 +398,9 @@ export class Home extends React.PureComponent {
           <div className="home-head-buttons">
             <Button
               content="DOCS"
-              onClick={() => this.props.history.push('eat-my-shiny-metal-doc')}
+              onClick={() =>
+                window.open('https://bender-optimizer.readthedocs.io', '_blank')
+              }
             />
             <Button
               content="DEMO"
@@ -367,29 +416,7 @@ export class Home extends React.PureComponent {
           <div className="home-graph-container">
             <FakeChart />
           </div>
-          <div className="home-form-container">
-            {this.props.from ? (
-              <div className="home-form-sub-container">
-                <LoginForm
-                  animate={!this.props.firstViewLoaded}
-                  onSubmit={this.props.onLogin}
-                  onSocialLoginSucess={this.props.onSocialLoginSucess}
-                  onToggleForm={this.props.toggleForm}
-                />
-              </div>
-            ) : (
-              <div className="home-form-sub-container">
-                <JoinForm
-                  animate={!this.props.firstViewLoaded}
-                  onSubmit={data =>
-                    this.props.onJoin({ history: this.props.history, ...data })
-                  }
-                  onSocialLoginSucess={this.props.onSocialLoginSucess}
-                  onToggleForm={this.props.toggleForm}
-                />
-              </div>
-            )}
-          </div>
+          <div className="home-form-container">{form}</div>
         </div>
         <div className="home-body-container">
           <div className="home-body-top">
@@ -483,12 +510,13 @@ Home.propTypes = {
   status: PropTypes.string,
   onLogin: PropTypes.func,
   onJoin: PropTypes.func,
+  onReset: PropTypes.func,
   verifyUser: PropTypes.func,
   loaded: PropTypes.func,
   firstViewLoaded: PropTypes.bool,
   onSocialLoginSucess: PropTypes.func,
   toggleForm: PropTypes.func,
-  from: PropTypes.bool,
+  form: PropTypes.string,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -513,9 +541,10 @@ export function mapDispatchToProps(dispatch) {
           history: data.history,
         }),
       ),
+    onReset: data => dispatch(reset(data)),
     loaded: () => dispatch(firstViewLoaded()),
     verifyUser: token => dispatch(verifyUser(token)),
-    toggleForm: () => dispatch(toggleForm()),
+    toggleForm: data => dispatch(toggleForm(data)),
     // onLogin: data => console.log(data),
   };
 }
@@ -523,7 +552,7 @@ export function mapDispatchToProps(dispatch) {
 const mapStateToProps = createStructuredSelector({
   status: makeSelectStatus(),
   firstViewLoaded: makeSelectFirstViewLoaded(),
-  from: makeSelectForm(),
+  form: makeSelectForm(),
 });
 
 const withConnect = connect(

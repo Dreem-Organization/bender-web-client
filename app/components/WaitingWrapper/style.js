@@ -12,7 +12,7 @@ const WaitingWrapper = styled.div`
     width: 100%;
     height: 100%;
     top: 0px;
-    background-color: white;
+    background-color: ${props => props.theme.inverted};
     &.out {
       animation: ${puffOutCenter} 1s cubic-bezier(0.165, 0.84, 0.44, 1) both;
     }
