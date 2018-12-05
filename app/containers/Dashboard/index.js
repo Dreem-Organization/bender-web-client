@@ -39,6 +39,7 @@ import {
   changeRankBy,
   toggleModal,
   chartPointSelect,
+  contact,
 } from './actions';
 import {
   makeSelectMenuState,
@@ -142,6 +143,7 @@ export class Dashboard extends React.PureComponent {
             toggle={this.props.onToggleMenu}
             fetching={this.props.fetching}
             onOpenProfile={() => this.props.toggleModal('profile')}
+            onOpenContact={() => this.props.toggleModal('contact')}
             theme={this.props.theme}
           />
           <div className="dashboard-container">
@@ -209,6 +211,7 @@ export class Dashboard extends React.PureComponent {
                 this.props.user.username,
               );
             }}
+            onContact={data => this.props.onContact(this.props.jwt, data)}
             onToggleTheme={this.props.toggleTheme}
             user={this.props.user}
             theme={this.props.theme}
@@ -235,6 +238,7 @@ Dashboard.propTypes = {
   fetchAlgos: PropTypes.func,
   onCreateAlgo: PropTypes.func,
   onUpdateAlgo: PropTypes.func,
+  onContact: PropTypes.func,
   fetchTrials: PropTypes.func,
   onRemoveExperiment: PropTypes.func,
   onRemoveAlgo: PropTypes.func,
@@ -267,6 +271,7 @@ export function mapDispatchToProps(dispatch) {
       dispatch(createAlgo(jwt, data, experiment, user)),
     onUpdateAlgo: (jwt, data, experiment, user) =>
       dispatch(updateAlgo(jwt, data, experiment, user)),
+    onContact: (jwt, data) => dispatch(contact(jwt, data)),
     fetchTrials: (jwt, experiment, filters) =>
       dispatch(fetchTrials(jwt, experiment, filters)),
     onRemoveExperiment: (jwt, id) => dispatch(deleteExperiment(jwt, id)),

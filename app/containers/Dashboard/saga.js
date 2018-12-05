@@ -19,7 +19,9 @@ import {
   FEED_ALGOS,
   FEED_TRIALS,
   SET_IS_FETCHING,
+  CONTACT,
   FETCH_ERROR,
+  CONTACT_SENT,
 } from './constants';
 
 function* fetchExperiments(action) {
@@ -221,6 +223,21 @@ function* fetchTrials(action) {
   }
 }
 
+function* contact(action) {
+  try {
+    yield call(api.contact, action.payload);
+    yield put({ type: CONTACT_SENT, payload: null });
+  } catch (error) {
+    yield put({
+      type: PUT_TOAST,
+      payload: {
+        message: error.message,
+        life: 10,
+      },
+    });
+  }
+}
+
 // ############################################################################
 // ############################################################################
 // ---------------------------  WATCHERS --------------------------------------
@@ -283,6 +300,13 @@ function* fetchTrialsWatcher() {
   }
 }
 
+function* contactWatcher() {
+  while (true) {
+    const data = yield take(CONTACT);
+    yield call(contact, data);
+  }
+}
+
 export default function* rootSaga() {
   yield all([
     fork(fetchExperimentsWatcher),
@@ -293,5 +317,6 @@ export default function* rootSaga() {
     fork(createAlgoWatcher),
     fork(updateAlgoWatcher),
     fork(fetchTrialsWatcher),
+    fork(contactWatcher),
   ]);
 }

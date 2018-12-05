@@ -3,7 +3,6 @@ import { PropTypes } from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
-import Title from 'components/Title';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import injectReducer from 'utils/injectReducer';
@@ -12,42 +11,93 @@ import { makeSelectStatus } from 'containers/App/selectors';
 import reducer from 'containers/App/reducer';
 import { socialLogin } from 'containers/App/actions';
 import saga from 'containers/App/saga';
+// import Plot from 'react-plotly.js';
 
-const ValidationView = styled.div`
+const StyledDemo = styled.div`
   height: 100%;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  .head {
+  .graphs {
     margin-bottom: 40px;
   }
 `;
 
 /* eslint-disable react/prefer-stateless-function */
-export class Validation extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.props.socialLogin(this.props.location.search.split('=')[1]);
+export class Demo extends React.PureComponent {
+  componentDidMount() {
+    this.loop(0);
   }
 
   render() {
     if (this.props.status === 'in') {
       return <Redirect to="/dashboard" />;
     }
+    // const data1 = [
+    //   {
+    //     z: this.sourceData,
+    //     type: 'surface',
+    //     showscale: false,
+    //     contours: {
+    //       z: {
+    //         show: true,
+    //         usecolormap: true,
+    //         highlightcolor: '#42f462',
+    //         project: { z: true },
+    //       },
+    //     },
+    //   },
+    // ];
+
+    // const data2 = [
+    //   {
+    //     z: this.state.progressiveData,
+    //     type: 'surface',
+    //     showscale: false,
+    //     contours: {
+    //       z: {
+    //         show: true,
+    //         usecolormap: true,
+    //         highlightcolor: '#42f462',
+    //         project: { z: true },
+    //       },
+    //     },
+    //   },
+    // ];
+
+    // const layout = {
+    //   autosize: false,
+    //   width: 500,
+    //   height: 500,
+    //   showlegend: false,
+    //   scene: { camera: { eye: { x: 1.87, y: 0.88, z: -0.64 } } },
+    //   margin: {
+    //     l: 65,
+    //     r: 50,
+    //     b: 65,
+    //     t: 90,
+    //   },
+    // };
+
+    // const options = {
+    //   displayModeBar: false,
+    // };
+
     return (
-      <ValidationView>
-        <Title className="head" content="LOGGING-IN..." size={1} />
-      </ValidationView>
+      <StyledDemo>
+        <div className="graphs">
+          {/* <Plot data={data1} layout={layout} config={options} />
+          <Plot data={data2} layout={layout} config={options} /> */}
+        </div>
+      </StyledDemo>
     );
   }
 }
 
-Validation.displayName = 'Validation';
-Validation.propTypes = {
+Demo.displayName = 'Demo';
+Demo.propTypes = {
   status: PropTypes.string,
-  socialLogin: PropTypes.func,
-  location: PropTypes.object,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -72,4 +122,4 @@ export default compose(
   withReducer,
   withSaga,
   withConnect,
-)(Validation);
+)(Demo);

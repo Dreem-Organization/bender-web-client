@@ -21,6 +21,7 @@ import {
   REMOVE_SELECTED_METRIC,
   FETCH_ERROR,
   SET_IS_FETCHING,
+  CONTACT_SENT,
 } from './constants';
 
 export const initialState = fromJS({
@@ -229,6 +230,15 @@ function dashboardReducer(state = initialState, action) {
         );
       }
       return state;
+    case CONTACT_SENT:
+      return state.set(
+        'modals',
+        fromJS({
+          open: false,
+          name: '',
+          meta: null,
+        }),
+      );
     case REMOVE_SELECTED_METRIC:
       if (
         state

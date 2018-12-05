@@ -17,6 +17,7 @@ import {
   CHART_POINT_SELECT,
   REMOVE_SELECTED_METRIC,
   ADD_SELECTED_METRIC,
+  CONTACT,
 } from './constants';
 
 // EXTERNAL STORE CALLS -------------------------------------------------------
@@ -201,5 +202,12 @@ export function toggleModal(modal, meta) {
     type: TOGGLE_MODAL,
     payload: modal,
     meta,
+  };
+}
+
+export function contact(jwt, data) {
+  return {
+    type: CONTACT,
+    payload: { jwt, data },
   };
 }

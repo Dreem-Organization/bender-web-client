@@ -34,3 +34,6 @@ export const FETCH_TRIALS = 'Dashboard/FETCH_TRIALS';
 
 export const ADD_SELECTED_METRIC = 'Dashboard/ADD_SELECTED_METRIC';
 export const REMOVE_SELECTED_METRIC = 'Dashboard/REMOVE_SELECTED_METRIC';
+
+export const CONTACT = 'Dashboard/CONTACT';
+export const CONTACT_SENT = 'Dashboard/CONTACT_SENT';

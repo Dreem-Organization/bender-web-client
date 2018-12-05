@@ -40,27 +40,20 @@ function Menu(props) {
         content="LOGOUT"
         theme={props.theme}
       />
-      <a href="mailto:dylan@dreem.com?Subject=[BENDER BUG] - " target="_top">
-        <Button
-          type="round"
-          icon="bug_report"
-          onClick={() => {}}
-          content="BUG"
-          theme={props.theme}
-        />
-      </a>
-      <a
-        href="mailto:dylan@dreem.com?Subject=[BENDER CONTACT] - "
-        target="_top"
-      >
-        <Button
-          type="round"
-          icon="contact_support"
-          onClick={() => {}}
-          content="CONTACT"
-          theme={props.theme}
-        />
-      </a>
+      <Button
+        type="round"
+        icon="bug_report"
+        onClick={props.onOpenContact}
+        content="BUG"
+        theme={props.theme}
+      />
+      <Button
+        type="round"
+        icon="contact_support"
+        onClick={props.onOpenContact}
+        content="CONTACT"
+        theme={props.theme}
+      />
       <span
         className={props.visible ? 'hide' : 'hide hidden'}
         onClick={props.toggle}
@@ -76,6 +69,7 @@ Menu.propTypes = {
   toggle: PropTypes.func,
   fetching: PropTypes.array,
   onOpenProfile: PropTypes.func,
+  onOpenContact: PropTypes.func,
 };
 
 Menu.defaultProps = {

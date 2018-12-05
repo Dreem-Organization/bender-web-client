@@ -4,6 +4,7 @@ import { light as theme } from 'themeConfig';
 import ModalCreateExperiment from 'components/ModalCreateExperiment';
 import ModalCreateAlgo from 'components/ModalCreateAlgo';
 import ModalProfile from 'components/ModalProfile';
+import ModalContact from 'components/ModalContact';
 import ModalHyperParameters from 'components/ModalHyperParameters';
 import Icon from 'components/Icon';
 import StyledModals from './style';
@@ -19,6 +20,11 @@ function Modals(props) {
             user={props.user}
             theme={props.theme}
           />
+        );
+        break;
+      case 'contact':
+        toRender = (
+          <ModalContact theme={props.theme} onValidate={props.onContact} />
         );
         break;
       case 'hp':
@@ -82,6 +88,7 @@ Modals.propTypes = {
   theme: PropTypes.object,
   user: PropTypes.object,
   onToggleTheme: PropTypes.func,
+  onContact: PropTypes.func,
   modalStates: PropTypes.object.isRequired,
   onClose: PropTypes.func,
   onCreateExperiment: PropTypes.func.isRequired,

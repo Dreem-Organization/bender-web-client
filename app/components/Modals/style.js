@@ -34,6 +34,7 @@ const Modals = styled.div`
     position: relative;
     background-color: ${props => props.theme.inverted};
     transition: 0.3s;
+    max-height: 90vh;
     .modal-close {
       position: absolute;
       right: 0;

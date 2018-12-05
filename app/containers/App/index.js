@@ -18,8 +18,7 @@ import Home from 'containers/Home/Loadable';
 import SocialLogin from 'containers/SocialLogin/Loadable';
 import Validation from 'containers/Validation/Loadable';
 import Toaster from 'containers/Toaster/Loadable';
-// import Docs from 'containers/Docs/Loadable';
-// import Demo from 'containers/Demo/Loadable';
+import Demo from 'containers/Demo/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
 export default function App() {
@@ -31,8 +30,7 @@ export default function App() {
         <Route exact path="/" component={Home} />
         <Route exact path="/socialLogin" component={SocialLogin} />
         <Route exact path="/verify/:code" component={Validation} />
-        {/* <Route path="/bite-my-shiny-metal-docs" component={Docs} />
-        <Route path="/demo" component={Demo} /> */}
+        <Route path="/demo" component={Demo} />
         <Route component={NotFoundPage} />
       </Switch>
     </div>

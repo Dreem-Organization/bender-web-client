@@ -70,4 +70,7 @@ export const api = {
       jwt,
     ).then(callBack);
   },
+  contact({ jwt, data }) {
+    return post(`${API_BASE_URL}/users/contact/`, data, jwt);
+  },
 };
