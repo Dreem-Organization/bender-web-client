@@ -4,5 +4,5 @@ export const storageKey = {
   user: 'dreem-viewer-user',
 };
 
-export const BASE_URL = 'http://0.0.0.0:8000';
-export const API_BASE_URL = 'http://0.0.0.0:8000/api';
+export const BASE_URL = 'https://bender-api.rythm.co';
+export const API_BASE_URL = 'https://bender-api.rythm.co/api';
