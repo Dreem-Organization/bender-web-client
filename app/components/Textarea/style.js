@@ -1,0 +1,23 @@
+/* eslint-disable */
+import styled from 'styled-components';
+
+const Input = styled.textarea`
+  flex-grow: 1;
+  height: 100px;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.9em;
+  font-weight: bold;
+  color: ${props => props.theme.greyDark};
+  border: 3px solid
+    ${props =>
+      props.meta.error && props.meta.visited && !props.meta.active
+        ? props.theme.negative
+        : props.theme.grey};
+  transition: border 0.4s;
+  &:focus {
+    border: 3px solid ${props => props.theme.main};
+  }
+`;
+
+export default Input;

@@ -9,7 +9,7 @@ import Button from 'components/Button';
 import Label from 'components/Label';
 import HomeStepCard from 'components/HomeStepCard';
 import BlackBox from 'components/BlackBox';
-import logo from 'images/white.png';
+import BenderEyes from 'components/BenderEyes';
 import bender from 'images/logo.png';
 import mathlab from 'images/mathlab.png';
 import python from 'images/py.png';
@@ -19,7 +19,7 @@ import FakeChart from 'components/FakeChart';
 import LoginForm from 'components/LoginForm';
 import RetrieveForm from 'components/RetrieveForm';
 import JoinForm from 'components/JoinForm';
-import { slideInBottom, scrollIndicator } from 'KeyFrames';
+import { scrollIndicator } from 'KeyFrames';
 import {
   makeSelectStatus,
   makeSelectFirstViewLoaded,
@@ -40,19 +40,26 @@ import { login, join, toggleForm, reset } from './actions';
 
 const HomeView = styled.div`
   .home-head-container {
-    padding-top: 50px;
+    padding-top: 25px;
     display: flex;
     position: relative;
     justify-content: flex-start;
     align-items: center;
     height: calc(100vh - 200px);
-    min-height: 690px;
+    min-height: 525px;
     background-color: ${theme.main};
     flex-direction: column;
+    justify-content: center;
     .home-title {
       position: relative;
       z-index: 1;
       color: ${theme.inverted};
+      &::after {
+        content: 'BETA';
+        position: absolute;
+        font-size: 1rem;
+        transform: rotate(10deg);
+      }
     }
     .home-sub-title {
       position: relative;
@@ -69,26 +76,6 @@ const HomeView = styled.div`
         background-color: ${theme.inverted};
         margin: 20px;
         padding: 0 20px 2px 20px;
-      }
-    }
-    .bender-container {
-      position: absolute;
-      bottom: -2px;
-      left: 50px;
-      width: 250px;
-      height: 250px;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: flex-end;
-      animation: ${slideInBottom} 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-      img {
-        width: 100%;
-        height: auto;
-        opacity: 0.3;
-      }
-      .eyes-container {
-        position: absolute;
       }
     }
     .home-graph-container {
@@ -109,11 +96,12 @@ const HomeView = styled.div`
   }
   .home-body-container {
     position: relative;
-    height: 100vh;
+    min-height: 100vh;
     background-color: ${theme.grey};
     display: flex;
     flex-direction: column;
     z-index: 1;
+    padding-bottom: 20px;
     .home-body-top {
       min-height: 200px;
       display: flex;
@@ -198,6 +186,7 @@ const HomeView = styled.div`
       height: 100%;
       display: flex;
       flex-direction: row;
+      justify-content: center;
       align-items: center;
       position: relative;
       .home-body-left,
@@ -213,7 +202,7 @@ const HomeView = styled.div`
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        flex: 1;
+        width: 32%;
       }
       .home-body-middle {
         .home-body-step-container {
@@ -237,8 +226,6 @@ export class Home extends React.PureComponent {
     };
     const token = LocalStorageManager.getUser();
     this.props.verifyUser(token);
-    this.handleEyes = this.handleEyes.bind(this);
-    this.draweyes = this.draweyes.bind(this);
     this.handleScrollToElement = this.handleScrollToElement.bind(this);
   }
 
@@ -252,6 +239,7 @@ export class Home extends React.PureComponent {
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScrollToElement);
   }
+
   handleScrollToElement() {
     const head = document.getElementById('head');
     if (
@@ -264,76 +252,6 @@ export class Home extends React.PureComponent {
     }
   }
 
-  componentDidUpdate() {
-    if (this.props.status !== 'waiting') {
-      this.c = document.getElementById('canvas');
-      if (this.c) {
-        this.ctx = this.c.getContext('2d');
-        this.centerX = this.c.width / 2;
-        this.centerY = this.c.height / 2;
-        this.radius = 100;
-        this.radiusEye = 10;
-        this.faceCenterX = this.centerX;
-        this.faceCenterY = this.c.height - 20;
-        this.radiusEyeIn = 10;
-        this.eyeYPosition = this.faceCenterY - 5;
-        this.reyedx = this.faceCenterX + this.radiusEyeIn / 2 + 35;
-        this.reyedy = this.eyeYPosition;
-        this.leyedx = this.faceCenterX - this.radiusEyeIn / 2 - 35;
-        this.leyedy = this.eyeYPosition;
-        this.eyesgap = 15;
-        this.draweyes(this.leyedx, this.leyedy, this.reyedx, this.reyedy);
-      }
-    }
-  }
-
-  draweyes(lEyeX, lEyeY, rEyeX, rEyeY) {
-    this.ctx.beginPath();
-    this.ctx.arc(rEyeX, rEyeY, this.radiusEyeIn, 0, 2 * Math.PI, false);
-    this.ctx.fillStyle = '#5eb0ef';
-    this.ctx.fill();
-    this.ctx.beginPath();
-    this.ctx.arc(lEyeX, lEyeY, this.radiusEyeIn, 0, 2 * Math.PI, false);
-    this.ctx.fillStyle = '#5eb0ef';
-    this.ctx.fill();
-  }
-
-  handleEyes(e) {
-    this.c = document.getElementById('canvas');
-    this.ctx = this.c.getContext('2d');
-    const head = document.getElementById('head');
-    const mouseX = e.pageX - (this.centerX + 50);
-    const mouseY = e.pageY - (head.clientHeight - 20);
-    const ratioX = Math.abs(mouseX) / (Math.abs(mouseX) + Math.abs(mouseY));
-    const ratioY = Math.abs(mouseY) / (Math.abs(mouseX) + Math.abs(mouseY));
-    let reyedxafter = 0;
-    let reyedyafter = 0;
-    let leyedxafter = 0;
-    let leyedyafter = 0;
-    if (mouseX > 0) {
-      reyedxafter = this.reyedx + ratioX * this.eyesgap;
-    } else {
-      reyedxafter = this.reyedx - ratioX * this.eyesgap;
-    }
-    if (mouseY > 0) {
-      reyedyafter = this.reyedy + ratioY * this.eyesgap;
-    } else {
-      reyedyafter = this.reyedy - ratioY * this.eyesgap;
-    }
-    if (mouseX > 0) {
-      leyedxafter = this.leyedx + ratioX * this.eyesgap;
-    } else {
-      leyedxafter = this.leyedx - ratioX * this.eyesgap;
-    }
-    if (mouseY > 0) {
-      leyedyafter = this.leyedy + ratioY * this.eyesgap;
-    } else {
-      leyedyafter = this.leyedy - ratioY * this.eyesgap;
-    }
-    this.ctx.clearRect(0, 0, this.c.width, this.c.height);
-    this.draweyes(leyedxafter, leyedyafter, reyedxafter, reyedyafter);
-  }
-
   render() {
     if (this.props.status === 'in') {
       return <Redirect to="/dashboard" />;
@@ -342,7 +260,6 @@ export class Home extends React.PureComponent {
     }
     let form = '';
 
-    console.log(this.props.form);
     switch (this.props.form) {
       case 'login':
         form = (
@@ -387,7 +304,7 @@ export class Home extends React.PureComponent {
         );
     }
     return (
-      <HomeView onMouseMove={this.handleEyes}>
+      <HomeView>
         <div className="home-head-container" id="head">
           <Title className="home-title" content="Welcome to Bender" size={1} />
           <Title
@@ -407,12 +324,7 @@ export class Home extends React.PureComponent {
               onClick={() => this.props.history.push('demo')}
             />
           </div>
-          <div className="bender-container">
-            <Image src={logo} />
-            <div className="eyes-container">
-              <canvas id="canvas" width={250} height={250} />
-            </div>
-          </div>
+          <BenderEyes />
           <div className="home-graph-container">
             <FakeChart />
           </div>
@@ -494,7 +406,12 @@ export class Home extends React.PureComponent {
                 title="Use the web client to explore the results and get the best set of Hyper Parameters"
                 desc=""
               >
-                <Image src={screen} height="250px" width="auto" />
+                <Image
+                  className="image fit"
+                  src={screen}
+                  height="250px"
+                  width="auto"
+                />
               </HomeStepCard>
             </div>
           </div>

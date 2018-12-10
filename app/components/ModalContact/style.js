@@ -7,9 +7,10 @@ const ModalCreateExperiment = styled.div`
   flex-direction: column;
   form {
     .button,
-    textarea {
+    .label {
       width: 100%;
-      margin-top: 10px;
+      margin-top: 20px;
+      display: block;
     }
   }
 `;

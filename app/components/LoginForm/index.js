@@ -28,12 +28,7 @@ const validate = values => {
 
 const Form = ({ handleSubmit, submitting, login }) => (
   <form onSubmit={handleSubmit(login)}>
-    <Field
-      name="username"
-      type="text"
-      component={Input}
-      placeholder="Username or E-Mail"
-    />
+    <Field name="username" type="text" component={Input} placeholder="E-Mail" />
     <Field
       name="password"
       type="password"

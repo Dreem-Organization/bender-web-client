@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { light as theme } from 'themeConfig';
 import Input from 'components/Input';
+import Textarea from 'components/Textarea';
 import Label from 'components/Label';
 import Button from 'components/Button';
 import { Field, reduxForm } from 'redux-form/immutable';
@@ -14,9 +15,23 @@ import StyledModalContact from './style';
 
 const validate = values => {
   const errors = {};
+  console.log(values);
   if (!values.title) {
     errors.title = 'Required';
   }
+  if (!values.email) {
+    errors.email = 'Required';
+  }
+  if (!values.content) {
+    errors.content = 'Required';
+  }
+  if (
+    values.email &&
+    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+  ) {
+    errors.email = 'Invalid email address';
+  }
+  console.log(errors);
   return errors;
 };
 
@@ -36,10 +51,11 @@ const Form = ({ handleSubmit, submitting, onCreate }) => (
       component={Input}
       placeholder="An explicit one"
     />
+    <Label content="Content" type="simple" size="normal" />
     <Field
       name="content"
       type="text"
-      component="textarea"
+      component={Textarea}
       placeholder="Tell us about it."
     />
     <Button content="Send" type="submit" disabled={submitting} />

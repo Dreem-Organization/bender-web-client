@@ -11,6 +11,10 @@ import { makeSelectStatus } from 'containers/App/selectors';
 import reducer from 'containers/App/reducer';
 import { socialLogin } from 'containers/App/actions';
 import saga from 'containers/App/saga';
+import Title from 'components/Title';
+import Image from 'components/Image';
+import Button from 'components/Button';
+import bender from 'images/nope.png';
 // import Plot from 'react-plotly.js';
 
 const StyledDemo = styled.div`
@@ -22,12 +26,16 @@ const StyledDemo = styled.div`
   .graphs {
     margin-bottom: 40px;
   }
+  .image {
+    width: 300px;
+    height: auto;
+  }
 `;
 
 /* eslint-disable react/prefer-stateless-function */
 export class Demo extends React.PureComponent {
   componentDidMount() {
-    this.loop(0);
+    // this.loop(0);
   }
 
   render() {
@@ -86,10 +94,20 @@ export class Demo extends React.PureComponent {
 
     return (
       <StyledDemo>
-        <div className="graphs">
-          {/* <Plot data={data1} layout={layout} config={options} />
-          <Plot data={data2} layout={layout} config={options} /> */}
-        </div>
+        {/* <div className="graphs">
+          <Plot data={data1} layout={layout} config={options} />
+          <Plot data={data2} layout={layout} config={options} />
+        </div> */}
+        <Image src={bender} />
+        <Title>
+          {
+            "I'm working on a sexy demo just for you : just a little bit more patience..."
+          }
+        </Title>
+        <Button
+          content="GO BACK"
+          onClick={() => this.props.history.push('/')}
+        />
       </StyledDemo>
     );
   }
@@ -98,6 +116,7 @@ export class Demo extends React.PureComponent {
 Demo.displayName = 'Demo';
 Demo.propTypes = {
   status: PropTypes.string,
+  history: PropTypes.object,
 };
 
 export function mapDispatchToProps(dispatch) {

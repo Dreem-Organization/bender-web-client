@@ -40,6 +40,10 @@ const HomeStepCard = styled.div`
           filter: grayscale(100%);
           opacity: 0.2;
         }
+        &.fit {
+          height: 100%;
+          width: 100%;
+        }
       }
     }
   }

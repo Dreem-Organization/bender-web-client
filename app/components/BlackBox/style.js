@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
-const ScatterChart = styled.div`
+const StyledBlackBox = styled.div`
   border-radius: 10px;
   border: 3px dashed ${props => props.theme.main};
   padding: 20px;
-  margin-top: 20px;
+  margin: 20px 0;
   .black-box-head {
     text-align: center;
   }
@@ -32,4 +32,4 @@ const ScatterChart = styled.div`
   }
 `;
 
-export default ScatterChart;
+export default StyledBlackBox;

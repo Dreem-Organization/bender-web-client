@@ -17,6 +17,7 @@ import Dashboard from 'containers/Dashboard/Loadable';
 import Home from 'containers/Home/Loadable';
 import SocialLogin from 'containers/SocialLogin/Loadable';
 import Validation from 'containers/Validation/Loadable';
+import Reset from 'containers/Reset/Loadable';
 import Toaster from 'containers/Toaster/Loadable';
 import Demo from 'containers/Demo/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
@@ -30,6 +31,7 @@ export default function App() {
         <Route exact path="/" component={Home} />
         <Route exact path="/socialLogin" component={SocialLogin} />
         <Route exact path="/verify/:code" component={Validation} />
+        <Route exact path="/password/reset/:uid/:token" component={Reset} />
         <Route path="/demo" component={Demo} />
         <Route component={NotFoundPage} />
       </Switch>

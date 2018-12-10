@@ -26,6 +26,14 @@ export const api = {
       email,
     }).then(callBack);
   },
+  resetConfirm({ uid, token, password1, password2, callBack }) {
+    return post(`${BASE_URL}/password/reset/confirm/`, {
+      new_password1: password1,
+      new_password2: password2,
+      uid,
+      token,
+    }).then(callBack);
+  },
   validate({ key, callBack }) {
     return post(`${BASE_URL}/registration/verify-email/`, {
       key,
