@@ -33,7 +33,7 @@ import reducer from 'containers/App/reducer';
 import LocalStorageManager from 'utils/localStorageManager';
 import { verifyUser, firstViewLoaded } from 'containers/App/actions';
 import { light as theme } from 'themeConfig';
-// import { ParallaxProvider, Parallax } from 'react-scroll-parallax';
+import ReactGA from 'react-ga';
 import homeReducer from './reducer';
 import { makeSelectForm } from './selectors';
 import { login, join, toggleForm, reset } from './actions';
@@ -227,6 +227,8 @@ export class Home extends React.PureComponent {
     const token = LocalStorageManager.getUser();
     this.props.verifyUser(token);
     this.handleScrollToElement = this.handleScrollToElement.bind(this);
+    ReactGA.initialize('UA-130808639-1');
+    ReactGA.pageview('bender-homepage');
   }
 
   componentDidMount() {
@@ -319,10 +321,10 @@ export class Home extends React.PureComponent {
                 window.open('https://bender-optimizer.readthedocs.io', '_blank')
               }
             />
-            <Button
+            {/* <Button
               content="DEMO"
               onClick={() => this.props.history.push('demo')}
-            />
+            /> */}
           </div>
           <BenderEyes />
           <div className="home-graph-container">
