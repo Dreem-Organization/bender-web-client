@@ -347,7 +347,7 @@ export class Home extends React.PureComponent {
           <Title className="home-title" content="Welcome to Bender" size={1} />
           <Title
             className="home-sub-title"
-            content="Hyper-Parameters Optimization"
+            content="Hyperparameters Optimization"
             size={3}
           />
           <div className="home-head-buttons">
