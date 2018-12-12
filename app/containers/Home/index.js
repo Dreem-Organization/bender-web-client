@@ -39,6 +39,7 @@ import { makeSelectForm } from './selectors';
 import { login, join, toggleForm, reset } from './actions';
 
 const HomeView = styled.div`
+  overflow-x: hidden;
   .home-head-container {
     padding-top: 25px;
     display: flex;
