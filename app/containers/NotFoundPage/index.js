@@ -5,6 +5,7 @@ import Image from 'components/Image';
 import Button from 'components/Button';
 import styled from 'styled-components';
 import bender from 'images/nope.png';
+import ReactGA from 'react-ga';
 
 const NotFoundView = styled.div`
   height: 100%;
@@ -23,6 +24,12 @@ const NotFoundView = styled.div`
 
 /* eslint-disable react/prefer-stateless-function */
 export default class NotFound extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    ReactGA.initialize('UA-130808639-1');
+    ReactGA.pageview('not-found');
+  }
+
   render() {
     return (
       <NotFoundView>

@@ -50,6 +50,23 @@ const HomeView = styled.div`
     background-color: ${theme.main};
     flex-direction: column;
     justify-content: center;
+    .powered {
+      position: absolute;
+      font-size: 0.8rem;
+      top: 20px;
+      left: 20px;
+      color: rgb(253, 17, 110);
+      background-color: white;
+      border-radius: 20px;
+      padding: 3px 10px;
+      transition: 0.2s;
+      &:hover {
+        cursor: pointer;
+        background-color: rgb(253, 17, 110);
+        font-weight: bold;
+        color: white;
+      }
+    }
     .home-title {
       position: relative;
       z-index: 1;
@@ -228,7 +245,7 @@ export class Home extends React.PureComponent {
     this.props.verifyUser(token);
     this.handleScrollToElement = this.handleScrollToElement.bind(this);
     ReactGA.initialize('UA-130808639-1');
-    ReactGA.pageview('bender-homepage');
+    ReactGA.pageview('homepage');
   }
 
   componentDidMount() {
@@ -252,6 +269,22 @@ export class Home extends React.PureComponent {
     } else {
       this.setState({ visibleScroll: true });
     }
+  }
+
+  handleDreemRedirect() {
+    window.open('https://dreem.com/', '_blank');
+    ReactGA.event({
+      category: 'Redirect',
+      action: 'Visit Dreem Website',
+    });
+  }
+
+  handleDocRedirect() {
+    window.open('https://bender-optimizer.readthedocs.io', '_blank');
+    ReactGA.event({
+      category: 'Redirect',
+      action: 'Visit ReadTheDocs Website',
+    });
   }
 
   render() {
@@ -308,6 +341,9 @@ export class Home extends React.PureComponent {
     return (
       <HomeView>
         <div className="home-head-container" id="head">
+          <span className="powered" onClick={this.handleDreemRedirect}>
+            Powered by dreem
+          </span>
           <Title className="home-title" content="Welcome to Bender" size={1} />
           <Title
             className="home-sub-title"
@@ -315,12 +351,7 @@ export class Home extends React.PureComponent {
             size={3}
           />
           <div className="home-head-buttons">
-            <Button
-              content="DOCS"
-              onClick={() =>
-                window.open('https://bender-optimizer.readthedocs.io', '_blank')
-              }
-            />
+            <Button content="DOCS" onClick={this.handleDocRedirect} />
             {/* <Button
               content="DEMO"
               onClick={() => this.props.history.push('demo')}
@@ -441,14 +472,23 @@ Home.propTypes = {
 export function mapDispatchToProps(dispatch) {
   return {
     // Export event properties to bypass event pooling warning
-    onLogin: data =>
+    onLogin: data => {
+      ReactGA.event({
+        category: 'User',
+        action: 'Login',
+      });
       dispatch(
         login({
           username: data.username,
           password: data.password,
         }),
-      ),
-    onJoin: data =>
+      );
+    },
+    onJoin: data => {
+      ReactGA.event({
+        category: 'User',
+        action: 'Join',
+      });
       dispatch(
         join({
           username: data.username,
@@ -459,7 +499,8 @@ export function mapDispatchToProps(dispatch) {
           password2: data.password2,
           history: data.history,
         }),
-      ),
+      );
+    },
     onReset: data => dispatch(reset(data)),
     loaded: () => dispatch(firstViewLoaded()),
     verifyUser: token => dispatch(verifyUser(token)),

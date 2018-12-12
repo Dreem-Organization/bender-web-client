@@ -20,6 +20,7 @@ import { compose } from 'redux';
 import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
 import LocalStorageManager from 'utils/localStorageManager';
+import ReactGA from 'react-ga';
 import { verifyUser, toggleTheme } from 'containers/App/actions';
 import {
   logout,
@@ -95,6 +96,8 @@ export class Dashboard extends React.PureComponent {
       this.props.onStageUpdate(stageData.stage);
     }
     this.props.verifyUser(token);
+    ReactGA.initialize('UA-130808639-1');
+    ReactGA.pageview('dashboard');
   }
 
   componentDidUpdate() {

@@ -13,6 +13,7 @@ import injectSaga from 'utils/injectSaga';
 import reducer from 'containers/App/reducer';
 import LocalStorageManager from 'utils/localStorageManager';
 import { verifyUser } from 'containers/App/actions';
+import ReactGA from 'react-ga';
 import { makeSelectStatus, makeSelectJwt } from 'containers/App/selectors';
 import { validate } from './actions';
 import saga from './saga';
@@ -34,6 +35,8 @@ export class Validation extends React.PureComponent {
     super(props);
     const token = LocalStorageManager.getUser();
     this.props.verifyUser(token);
+    ReactGA.initialize('UA-130808639-1');
+    ReactGA.pageview('email-verification');
   }
 
   render() {

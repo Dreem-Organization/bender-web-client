@@ -16,6 +16,7 @@ import { verifyUser } from 'containers/App/actions';
 import { makeSelectStatus, makeSelectJwt } from 'containers/App/selectors';
 import Input from 'components/Input';
 import { Field, reduxForm } from 'redux-form/immutable';
+import ReactGA from 'react-ga';
 import { reset } from './actions';
 import saga from './saga';
 
@@ -94,6 +95,8 @@ export class Validation extends React.PureComponent {
     const token = LocalStorageManager.getUser();
     this.props.verifyUser(token);
     this.handleSubmit = this.handleSubmit.bind(this);
+    ReactGA.initialize('UA-130808639-1');
+    ReactGA.pageview('reset-password');
   }
 
   handleSubmit(data) {
