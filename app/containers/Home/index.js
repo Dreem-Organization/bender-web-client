@@ -40,6 +40,7 @@ import { login, join, toggleForm, reset } from './actions';
 
 const HomeView = styled.div`
   overflow-x: hidden;
+  min-width: 1300px;
   .home-head-container {
     padding-top: 25px;
     display: flex;
@@ -47,7 +48,7 @@ const HomeView = styled.div`
     justify-content: flex-start;
     align-items: center;
     height: calc(100vh - 200px);
-    min-height: 525px;
+    min-height: 538px;
     background-color: ${theme.main};
     flex-direction: column;
     justify-content: center;
@@ -205,11 +206,12 @@ const HomeView = styled.div`
       display: flex;
       flex-direction: row;
       justify-content: center;
-      align-items: center;
       position: relative;
       .home-body-left,
-      .home-body-step-container,
       .home-body-right {
+        padding-top: 100px;
+      }
+      .home-body-step-container {
         justify-content: center;
       }
       .home-body-left,

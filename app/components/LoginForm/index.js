@@ -62,18 +62,18 @@ function LoginForm(props) {
         <Label
           type="link"
           size="mini"
-          onClick={() => props.onToggleForm('join')}
-          theme={props.theme}
-        >
-          Join Us
-        </Label>
-        <Label
-          type="link"
-          size="mini"
           onClick={() => props.onToggleForm('reset')}
           theme={props.theme}
         >
           Reset Password
+        </Label>
+        <Label
+          type="link"
+          size="mini"
+          onClick={() => props.onToggleForm('join')}
+          theme={props.theme}
+        >
+          Join Us
         </Label>
       </div>
     </StyledLoginForm>

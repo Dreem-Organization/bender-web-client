@@ -41,37 +41,48 @@ const validate = values => {
 
 const Form = ({ handleSubmit, submitting, login }) => (
   <form onSubmit={handleSubmit(login)}>
-    <Field
-      name="username"
-      type="text"
-      component={Input}
-      placeholder="Username"
-    />
-    <Field name="email" type="email" component={Input} placeholder="E-Mail" />
-    <Field
-      name="firstName"
-      type="text"
-      component={Input}
-      placeholder="First Name"
-    />
-    <Field
-      name="lastName"
-      type="text"
-      component={Input}
-      placeholder="Last Name"
-    />
-    <Field
-      name="password1"
-      type="password"
-      component={Input}
-      placeholder="Password"
-    />
-    <Field
-      name="password2"
-      type="password"
-      component={Input}
-      placeholder="Confirm Password"
-    />
+    <div className="form-body">
+      <div className="form-part">
+        <Field
+          name="username"
+          type="text"
+          component={Input}
+          placeholder="Username"
+        />
+        <Field
+          name="email"
+          type="email"
+          component={Input}
+          placeholder="E-Mail"
+        />
+        <Field
+          name="firstName"
+          type="text"
+          component={Input}
+          placeholder="First Name"
+        />
+      </div>
+      <div className="form-part">
+        <Field
+          name="password1"
+          type="password"
+          component={Input}
+          placeholder="Password"
+        />
+        <Field
+          name="password2"
+          type="password"
+          component={Input}
+          placeholder="Confirm Password"
+        />
+        <Field
+          name="lastName"
+          type="text"
+          component={Input}
+          placeholder="Last Name"
+        />
+      </div>
+    </div>
     <Button content="Go" type="submit" disabled={submitting} />
   </form>
 );
@@ -89,9 +100,9 @@ const RForm = reduxForm({
 
 function LoginForm(props) {
   return (
-    <StyledLoginForm className="login-form" {...props}>
-      <div className="login-form-container">
-        <div className="login-form-head">
+    <StyledLoginForm className="join-form" {...props}>
+      <div className="join-form-container">
+        <div className="join-form-head">
           <Title size={2} content="Join Form" theme={props.theme} />
           {/* <GithubButton /> */}
         </div>

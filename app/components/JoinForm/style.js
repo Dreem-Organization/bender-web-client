@@ -7,27 +7,34 @@ const LoginForm = styled.div`
   align-items: center;
   flex-direction: column;
   overflow: hidden;
-  .login-form-container {
+  .join-form-container {
     box-shadow: ${props => props.theme.shadow};
     background-color: white;
     padding: 20px 30px;
-    width: 300px;
     display: flex;
-    justify-content: center;
+    min-height: 280px;
+    max-height: 280px;
+    justify-content: space-between;
     flex-direction: column;
     ${props =>
     props.animate
       ? `animation: ${scaleInCenter} 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;`
       : ''};
-    .login-form-head {
+    .join-form-head {
       display: flex;
       justify-content: space-between;
       margin-bottom: 20px;
     }
     form {
       display: flex;
-      justify-content: center;
       flex-direction: column;
+      .form-body {
+        display: flex;
+        .form-part {
+          display: flex;
+          flex-direction: column;
+        }
+      }
       .input,
       .button {
         margin: 5px;

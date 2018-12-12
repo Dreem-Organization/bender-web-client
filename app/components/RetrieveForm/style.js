@@ -13,7 +13,6 @@ const LoginForm = styled.div`
     padding: 20px 30px;
     width: 300px;
     display: flex;
-    justify-content: center;
     flex-direction: column;
     ${props =>
     props.animate

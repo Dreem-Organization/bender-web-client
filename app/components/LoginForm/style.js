@@ -13,7 +13,9 @@ const LoginForm = styled.div`
     padding: 20px 30px;
     width: 300px;
     display: flex;
-    justify-content: center;
+    min-height: 280px;
+    max-height: 280px;
+    justify-content: space-between;
     flex-direction: column;
     ${props =>
     props.animate
@@ -22,11 +24,9 @@ const LoginForm = styled.div`
     .login-form-head {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 20px;
     }
     form {
       display: flex;
-      justify-content: center;
       flex-direction: column;
       .input,
       .button {
