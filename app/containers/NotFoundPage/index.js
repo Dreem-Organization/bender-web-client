@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Title from 'components/Title';
-import Image from 'components/Image';
+// import Image from 'components/Image';
 import Button from 'components/Button';
 import styled from 'styled-components';
-import bender from 'images/nope.png';
+// import bender from 'images/nope.png';
 import ReactGA from 'react-ga';
 
 const NotFoundView = styled.div`
@@ -33,7 +33,6 @@ export default class NotFound extends React.PureComponent {
   render() {
     return (
       <NotFoundView>
-        <Image src={bender} />
         <Title>Pretty much nothing here...</Title>
         <Button
           content="GO BACK"
