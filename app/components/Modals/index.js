@@ -5,6 +5,7 @@ import ModalCreateExperiment from 'components/ModalCreateExperiment';
 import ModalCreateAlgo from 'components/ModalCreateAlgo';
 import ModalProfile from 'components/ModalProfile';
 import ModalContact from 'components/ModalContact';
+import ModalConfirm from 'components/ModalConfirm';
 import ModalHyperParameters from 'components/ModalHyperParameters';
 import Icon from 'components/Icon';
 import StyledModals from './style';
@@ -20,6 +21,11 @@ function Modals(props) {
             user={props.user}
             theme={props.theme}
           />
+        );
+        break;
+      case 'confirm':
+        toRender = (
+          <ModalConfirm theme={props.theme} confirm={props.onConfirmChoice} />
         );
         break;
       case 'contact':
@@ -91,6 +97,7 @@ Modals.propTypes = {
   onContact: PropTypes.func,
   modalStates: PropTypes.object.isRequired,
   onClose: PropTypes.func,
+  onConfirmChoice: PropTypes.func,
   onCreateExperiment: PropTypes.func.isRequired,
   onCreateAlgo: PropTypes.func.isRequired,
   onUpdateAlgo: PropTypes.func.isRequired,

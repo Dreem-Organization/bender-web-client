@@ -2,7 +2,6 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 import { Redirect } from 'react-router-dom';
-import styled from 'styled-components';
 import Title from 'components/Title';
 import Image from 'components/Image';
 import Button from 'components/Button';
@@ -19,7 +18,6 @@ import FakeChart from 'components/FakeChart';
 import LoginForm from 'components/LoginForm';
 import RetrieveForm from 'components/RetrieveForm';
 import JoinForm from 'components/JoinForm';
-import { scrollIndicator } from 'KeyFrames';
 import {
   makeSelectStatus,
   makeSelectFirstViewLoaded,
@@ -28,214 +26,16 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
-import saga from 'containers/App/saga';
-import reducer from 'containers/App/reducer';
+import sagaApp from 'containers/App/saga';
+import reducerApp from 'containers/App/reducer';
 import LocalStorageManager from 'utils/localStorageManager';
 import { verifyUser, firstViewLoaded } from 'containers/App/actions';
 import { light as theme } from 'themeConfig';
 import ReactGA from 'react-ga';
-import homeReducer from './reducer';
+import reducer from './reducer';
 import { makeSelectForm } from './selectors';
 import { login, join, toggleForm, reset } from './actions';
-
-const HomeView = styled.div`
-  overflow-x: hidden;
-  min-width: 1300px;
-  .home-head-container {
-    padding-top: 25px;
-    display: flex;
-    position: relative;
-    justify-content: flex-start;
-    align-items: center;
-    height: calc(100vh - 200px);
-    min-height: 538px;
-    background-color: ${theme.main};
-    flex-direction: column;
-    justify-content: center;
-    .powered {
-      position: absolute;
-      font-size: 0.8rem;
-      top: 20px;
-      left: 20px;
-      color: rgb(253, 17, 110);
-      background-color: white;
-      border-radius: 20px;
-      padding: 3px 10px;
-      transition: 0.2s;
-      &:hover {
-        cursor: pointer;
-        background-color: rgb(253, 17, 110);
-        font-weight: bold;
-        color: white;
-      }
-    }
-    .home-title {
-      position: relative;
-      z-index: 1;
-      color: ${theme.inverted};
-      &::after {
-        content: 'BETA';
-        position: absolute;
-        font-size: 1rem;
-        transform: rotate(10deg);
-      }
-    }
-    .home-sub-title {
-      position: relative;
-      z-index: 1;
-      font-size: 1.6rem;
-      color: ${theme.inverted};
-    }
-    .home-head-buttons {
-      position: relative;
-      z-index: 1;
-      .button {
-        font-weight: bold;
-        font-size: 1.3rem;
-        background-color: ${theme.inverted};
-        margin: 20px;
-        padding: 0 20px 2px 20px;
-      }
-    }
-    .home-graph-container {
-      position: absolute;
-      z-index: 0;
-      bottom: 0;
-      right: 0;
-      height: 70%;
-      width: 90%;
-      opacity: 0.3;
-      margin: 0 -150px -35px 0;
-    }
-    .home-form-container {
-      position: relative;
-      z-index: 1;
-      margin-top: 40px;
-    }
-  }
-  .home-body-container {
-    position: relative;
-    min-height: 100vh;
-    background-color: ${theme.grey};
-    display: flex;
-    flex-direction: column;
-    z-index: 1;
-    padding-bottom: 20px;
-    .home-body-top {
-      min-height: 200px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      .home-body-top-about {
-        text-align: center;
-        .text-about,
-        .text-bender {
-          font-size: 4rem;
-          margin: 0 10px;
-        }
-      }
-      .text-about {
-        font-weight: thin;
-        color: ${theme.greyDark};
-      }
-      .text-bender {
-        color: ${theme.main};
-      }
-      .home-body-top-steps {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: row;
-        margin-bottom: 20px;
-        span {
-          text-align: center;
-          font-weight: 700;
-          line-height: 1.5rem;
-          width: 2rem;
-          height: 2rem;
-          color: ${theme.main};
-          border: 3px solid ${theme.main};
-          border-radius: 2rem;
-        }
-        .sep {
-          margin: 0 10px;
-          width: 20px;
-          height: 0px;
-          border: 1px solid ${theme.main};
-        }
-      }
-      .home-scroll {
-        position: absolute;
-        top: 80px;
-        &.left {
-          left: 15%;
-        }
-        &.right {
-          right: 15%;
-        }
-        span {
-          position: absolute;
-          top: 0;
-          width: 24px;
-          height: 24px;
-          margin-left: -12px;
-          border-left: 2px solid ${theme.main};
-          border-bottom: 2px solid ${theme.main};
-          transform: rotate(-45deg);
-          animation: ${scrollIndicator} 2s infinite;
-          opacity: 0;
-          box-sizing: border-box;
-        }
-        span:nth-of-type(1) {
-          animation-delay: 0s;
-        }
-        span:nth-of-type(2) {
-          top: 16px;
-          animation-delay: 0.15s;
-        }
-        span:nth-of-type(3) {
-          top: 32px;
-          animation-delay: 0.3s;
-        }
-      }
-    }
-    .home-body-main {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      position: relative;
-      .home-body-left,
-      .home-body-right {
-        padding-top: 100px;
-      }
-      .home-body-step-container {
-        justify-content: center;
-      }
-      .home-body-left,
-      .home-body-middle,
-      .home-body-right {
-        display: flex;
-        height: 100%;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 32%;
-      }
-      .home-body-middle {
-        .home-body-step-container {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
-          height: 100%;
-        }
-      }
-    }
-  }
-`;
+import HomeView from './style';
 
 /* eslint-disable react/prefer-stateless-function */
 export class Home extends React.PureComponent {
@@ -342,7 +142,7 @@ export class Home extends React.PureComponent {
         );
     }
     return (
-      <HomeView>
+      <HomeView theme={theme}>
         <div className="home-head-container" id="head">
           <span className="powered" onClick={this.handleDreemRedirect}>
             Powered by dreem
@@ -430,7 +230,7 @@ export class Home extends React.PureComponent {
                 <HomeStepCard
                   number="2"
                   title="Feed Bender your results or ask him some new ones to try"
-                  desc="The more you feed Bender with pairs of [Hyper-Parameters / Alrorithm Results], the more he will become efficient."
+                  desc="The more you feed Bender with pairs of [Hyperparameters / Alrorithm Results], the more he will become efficient."
                 >
                   <Image src={bender} height="50px" width="auto" />
                 </HomeStepCard>
@@ -439,7 +239,7 @@ export class Home extends React.PureComponent {
             <div className="home-body-right">
               <HomeStepCard
                 number="3"
-                title="Use the web client to explore the results and get the best set of Hyper Parameters"
+                title="Use the web client to explore the results and get the best set of Hyperparameters"
                 desc=""
               >
                 <Image
@@ -523,13 +323,13 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-const withReducer2 = injectReducer({ key: 'home', reducer: homeReducer });
-const withReducer = injectReducer({ key: 'global', reducer });
-const withSaga = injectSaga({ key: 'global', saga });
+const withReducer = injectReducer({ key: 'home', reducer });
+const withReducerApp = injectReducer({ key: 'global', reducer: reducerApp });
+const withSagaApp = injectSaga({ key: 'global', saga: sagaApp });
 
 export default compose(
-  withReducer2,
   withReducer,
-  withSaga,
+  withReducerApp,
+  withSagaApp,
   withConnect,
 )(Home);

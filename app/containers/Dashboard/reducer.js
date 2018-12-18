@@ -1,6 +1,7 @@
 import { fromJS } from 'immutable';
 import LocalStorageManager from 'utils/localStorageManager';
 import {
+  LOAD_FRESH_CONTENT,
   TOGGLE_MENU,
   STAGE_UPDATE,
   FEED_EXPERIMENTS,
@@ -50,6 +51,8 @@ export const initialState = fromJS({
 
 function dashboardReducer(state = initialState, action) {
   switch (action.type) {
+    case LOAD_FRESH_CONTENT:
+      return state.setIn(['experiments', 'loaded'], false);
     case TOGGLE_MENU:
       return state.update('menuState', val => !val);
     case CHANGE_RANK_BY:
@@ -104,6 +107,7 @@ function dashboardReducer(state = initialState, action) {
             participants: [[action.meta]],
             algo_count: 0,
             trial_count: 0,
+            rankBy: action.payload.metrics[0],
             selectedMetrics: [action.payload.metrics[0]],
             dataset_parameters: {},
             selectedHyperParameter: 'time',

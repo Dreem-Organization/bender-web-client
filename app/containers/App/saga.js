@@ -3,12 +3,15 @@ import {
   FETCH_ERROR,
   FETCH_LOGIN,
   LOGIN,
+  LOGOUT_REQUEST,
+  LOGOUT,
   FETCH_RESET,
   RESET,
   SOCIAL_LOGIN,
   FETCH_JOIN,
   JOIN,
 } from 'containers/App/constants';
+import { TOGGLE_MODAL, CONFIRM_CHOICE } from 'containers/Dashboard/constants';
 import { PUT_TOAST } from 'containers/Toaster/constants';
 import { api } from 'utils/api';
 // import { selectCredentials } from 'containers/App/selectors';
@@ -19,8 +22,6 @@ export function getCart(state) {
 
 function* login(action) {
   try {
-    // TODO: Finding a way to use selectors to search in form store (AKA : makeSelectForm)
-    // const credentials = yield select(selectCredentials);
     const data = yield call(api.login, action.payload);
     yield put({ type: LOGIN, payload: data });
   } catch (error) {
@@ -98,6 +99,18 @@ function* loginWatcher() {
   }
 }
 
+function* logoutWatcher() {
+  while (true) {
+    yield take(LOGOUT_REQUEST);
+    yield put({ type: TOGGLE_MODAL, payload: 'confirm' });
+    const choice = yield take(CONFIRM_CHOICE);
+    if (choice.payload === true) {
+      yield put({ type: LOGOUT, payload: '' });
+    }
+    yield put({ type: TOGGLE_MODAL, payload: '' });
+  }
+}
+
 function* resetWatcher() {
   while (true) {
     const data = yield take(FETCH_RESET);
@@ -121,6 +134,7 @@ function* joinWatcher() {
 
 export default function* rootSaga() {
   yield all([
+    fork(logoutWatcher),
     fork(loginWatcher),
     fork(resetWatcher),
     fork(socialLoginWatcher),

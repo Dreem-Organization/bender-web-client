@@ -15,6 +15,8 @@ import {
   makeSelectUserInfos,
   makeSelectTheme,
 } from 'containers/App/selectors';
+import reducerApp from 'containers/App/reducer';
+import sagaApp from 'containers/App/saga';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import injectReducer from 'utils/injectReducer';
@@ -23,6 +25,7 @@ import LocalStorageManager from 'utils/localStorageManager';
 import ReactGA from 'react-ga';
 import { verifyUser, toggleTheme } from 'containers/App/actions';
 import {
+  loadFreshContent,
   logout,
   toggleMenu,
   stageUpdate,
@@ -41,6 +44,7 @@ import {
   toggleModal,
   chartPointSelect,
   contact,
+  confirmChoice,
 } from './actions';
 import {
   makeSelectMenuState,
@@ -116,15 +120,6 @@ export class Dashboard extends React.PureComponent {
         this.props.filters,
       );
     }
-    // if (
-    //   JSON.stringify(prevProps.filters) !== JSON.stringify(this.props.filters)
-    // ) {
-    //   this.props.fetchTrials(
-    //     this.props.jwt,
-    //     this.props.stage[0].exp,
-    //     this.props.filters,
-    //   );
-    // }
   }
 
   render() {
@@ -136,7 +131,7 @@ export class Dashboard extends React.PureComponent {
     return (
       <WaitingWrapper
         timeout={1000}
-        show={this.props.status === 'waiting' || !this.props.experiments.loaded}
+        show={this.props.status === 'waiting'}
         theme={this.props.theme}
       >
         <DashboardView theme={this.props.theme}>
@@ -216,6 +211,7 @@ export class Dashboard extends React.PureComponent {
             }}
             onContact={data => this.props.onContact(this.props.jwt, data)}
             onToggleTheme={this.props.toggleTheme}
+            onConfirmChoice={this.props.onConfirmChoice}
             user={this.props.user}
             theme={this.props.theme}
           />
@@ -228,6 +224,7 @@ export class Dashboard extends React.PureComponent {
 Dashboard.displayName = 'Dashboard';
 Dashboard.propTypes = {
   theme: PropTypes.object,
+  loadFreshContent: PropTypes.func,
   status: PropTypes.string,
   jwt: PropTypes.string,
   experiments: PropTypes.object,
@@ -257,11 +254,13 @@ Dashboard.propTypes = {
   onSelectedHyperParameterChange: PropTypes.func,
   onChangeSelectedMetrics: PropTypes.func,
   fetching: PropTypes.array,
+  onConfirmChoice: PropTypes.func,
   toggleTheme: PropTypes.func,
 };
 
 export function mapDispatchToProps(dispatch) {
   return {
+    loadFreshContent: () => dispatch(loadFreshContent()),
     onLogout: () => dispatch(logout()),
     onToggleMenu: () => dispatch(toggleMenu()),
     onStageUpdate: stage => dispatch(stageUpdate(stage)),
@@ -287,6 +286,7 @@ export function mapDispatchToProps(dispatch) {
     toggleModal: (modal, meta) => dispatch(toggleModal(modal, meta)),
     onChartPointSelect: point => dispatch(chartPointSelect(point)),
     onChangeSelectedMetrics: data => dispatch(changeSelectedMetrics(data)),
+    onConfirmChoice: status => dispatch(confirmChoice(status)),
     toggleTheme: theme => dispatch(toggleTheme(theme)),
   };
 }
@@ -312,9 +312,13 @@ const withConnect = connect(
 
 const withReducer = injectReducer({ key: 'dashboard', reducer });
 const withSaga = injectSaga({ key: 'dashboard', saga });
+const withReducerApp = injectReducer({ key: 'global', reducer: reducerApp });
+const withSagaApp = injectSaga({ key: 'global', saga: sagaApp });
 
 export default compose(
   withReducer,
+  withReducerApp,
+  withSagaApp,
   withSaga,
   withConnect,
 )(Dashboard);

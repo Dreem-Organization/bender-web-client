@@ -40,28 +40,30 @@ const validate = values => {
         p.search_space.values.forEach(v => {
           error.search_space.values.push(!v ? 'Required' : undefined);
         });
-        let s = 0;
-        p.search_space.probabilities.forEach(prob => {
-          s += prob || 0;
-        });
-        error.search_space.probabilities = p.search_space.probabilities.map(
-          () => undefined,
-        );
-        if (s !== 0 && s !== 1) {
-          error.search_space.probabilities[
-            error.search_space.probabilities.length - 1
-          ] =
-            'Sum of probabilities must be equal to 1';
-        }
-        let undef = 0;
-        p.search_space.probabilities.forEach(pr => {
-          undef += pr ? 0 : 1;
-        });
-        if (undef > 0 && undef !== p.search_space.probabilities.length) {
-          error.search_space.probabilities[
-            error.search_space.probabilities.length - 1
-          ] =
-            'If using probabilities, fill everything';
+        if (p.search_space.probabilities) {
+          let s = 0;
+          p.search_space.probabilities.forEach(prob => {
+            s += prob || 0;
+          });
+          error.search_space.probabilities = p.search_space.probabilities.map(
+            () => undefined,
+          );
+          if (s !== 0 && s !== 1) {
+            error.search_space.probabilities[
+              error.search_space.probabilities.length - 1
+            ] =
+              'Sum of probabilities must be equal to 1';
+          }
+          let undef = 0;
+          p.search_space.probabilities.forEach(pr => {
+            undef += pr ? 0 : 1;
+          });
+          if (undef > 0 && undef !== p.search_space.probabilities.length) {
+            error.search_space.probabilities[
+              error.search_space.probabilities.length - 1
+            ] =
+              'If using probabilities, fill everything';
+          }
         }
       }
       if (
@@ -69,9 +71,6 @@ const validate = values => {
       ) {
         if (p.search_space.base && p.search_space.base < 2) {
           error.search_space.base = 'Must be greater or equal to 2';
-        }
-        if (!p.search_space.step) {
-          error.search_space.step = 'Required';
         }
         if (!p.search_space.high) {
           error.search_space.high = 'Required';

@@ -20,6 +20,8 @@ import {
   FEED_TRIALS,
   SET_IS_FETCHING,
   CONTACT,
+  TOGGLE_MODAL,
+  CONFIRM_CHOICE,
   FETCH_ERROR,
   CONTACT_SENT,
 } from './constants';
@@ -254,7 +256,12 @@ function* fetchExperimentsWatcher() {
 function* delExperimentWatcher() {
   while (true) {
     const data = yield take(FETCH_DELETE_EXPERIMENT);
-    yield call(fetchDeleteExperiment, data);
+    yield put({ type: TOGGLE_MODAL, payload: 'confirm' });
+    const choice = yield take(CONFIRM_CHOICE);
+    if (choice.payload === true) {
+      yield call(fetchDeleteExperiment, data);
+    }
+    yield put({ type: TOGGLE_MODAL, payload: '' });
   }
 }
 
@@ -275,7 +282,12 @@ function* fetchAlgosWatcher() {
 function* delAlgoWatcher() {
   while (true) {
     const data = yield take(FETCH_DELETE_ALGO);
-    yield call(fetchDeleteAlgo, data);
+    yield put({ type: TOGGLE_MODAL, payload: 'confirm' });
+    const choice = yield take(CONFIRM_CHOICE);
+    if (choice.payload === true) {
+      yield call(fetchDeleteAlgo, data);
+    }
+    yield put({ type: TOGGLE_MODAL, payload: '' });
   }
 }
 

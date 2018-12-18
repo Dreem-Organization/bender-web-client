@@ -1,5 +1,6 @@
-import { LOGOUT } from 'containers/App/constants';
+import { LOGOUT_REQUEST } from 'containers/App/constants';
 import {
+  LOAD_FRESH_CONTENT,
   TOGGLE_MENU,
   STAGE_UPDATE,
   FETCH_EXPERIMENTS,
@@ -17,13 +18,14 @@ import {
   CHART_POINT_SELECT,
   REMOVE_SELECTED_METRIC,
   ADD_SELECTED_METRIC,
+  CONFIRM_CHOICE,
   CONTACT,
 } from './constants';
 
 // EXTERNAL STORE CALLS -------------------------------------------------------
 export function logout() {
   return {
-    type: LOGOUT,
+    type: LOGOUT_REQUEST,
     payload: null,
   };
 }
@@ -65,28 +67,18 @@ export function updateAlgo(jwt, raw, experiment, user) {
   const algoData = {
     experiment,
     name: raw.name,
-    parameters: [],
+    parameters: raw.parameters,
   };
-  raw.parameters.forEach(p => {
-    if (p.type === 'categorical') {
-      algoData.parameters.push({
-        category: p.type,
-        name: p.hpName,
-        search_space: {
-          values: p.select,
-        },
-      });
-    } else {
-      algoData.parameters.push({
-        category: p.type,
-        name: p.hpName,
-        search_space: {
-          step: parseFloat(p.step),
-          low: parseFloat(p.low),
-          high: parseFloat(p.high),
-        },
-      });
-    }
+  algoData.parameters.forEach((e, i) => {
+    Object.keys(algoData.parameters[i].search_space).forEach(key => {
+      if (
+        (Array.isArray(algoData.parameters[i].search_space[key]) &&
+          algoData.parameters[i].search_space[key].length === 0) ||
+        !algoData.parameters[i].search_space[key]
+      ) {
+        delete algoData.parameters[i].search_space[key];
+      }
+    });
   });
   return {
     type: FETCH_UPDATE_ALGO,
@@ -114,6 +106,14 @@ export function fetchTrials(jwt, experiment, filters, algo) {
 
 // EXPERIMENTS ----------------------------------------------------------------
 // API CALLS ***
+
+export function loadFreshContent() {
+  return {
+    type: LOAD_FRESH_CONTENT,
+    payload: null,
+  };
+}
+
 export function fetchExperiments(jwt, owner) {
   return {
     type: FETCH_EXPERIMENTS,
@@ -209,5 +209,12 @@ export function contact(jwt, data) {
   return {
     type: CONTACT,
     payload: { jwt, data },
+  };
+}
+
+export function confirmChoice(status) {
+  return {
+    type: CONFIRM_CHOICE,
+    payload: status,
   };
 }

@@ -4,6 +4,7 @@ import {
   slideOutRight,
   slideInLeft,
   slideOutLeft,
+  rotateBlink,
 } from 'KeyFrames';
 
 const Board = styled.div`
@@ -18,9 +19,27 @@ const Board = styled.div`
   .board-title {
     margin: 10px 20px 0 20px;
     transition: 0.3s;
-    border-bottom: 2px solid ${props => props.theme.grey};
     padding-bottom: 10px;
     text-transform: capitalize;
+    &.loaded {
+      border-bottom: 2px solid ${props => props.theme.grey};
+    }
+    .material-icons {
+      color: ${props => props.theme.main};
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      transition: 0.4s;
+      &.active {
+        animation: ${rotateBlink} 1s infinite;
+      }
+      &.inactive {
+        &:hover {
+          transform: scale(1.1) rotate(-45deg);
+          cursor: pointer;
+        }
+      }
+    }
   }
 
   &.slide-prev-enter.slide-prev-enter-active {

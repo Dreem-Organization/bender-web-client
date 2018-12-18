@@ -5,6 +5,30 @@ import { keyframes } from 'styled-components';
  * animation slide-in-bottom
  * ----------------------------------------
  */
+export const rotateBlink = keyframes`
+  0% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(-360deg);
+  }
+`;
+
+/**
+ * ----------------------------------------
+ * animation slide-in-bottom
+ * ----------------------------------------
+ */
 export const scrollIndicator = keyframes`
   0% {
     opacity: 0;

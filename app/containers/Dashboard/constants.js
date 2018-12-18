@@ -2,6 +2,8 @@ export const STAGE_UPDATE = 'Dashboard/STAGE_UPDATE';
 export const TOGGLE_MENU = 'Dashboard/TOGGLE_MENU';
 export const CHANGE_RANK_BY = 'Dashboard/CHANGE_RANK_BY';
 export const TOGGLE_MODAL = 'Dashboard/TOGGLE_MODAL';
+export const CONFIRM_CHOICE = 'Dashboard/CONFIRM_CHOICE';
+export const LOAD_FRESH_CONTENT = 'Dashboard/LOAD_FRESH_CONTENT';
 
 export const FETCH_ERROR = 'Dashboard/FETCH_ERROR';
 export const SET_IS_FETCHING = 'Dashboard/SET_IS_FETCHING';

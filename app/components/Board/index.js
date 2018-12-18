@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { light as theme } from 'themeConfig';
 import Title from 'components/Title';
+import Icon from 'components/Icon';
 import TrialsBoard from 'components/TrialsBoard';
 import RankingBoard from 'components/RankingBoard';
 import ExperimentsBoard from 'components/ExperimentsBoard';
@@ -75,8 +76,14 @@ function Board(props) {
   }
   return (
     <StyledBoard className="board" {...props}>
-      <div className="board-title">
+      <div className={`board-title ${name !== '' ? 'loaded' : ''}`}>
         <Title content={name} theme={props.theme} />
+        <Icon
+          name="cached"
+          onClick={props.loadFreshContent}
+          className={`material-icons ${name !== '' ? 'inactive' : 'active'}`}
+          theme={props.theme}
+        />
       </div>
       {displayedBoard}
     </StyledBoard>
@@ -85,6 +92,7 @@ function Board(props) {
 
 Board.propTypes = {
   theme: PropTypes.object,
+  loadFreshContent: PropTypes.func,
   jwt: PropTypes.string.isRequired,
   stage: PropTypes.array.isRequired,
   filters: PropTypes.object.isRequired,
