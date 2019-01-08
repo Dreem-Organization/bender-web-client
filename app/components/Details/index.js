@@ -6,7 +6,6 @@ import { light as theme } from 'themeConfig';
 import StyledDetails from './style';
 
 function Details(props) {
-  const point = props.trials[props.selectedPoint];
   if (props.trials.length === 0) {
     return '';
   }
@@ -22,27 +21,34 @@ function Details(props) {
             theme={props.theme}
           />
         </div>
-        {point ? (
+        {props.selectedPoint ? (
           <div className="details-head-under">
             <Label
-              content={point.algo_name}
+              content={`Algo: ${props.selectedPoint.algo_name}`}
               size="mini"
-              type="important"
               theme={props.theme}
             />
             <Label
-              content={point.owner}
+              content={`Owner: ${props.selectedPoint.owner}`}
               size="mini"
-              type="important"
               theme={props.theme}
             />
+            {props.selectedPoint.comment ? (
+              <Label
+                content={`Comment: ${props.selectedPoint.comment}`}
+                size="mini"
+                theme={props.theme}
+              />
+            ) : (
+              ''
+            )}
           </div>
         ) : (
           ''
         )}
       </div>
       <div className="details-body">
-        {props.selectedPoint !== -1 ? (
+        {props.selectedPoint ? (
           <div className="details-body-sub">
             <div className="details-pm-container">
               <Label
@@ -52,7 +58,7 @@ function Details(props) {
                 type="important"
                 theme={props.theme}
               />
-              {Object.keys(point.parameters).map(k => (
+              {Object.keys(props.selectedPoint.parameters).map(k => (
                 <div className="details-line" key={k}>
                   <Label
                     content={k}
@@ -62,7 +68,7 @@ function Details(props) {
                   />
                   <input
                     onFocus={e => e.target.select()}
-                    value={point.parameters[k]}
+                    value={props.selectedPoint.parameters[k]}
                     readOnly
                   />
                 </div>
@@ -76,7 +82,7 @@ function Details(props) {
                 type="important"
                 theme={props.theme}
               />
-              {Object.keys(point.results).map(k => (
+              {Object.keys(props.selectedPoint.results).map(k => (
                 <div className="details-line" key={k}>
                   <Label
                     content={k}
@@ -86,7 +92,7 @@ function Details(props) {
                   />
                   <input
                     onFocus={e => e.target.select()}
-                    value={point.results[k]}
+                    value={props.selectedPoint.results[k]}
                     readOnly
                   />
                 </div>
@@ -108,7 +114,7 @@ function Details(props) {
 
 Details.propTypes = {
   theme: PropTypes.object,
-  selectedPoint: PropTypes.number.isRequired,
+  selectedPoint: PropTypes.object,
   trials: PropTypes.array.isRequired,
 };
 

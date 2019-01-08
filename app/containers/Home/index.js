@@ -144,9 +144,6 @@ export class Home extends React.PureComponent {
     return (
       <HomeView theme={theme}>
         <div className="home-head-container" id="head">
-          <span className="powered" onClick={this.handleDreemRedirect}>
-            Powered by dreem
-          </span>
           <Title className="home-title" content="Welcome to Bender" size={1} />
           <Title
             className="home-sub-title"
@@ -216,12 +213,7 @@ export class Home extends React.PureComponent {
                   width="auto"
                 />
                 <Image src={python} height="50px" width="auto" />
-                <Image
-                  className="image grey"
-                  src={r}
-                  height="50px"
-                  width="auto"
-                />
+                <Image className="image" src={r} height="50px" width="auto" />
               </HomeStepCard>
             </div>
             <div className="home-body-middle">
@@ -251,6 +243,9 @@ export class Home extends React.PureComponent {
               </HomeStepCard>
             </div>
           </div>
+          <span className="powered" onClick={this.handleDreemRedirect}>
+            Powered by dreem
+          </span>
         </div>
       </HomeView>
     );

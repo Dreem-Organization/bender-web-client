@@ -96,7 +96,7 @@ Board.propTypes = {
   jwt: PropTypes.string.isRequired,
   stage: PropTypes.array.isRequired,
   filters: PropTypes.object.isRequired,
-  chartSelectedPoint: PropTypes.number.isRequired,
+  chartSelectedPoint: PropTypes.object,
   experiments: PropTypes.object.isRequired,
   onStageUpdate: PropTypes.func.isRequired,
   onRankByChange: PropTypes.func.isRequired,

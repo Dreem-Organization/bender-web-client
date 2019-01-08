@@ -15,23 +15,6 @@ const pc = css`
     background-color: ${props => props.theme.main};
     flex-direction: column;
     justify-content: center;
-    .powered {
-      position: absolute;
-      font-size: 0.8rem;
-      top: 20px;
-      left: 20px;
-      color: rgb(253, 17, 110);
-      background-color: white;
-      border-radius: 20px;
-      padding: 3px 10px;
-      transition: 0.2s;
-      &:hover {
-        cursor: pointer;
-        background-color: rgb(253, 17, 110);
-        font-weight: bold;
-        color: white;
-      }
-    }
     .home-title {
       position: relative;
       z-index: 1;
@@ -195,6 +178,23 @@ const pc = css`
           flex-direction: column;
           height: 100%;
         }
+      }
+    }
+    .powered {
+      position: absolute;
+      font-size: 0.8rem;
+      bottom: 20px;
+      right: 20px;
+      color: rgb(253, 17, 110);
+      background-color: white;
+      border-radius: 20px;
+      padding: 3px 10px;
+      transition: 0.2s;
+      &:hover {
+        cursor: pointer;
+        background-color: rgb(253, 17, 110);
+        font-weight: bold;
+        color: white;
       }
     }
   }

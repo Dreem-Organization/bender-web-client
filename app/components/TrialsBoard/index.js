@@ -64,7 +64,7 @@ TrialsBoard.propTypes = {
   onFilterChange: PropTypes.func.isRequired,
   onSelectedHyperParameterChange: PropTypes.func.isRequired,
   onChartPointSelect: PropTypes.func.isRequired,
-  chartSelectedPoint: PropTypes.number.isRequired,
+  chartSelectedPoint: PropTypes.object,
   onChangeSelectedMetrics: PropTypes.func.isRequired,
 };
 

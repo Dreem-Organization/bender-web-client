@@ -121,7 +121,7 @@ export default class MyScatterChart extends Component {
 
   lineCustomTooltip(item) {
     if (item.payload[0]) {
-      const trial = this.props.trials[0];
+      const trial = item.payload[0].payload;
       return (
         <div className="custom-tooltip">
           <div className="custom-tooltip-header">
@@ -157,6 +157,7 @@ export default class MyScatterChart extends Component {
       scatterData.push({
         x: t.parameters[this.state.selectedX],
         y: t.results[this.state.selectedY],
+        ...t,
       });
     });
     scatterData.sort((a, b) => a.x - b.x);
@@ -174,9 +175,11 @@ export default class MyScatterChart extends Component {
         <Scatter
           onClick={e =>
             this.props.onChartPointSelect(
-              scatterData.findIndex(
-                i => i.x === e.payload.x && i.y === e.payload.y,
-              ),
+              scatterData[
+                scatterData.findIndex(
+                  i => i.x === e.payload.x && i.y === e.payload.y,
+                )
+              ],
             )
           }
           data={scatterData}
@@ -187,12 +190,11 @@ export default class MyScatterChart extends Component {
           type={this.state.isCategorical ? 'category' : 'number'}
           allowDuplicatedCategory={false}
           dataKey="x"
-          name="toto"
           tickFormatter={val =>
             typeof val === 'string' ? val : val.toExponential(2)
           }
         />
-        <YAxis padding={{ top: 10 }} dataKey="y" name="tata" />
+        <YAxis padding={{ top: 10 }} dataKey="y" />
         <Tooltip content={this.lineCustomTooltip} offset={25} />
         <CartesianGrid strokeDasharray="3 3" style={{ opacity: 0.3 }} />
       </ScatterChart>

@@ -35,6 +35,18 @@ function Menu(props) {
       />
       <Button
         type="round"
+        icon="description"
+        onClick={() =>
+          window.open(
+            'https://bender-optimizer.readthedocs.io/en/latest/',
+            '_blank',
+          )
+        }
+        content="DOCS"
+        theme={props.theme}
+      />
+      <Button
+        type="round"
         icon="power_settings_new"
         onClick={props.onLogout}
         content="LOGOUT"

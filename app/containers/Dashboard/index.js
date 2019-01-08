@@ -249,7 +249,7 @@ Dashboard.propTypes = {
   user: PropTypes.object,
   filters: PropTypes.object,
   modalStates: PropTypes.object,
-  chartSelectedPoint: PropTypes.number,
+  chartSelectedPoint: PropTypes.object,
   onChartPointSelect: PropTypes.func,
   onSelectedHyperParameterChange: PropTypes.func,
   onChangeSelectedMetrics: PropTypes.func,

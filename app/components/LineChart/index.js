@@ -176,6 +176,7 @@ export default class LineChart extends Component {
       lineData.push({
         id: t.id,
         ...t.results,
+        ...t,
       });
     });
     const metric = this.props.experiment.metrics.find(
@@ -204,7 +205,7 @@ export default class LineChart extends Component {
           left: -18,
           bottom: 5,
         }}
-        onClick={e => this.props.onChartPointSelect(e.activeLabel)}
+        onClick={e => this.props.onChartPointSelect(lineData[e.activeLabel])}
         data={lineData}
       >
         <CartesianGrid strokeDasharray="3 3" style={{ opacity: 0.5 }} />

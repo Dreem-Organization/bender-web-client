@@ -45,7 +45,7 @@ export const initialState = fromJS({
   fetching: [],
   menuState: true,
   stage: [{ layer: 0, exp: '', algo: '' }],
-  chartSelectedPoint: -1,
+  chartSelectedPoint: null,
   error: null,
 });
 
