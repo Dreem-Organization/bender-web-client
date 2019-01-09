@@ -222,7 +222,7 @@ export class Home extends React.PureComponent {
                 <HomeStepCard
                   number="2"
                   title="Feed Bender your results or ask him some new ones to try"
-                  desc="The more you feed Bender with pairs of [Hyperparameters / Alrorithm Results], the more he will become efficient."
+                  desc="The more you feed Bender with pairs of [Hyperparameters / Algorithm Results], the more he will become efficient."
                 >
                   <Image src={bender} height="50px" width="auto" />
                 </HomeStepCard>
