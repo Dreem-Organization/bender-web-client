@@ -44,6 +44,7 @@ export function createAlgo(jwt, raw, experiment, user) {
   const algoData = {
     experiment,
     name: raw.name,
+    description: raw.description,
     parameters: raw.parameters,
   };
   algoData.parameters.forEach((e, i) => {

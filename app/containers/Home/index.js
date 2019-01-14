@@ -303,7 +303,6 @@ export function mapDispatchToProps(dispatch) {
     loaded: () => dispatch(firstViewLoaded()),
     verifyUser: token => dispatch(verifyUser(token)),
     toggleForm: data => dispatch(toggleForm(data)),
-    // onLogin: data => console.log(data),
   };
 }
 

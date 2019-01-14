@@ -189,6 +189,24 @@ function ExperimentsHeader(props) {
               />
             ))}
           </div>
+          <div className="experiments-infos-sub-container">
+            <Label
+              content="Description :"
+              size="tiny"
+              type="important"
+              theme={props.theme}
+            />
+            <Label
+              content={
+                props.experiments.list[props.stage.exp].algos.list[
+                  props.stage.algo
+                ].description
+              }
+              size="tiny"
+              type="simple"
+              theme={props.theme}
+            />
+          </div>
         </div>
       ) : (
         ''

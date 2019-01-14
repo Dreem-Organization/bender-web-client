@@ -42,11 +42,19 @@ function RankingBoard(props) {
       unranked.push({ algo: a, trial: null, metric: props.experiment.rankBy });
     }
   });
-  ranking.sort(
-    (a, b) =>
-      b.trial.results[b.metric.metric_name] -
-      a.trial.results[a.metric.metric_name],
-  );
+  if (props.experiment.rankBy.type === 'reward') {
+    ranking.sort(
+      (a, b) =>
+        b.trial.results[b.metric.metric_name] -
+        a.trial.results[a.metric.metric_name],
+    );
+  } else {
+    ranking.sort(
+      (a, b) =>
+        a.trial.results[a.metric.metric_name] -
+        b.trial.results[b.metric.metric_name],
+    );
+  }
   ranking = ranking.concat(unranked);
   return (
     <StyledRankingBoard className="ranking-board" {...props}>

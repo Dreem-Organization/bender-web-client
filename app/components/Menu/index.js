@@ -47,23 +47,16 @@ function Menu(props) {
       />
       <Button
         type="round"
+        icon="contact_support"
+        onClick={props.onOpenContact}
+        content="SUPPORT"
+        theme={props.theme}
+      />
+      <Button
+        type="round"
         icon="power_settings_new"
         onClick={props.onLogout}
         content="LOGOUT"
-        theme={props.theme}
-      />
-      <Button
-        type="round"
-        icon="bug_report"
-        onClick={props.onOpenContact}
-        content="BUG"
-        theme={props.theme}
-      />
-      <Button
-        type="round"
-        icon="contact_support"
-        onClick={props.onOpenContact}
-        content="CONTACT"
         theme={props.theme}
       />
       <span

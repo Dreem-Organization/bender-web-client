@@ -205,7 +205,7 @@ function dashboardReducer(state = initialState, action) {
         .updateIn(['fetching'], arr => arr.pop());
     case CHANGE_FILTERS:
       return state
-        .set('chartSelectedPoint', -1)
+        .set('chartSelectedPoint', null)
         .updateIn(
           ['experiments', 'list', action.payload.exp, 'filters'],
           () => action.payload.data,

@@ -416,7 +416,14 @@ let Form = class FormClass extends React.PureComponent {
           type="text"
           component={Input}
           placeholder="Choose wisely"
-          value="toto"
+          theme={this.props.theme}
+        />
+        <Label content="Description" type="simple" size="normal" />
+        <Field
+          name="description"
+          type="text"
+          component={Input}
+          placeholder="This is not mandatory... But nice !"
           theme={this.props.theme}
         />
         <FieldArray

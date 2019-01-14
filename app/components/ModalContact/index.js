@@ -15,7 +15,6 @@ import StyledModalContact from './style';
 
 const validate = values => {
   const errors = {};
-  console.log(values);
   if (!values.title) {
     errors.title = 'Required';
   }
@@ -31,7 +30,6 @@ const validate = values => {
   ) {
     errors.email = 'Invalid email address';
   }
-  console.log(errors);
   return errors;
 };
 

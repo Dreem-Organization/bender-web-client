@@ -71,8 +71,8 @@ const RankingBoard = styled.div`
     max-width: 90px;
   }
   .ranking-board-algo {
-    min-width: 250px;
-    max-width: 250px;
+    min-width: 320px;
+    max-width: 320px;
   }
 `;
 
