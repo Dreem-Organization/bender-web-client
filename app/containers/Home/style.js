@@ -192,7 +192,7 @@ const pc = css`
       transition: 0.2s;
       &:hover {
         cursor: pointer;
-        background-color: rgb(253, 17, 110);
+        background-color: black;
         font-weight: bold;
         color: white;
       }
@@ -211,20 +211,6 @@ const phone = css`
     background-color: ${props => props.theme.main};
     flex-direction: column;
     justify-content: center;
-    .powered {
-      font-size: 0.8rem;
-      color: rgb(253, 17, 110);
-      background-color: white;
-      border-radius: 20px;
-      padding: 3px 10px;
-      transition: 0.2s;
-      &:hover {
-        cursor: pointer;
-        background-color: rgb(253, 17, 110);
-        font-weight: bold;
-        color: white;
-      }
-    }
     .home-title {
       font-size: 2.2rem;
       text-align: center;
@@ -389,6 +375,20 @@ const phone = css`
           justify-content: center;
           flex-direction: column;
         }
+      }
+    }
+    .powered {
+      font-size: 0.8rem;
+      color: rgb(253, 17, 110);
+      background-color: white;
+      border-radius: 20px;
+      padding: 3px 10px;
+      transition: 0.2s;
+      &:hover {
+        cursor: pointer;
+        background-color: rgb(253, 17, 110);
+        font-weight: bold;
+        color: white;
       }
     }
   }
