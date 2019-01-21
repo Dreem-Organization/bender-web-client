@@ -192,7 +192,7 @@ const pc = css`
       transition: 0.2s;
       &:hover {
         cursor: pointer;
-        background-color: black;
+        background-color: rgb(253, 17, 110);
         font-weight: bold;
         color: white;
       }
