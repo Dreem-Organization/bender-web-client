@@ -10,6 +10,11 @@ errors stdout
 
 root /var/www/
 
+expires {
+    match .(jpg|jpeg|png|gif|ico|svg)$ 1h
+    match .(js|css)$ 1h
+}
+
 rewrite {
     r ^/(.*)$
     to /{1} /
