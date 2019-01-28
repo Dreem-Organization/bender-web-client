@@ -1,5 +1,7 @@
 ARG BUILD_MODE=build
 FROM dreem/bender-front-builder:latest as builder
+ARG BUILD_MODE
+RUN echo $BUILD_MODE
 
 WORKDIR /usr/src/app
 COPY . .
