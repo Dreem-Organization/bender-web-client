@@ -1,5 +1,5 @@
 ARG BUILD_MODE=build
-FROM registry.rythm.co/bender-front-builder:745519c as builder
+FROM dreem/bender-front-builder:latest as builder
 
 WORKDIR /usr/src/app
 COPY . .
@@ -7,7 +7,7 @@ COPY . .
 RUN yarn install
 RUN yarn $BUILD_MODE
 
-FROM registry.rythm.co/caddy-server:v0.11.0
+FROM dreem/caddy-server:v0.11.0
 
 ENV NPM_CONFIG_LOGLEVEL warn
 
