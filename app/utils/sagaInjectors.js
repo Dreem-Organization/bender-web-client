@@ -41,7 +41,7 @@ export function injectSagaFactory(store, isValid) {
 
     let hasSaga = Reflect.has(store.injectedSagas, key);
 
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV === 'development') {
       const oldDescriptor = store.injectedSagas[key];
       // enable hot reloading of daemon and once-till-unmount sagas
       if (hasSaga && oldDescriptor.saga !== saga) {
@@ -75,7 +75,7 @@ export function ejectSagaFactory(store, isValid) {
       if (descriptor.mode !== DAEMON) {
         descriptor.task.cancel();
         // Clean up in production; in development we need `descriptor.saga` for hot reloading
-        if (process.env.NODE_ENV === 'production') {
+        if (process.env.NODE_ENV !== 'development') {
           // Need some value to be able to detect `ONCE_TILL_UNMOUNT` sagas in `injectSaga`
           store.injectedSagas[key] = 'done'; // eslint-disable-line no-param-reassign
         }
