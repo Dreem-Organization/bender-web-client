@@ -11,6 +11,7 @@ import {
   ComposedChart,
   ResponsiveContainer,
   Area,
+  Line,
   Legend,
   CartesianGrid,
   Tooltip,
@@ -62,7 +63,8 @@ export default class LineChart extends Component {
 
   getLineData() {
     let data;
-    if (this.props.experiment.selectedMetrics !== null) {
+    const sm = this.props.experiment.selectedMetrics;
+    if (sm !== null) {
       data = _.chain(this.props.trials)
         .map(k => {
           const results = _.mapValues(k.results, r => _.round(r, 4));
@@ -136,6 +138,46 @@ export default class LineChart extends Component {
     ));
   }
 
+  generateCfdMetrics(item) {
+    if (item.payload.length > 1) {
+      const pl = item.payload[1].payload;
+      return (
+        <div className="custom-tooltip-sub-container">
+          <Label content="Selected Metric" type="important" />
+          <div className="custom-tooltip-data-list">
+            <div className="data-table">
+              <div className="left">
+                <Label content="STD" type="simple" />
+              </div>
+              <Label
+                className="right"
+                content={
+                  _.isNumber(pl.cfd)
+                    ? _.round(+pl.cfd, 4).toString()
+                    : pl.cfd.toString()
+                }
+              />
+            </div>
+            {pl.replicas.map(r => (
+              <div className="data-table" key={r}>
+                <div className="left">
+                  <Label content="Other Recorded Value" type="simple" />
+                </div>
+                <Label
+                  className="right"
+                  content={
+                    _.isNumber(r) ? _.round(+r, 4).toString() : r.toString()
+                  }
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+    return '';
+  }
+
   lineCustomTooltip(item) {
     if (item.payload[0]) {
       const trial = this.props.trials.filter(
@@ -152,6 +194,7 @@ export default class LineChart extends Component {
             />
             <TimeAgo className="time-ago" date={trial.created} />
           </div>
+          {this.generateCfdMetrics(item)}
           <div className="custom-tooltip-sub-container">
             <Label content="Metrics" type="important" />
             <div className="custom-tooltip-data-list">
@@ -171,10 +214,17 @@ export default class LineChart extends Component {
   }
 
   getChart() {
-    const lineData = [];
+    const sm = this.props.experiment.selectedMetrics;
+    let lineData = [];
+    let cfdActivated = false;
     this.props.trials.forEach(t => {
       lineData.push({
         id: t.id,
+        cfdHigh: [],
+        cfdLow: [],
+        cfd: null,
+        replicas: [],
+        selectedMetric: sm,
         ...t.results,
         ...t,
       });
@@ -188,7 +238,41 @@ export default class LineChart extends Component {
     } else {
       lineData.sort((a, b) => a[metric.metric_name] - b[metric.metric_name]);
     }
-    if (this.props.experiment.selectedMetrics.length === 0) {
+    lineData = lineData.reverse();
+    lineData.forEach((pointA, iA) => {
+      lineData.forEach((pointB, iB) => {
+        if (
+          JSON.stringify(pointA.parameters) ===
+            JSON.stringify(pointB.parameters) &&
+          iA !== iB
+        ) {
+          pointA.replicas.push(pointB.results[metric.metric_name]);
+          lineData.splice(iB, 1);
+        }
+      });
+    });
+    lineData = lineData.reverse();
+    lineData.forEach((point, i) => {
+      if (point.replicas.length > 0) {
+        point.replicas.push(point.results[metric.metric_name]);
+        const moy =
+          point.replicas.reduce((a, b) => a + b, 0) / point.replicas.length;
+        const std =
+          point.replicas.reduce((a, b) => a + (b - moy) ** 2, 0) /
+          point.replicas.length;
+        // CONFIDENCE INTERVAL -> Nope
+        // const cfd = 1.96 * (Math.sqrt(std) / Math.sqrt(point.replicas.length));
+        lineData[i].cfdHigh = point.results[metric.metric_name] + std;
+        lineData[i].cfdLow = point.results[metric.metric_name] - std;
+        lineData[i].cfd = std;
+        cfdActivated = true;
+      } else {
+        lineData[i].cfd = 0;
+        lineData[i].cfdHigh = point.results[metric.metric_name];
+        lineData[i].cfdLow = point.results[metric.metric_name];
+      }
+    });
+    if (sm.length === 0) {
       return (
         <div className="chart-empty-container">
           <Label content="Uh, oh — looks like you haven't selected any metric to visualize yet." />
@@ -237,23 +321,23 @@ export default class LineChart extends Component {
             );
           })}
         </defs>
-        {this.props.experiment.selectedMetrics.map((m, index) => (
+        {sm.map((m, index) => (
           <YAxis
             key={m.metric_name}
             margin={{
-              left: -20 + 20 * this.props.experiment.selectedMetrics.length,
+              left: -20 + 20 * sm.length,
             }}
-            width={65 - 5 * this.props.experiment.selectedMetrics.length}
+            width={65 - 5 * sm.length}
             stroke={colorWheel[index]}
             yAxisId={`yaxis-${index}`}
             domain={['auto', 'auto']}
             tickFormatter={v => _.round(v, 3)}
           />
         ))}
-        {this.props.experiment.selectedMetrics.map((m, index) => {
+        {sm.map((m, index) => {
           const stroke = `${colorWheel[index]}`;
           const fill = `url(#colorUv-${index})`;
-          return (
+          return !cfdActivated ? (
             <Area
               margin={{ bottom: 5 }}
               type="monotone"
@@ -267,13 +351,51 @@ export default class LineChart extends Component {
               activeDot={{ r: 5 }}
               animationDuration={850}
             />
+          ) : (
+            <Line
+              key="line"
+              type="monotone"
+              dataKey={m.metric_name}
+              strokeWidth={2}
+              yAxisId={`yaxis-${0}`}
+              stroke={`${colorWheel[0]}`}
+            />
           );
         })}
+        {cfdActivated ? (
+          <Line
+            key="cfdHigh"
+            type="monotone"
+            dot={false}
+            strokeDasharray="5 5"
+            strokeOpacity={0.6}
+            dataKey="cfdHigh"
+            yAxisId={`yaxis-${0}`}
+            stroke={`${colorWheel[0]}`}
+          />
+        ) : (
+          ''
+        )}
+        {cfdActivated ? (
+          <Line
+            key="cfdLow"
+            type="monotone"
+            dot={false}
+            strokeDasharray="5 5"
+            strokeOpacity={0.6}
+            dataKey="cfdLow"
+            yAxisId={`yaxis-${0}`}
+            stroke={`${colorWheel[0]}`}
+          />
+        ) : (
+          ''
+        )}
       </ComposedChart>
     );
   }
 
   render() {
+    const sm = this.props.experiment.selectedMetrics;
     return (
       <StyledLineChart className="chart" {...this.props}>
         <div className="chart-filters-container">
@@ -325,14 +447,10 @@ export default class LineChart extends Component {
                   name={metric.metric_name}
                   label={metric.metric_name}
                   value={metric.metric_name}
-                  checked={this.props.experiment.selectedMetrics.some(
-                    m => metric.metric_name === m.metric_name,
-                  )}
+                  checked={sm.some(m => metric.metric_name === m.metric_name)}
                   onChange={() =>
                     this.props.onChangeSelectedMetrics({
-                      action: this.props.experiment.selectedMetrics.some(
-                        m => metric.metric_name === m.metric_name,
-                      )
+                      action: sm.some(m => metric.metric_name === m.metric_name)
                         ? 'remove'
                         : 'add',
                       metric,
