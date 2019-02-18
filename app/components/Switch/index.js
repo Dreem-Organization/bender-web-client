@@ -4,6 +4,9 @@ import { light as theme } from 'themeConfig';
 import StyledSwitch from './style';
 
 function Switch(props) {
+  const isError =
+    props.meta.error &&
+    ((props.meta.visited && !props.meta.active) || props.meta.submitFailed);
   return (
     <StyledSwitch className="switch" {...props}>
       {props.options.map(o => (
@@ -17,6 +20,14 @@ function Switch(props) {
           <span>{o.label}</span>
         </div>
       ))}
+      {isError ? (
+        <div className="input-error">
+          <div className="input-error-arrow" />
+          <span>{props.meta.error}</span>
+        </div>
+      ) : (
+        ''
+      )}
     </StyledSwitch>
   );
 }
@@ -24,6 +35,7 @@ function Switch(props) {
 Switch.propTypes = {
   options: PropTypes.array.isRequired,
   theme: PropTypes.object,
+  meta: PropTypes.object,
   input: PropTypes.object,
 };
 

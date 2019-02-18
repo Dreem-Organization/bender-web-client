@@ -31,16 +31,17 @@ const validate = values => {
       errors.metrics.push(childError);
     });
   }
-  if (!values.dataset) {
-    errors.dataset = 'Required';
-  }
   return errors;
 };
 
 class renderMembers extends React.PureComponent {
   componentWillMount() {
     const { fields } = this.props;
-    if (!fields.length) fields.push();
+    if (!fields.length)
+      fields.push({
+        metric_name: '',
+        type: '',
+      });
   }
 
   render() {
@@ -76,7 +77,10 @@ class renderMembers extends React.PureComponent {
           color="positive"
           onClick={e => {
             e.preventDefault();
-            this.props.fields.push();
+            this.props.fields.push({
+              metric_name: '',
+              type: '',
+            });
           }}
         />
       </div>
