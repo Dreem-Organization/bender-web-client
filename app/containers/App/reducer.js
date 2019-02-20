@@ -52,7 +52,7 @@ function appReducer(state = initialState, action) {
         });
     case LOGOUT:
       LocalStorageManager.removeUser();
-      return state.set('status', 'out');
+      return initialState.set('status', 'out');
     case JOIN:
       return state;
     case FETCH_ERROR:

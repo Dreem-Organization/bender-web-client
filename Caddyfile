@@ -8,7 +8,7 @@ log / stdout "\{\"time\": \"{when_iso}\",\"lang\": \"{>Detected-Locale}\", \"hos
 
 errors stdout
 
-root /var/www/
+root /home/caddy/
 
 expires {
     match .(jpg|jpeg|png|gif|ico|svg)$ 1h
