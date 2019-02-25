@@ -3,10 +3,10 @@ import { slideInBottom } from 'KeyFrames';
 
 const StyledBenderEyes = styled.div`
   position: absolute;
-  bottom: -2px;
-  left: 50px;
-  width: 250px;
-  height: 250px;
+  bottom: -90px;
+  left: 0;
+  width: 500px;
+  height: 500px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -16,9 +16,6 @@ const StyledBenderEyes = styled.div`
     width: 100%;
     height: auto;
     opacity: 0.3;
-  }
-  .eyes-container {
-    position: absolute;
   }
 `;
 

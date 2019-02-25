@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { light as theme } from 'themeConfig';
-import animated from 'images/animation.gif';
+// import animated from 'images/animation.gif';
 import logo from 'images/logo.png';
 import Image from 'components/Image';
 import Button from 'components/Button';
@@ -13,7 +13,7 @@ function Menu(props) {
       <div className="menu-logo-container">
         <Image
           className="image animated"
-          src={animated}
+          src={logo}
           width="40px"
           height="40px"
           theme={props.theme}
