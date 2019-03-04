@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { light as theme } from 'themeConfig';
 import Title from 'components/Title';
 import Label from 'components/Label';
+import DeleteAccount from 'components/DeleteAccount';
 import StyledModalProfile from './style';
 
 function ModalProfile(props) {
@@ -35,7 +36,19 @@ function ModalProfile(props) {
           type="important"
           theme={props.theme}
         />
-        <button onClick={() => props.onToggleTheme(props.theme)} />
+        <button
+          className="switch"
+          onClick={() => props.onToggleTheme(props.theme)}
+        />
+      </section>
+      <section>
+        <Label
+          content="Account suppression"
+          size="standard"
+          type="important"
+          theme={props.theme}
+        />
+        <DeleteAccount onDeleteAccount={props.onDeleteAccount} />
       </section>
     </StyledModalProfile>
   );
@@ -45,6 +58,7 @@ ModalProfile.propTypes = {
   theme: PropTypes.object,
   user: PropTypes.object,
   onToggleTheme: PropTypes.func,
+  onDeleteAccount: PropTypes.func,
 };
 
 ModalProfile.defaultProps = {

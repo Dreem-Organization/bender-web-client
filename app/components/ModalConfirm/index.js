@@ -4,26 +4,26 @@ import PropTypes from 'prop-types';
 import { light as theme } from 'themeConfig';
 import Title from 'components/Title';
 import Button from 'components/Button';
-import StyledModalProfile from './style';
+import StyledModalConfirm from './style';
 
-function ModalProfile(props) {
+function ModalConfirm(props) {
   return (
-    <StyledModalProfile className="modal-create-experiment" {...props}>
+    <StyledModalConfirm className="modal-create-experiment" {...props}>
       <Title content="Sure ?" theme={props.theme} />
       <Button content="Yes" onClick={() => props.confirm(true)} />
       <Button content="No" onClick={() => props.confirm(false)} />
-    </StyledModalProfile>
+    </StyledModalConfirm>
   );
 }
 
-ModalProfile.propTypes = {
+ModalConfirm.propTypes = {
   theme: PropTypes.object,
   user: PropTypes.object,
   confirm: PropTypes.func,
 };
 
-ModalProfile.defaultProps = {
+ModalConfirm.defaultProps = {
   theme,
 };
 
-export default ModalProfile;
+export default ModalConfirm;

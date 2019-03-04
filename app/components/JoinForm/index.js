@@ -1,3 +1,4 @@
+/* eslint jsx-a11y/anchor-is-valid: 0 */
 import React from 'react';
 import PropTypes from 'prop-types';
 import Input from 'components/Input';
@@ -36,10 +37,13 @@ const validate = values => {
   ) {
     errors.password2 = 'Passwords are not matching';
   }
+  if (!values.cgu) {
+    errors.cgu = 'Required';
+  }
   return errors;
 };
 
-const Form = ({ handleSubmit, submitting, login }) => (
+const Form = ({ handleSubmit, submitting, login, openCGU }) => (
   <form onSubmit={handleSubmit(login)}>
     <div className="form-body">
       <div className="form-part">
@@ -55,12 +59,6 @@ const Form = ({ handleSubmit, submitting, login }) => (
           component={Input}
           placeholder="E-Mail"
         />
-        <Field
-          name="firstName"
-          type="text"
-          component={Input}
-          placeholder="First Name"
-        />
       </div>
       <div className="form-part">
         <Field
@@ -75,13 +73,15 @@ const Form = ({ handleSubmit, submitting, login }) => (
           component={Input}
           placeholder="Confirm Password"
         />
-        <Field
-          name="lastName"
-          type="text"
-          component={Input}
-          placeholder="Last Name"
-        />
       </div>
+    </div>
+    <div className="form-cgu-container">
+      <Label>
+        <span>
+          I accept the <a onClick={openCGU}>CGU</a>
+        </span>
+      </Label>
+      <Field name="cgu" component={Input} type="checkbox" />
     </div>
     <Button content="Go" type="submit" disabled={submitting} />
   </form>
@@ -89,6 +89,7 @@ const Form = ({ handleSubmit, submitting, login }) => (
 
 Form.propTypes = {
   handleSubmit: PropTypes.func,
+  openCGU: PropTypes.func.isRequired,
   login: PropTypes.func,
   submitting: PropTypes.bool,
 };
@@ -106,7 +107,7 @@ function LoginForm(props) {
           <Title size={2} content="Join Form" theme={props.theme} />
           {/* <GithubButton /> */}
         </div>
-        <RForm login={props.onSubmit} />
+        <RForm login={props.onSubmit} openCGU={props.openCGU} />
         <Label
           type="link"
           size="mini"
@@ -123,6 +124,7 @@ function LoginForm(props) {
 LoginForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   theme: PropTypes.object,
+  openCGU: PropTypes.func.isRequired,
   onToggleForm: PropTypes.func.isRequired,
 };
 

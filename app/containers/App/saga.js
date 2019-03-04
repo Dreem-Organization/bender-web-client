@@ -5,6 +5,7 @@ import {
   LOGIN,
   LOGOUT_REQUEST,
   LOGOUT,
+  DELETE_ACCOUNT_REQUEST,
   FETCH_RESET,
   RESET,
   SOCIAL_LOGIN,
@@ -86,6 +87,22 @@ function* join(action) {
   }
 }
 
+function* deleteAccount(action) {
+  try {
+    yield call(api.deleteAccount, action.payload);
+    yield put({ type: LOGOUT, payload: '' });
+  } catch (error) {
+    yield put({ type: FETCH_ERROR, payload: error });
+    yield put({
+      type: PUT_TOAST,
+      payload: {
+        message: error.message,
+        life: 10,
+      },
+    });
+  }
+}
+
 // ############################################################################
 // ############################################################################
 // ---------------------------  WATCHERS --------------------------------------
@@ -108,6 +125,13 @@ function* logoutWatcher() {
       yield put({ type: LOGOUT, payload: '' });
     }
     yield put({ type: TOGGLE_MODAL, payload: '' });
+  }
+}
+
+function* deleteAccountWatcher() {
+  while (true) {
+    const data = yield take(DELETE_ACCOUNT_REQUEST);
+    yield call(deleteAccount, data);
   }
 }
 
@@ -135,6 +159,7 @@ function* joinWatcher() {
 export default function* rootSaga() {
   yield all([
     fork(logoutWatcher),
+    fork(deleteAccountWatcher),
     fork(loginWatcher),
     fork(resetWatcher),
     fork(socialLoginWatcher),

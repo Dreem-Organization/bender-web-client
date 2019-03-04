@@ -8,6 +8,9 @@ export const api = {
       password,
     });
   },
+  deleteAccount({ jwt, id }) {
+    return remove(`${API_BASE_URL}/users/${id}/`, jwt);
+  },
   socialLogin(code) {
     return post(`${BASE_URL}/github/`, {
       code,

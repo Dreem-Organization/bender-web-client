@@ -4,6 +4,7 @@ import { scrollIndicator } from 'KeyFrames';
 const pc = css`
   overflow-x: hidden;
   min-width: 1300px;
+  position: relative;
   .home-head-container {
     padding-top: 25px;
     display: flex;

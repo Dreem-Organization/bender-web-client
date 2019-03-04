@@ -1,5 +1,6 @@
 import { call, take, put, all, fork } from 'redux-saga/effects';
 import { api } from 'utils/api';
+import { LOGOUT } from 'containers/App/constants';
 import { PUT_TOAST } from 'containers/Toaster/constants';
 import {
   FETCH_EXPERIMENTS,
@@ -61,6 +62,7 @@ function* fetchExperiments(action) {
         life: 10,
       },
     });
+    yield put({ type: LOGOUT, payload: null });
   }
 }
 
@@ -78,6 +80,7 @@ function* fetchDeleteExperiment(action) {
         life: 10,
       },
     });
+    yield put({ type: LOGOUT, payload: null });
   }
 }
 
@@ -99,6 +102,7 @@ function* fetchCreateExperiment(action) {
         life: 10,
       },
     });
+    yield put({ type: LOGOUT, payload: null });
   }
 }
 
@@ -130,6 +134,7 @@ function* fetchAlgos(action) {
         life: 10,
       },
     });
+    yield put({ type: LOGOUT, payload: null });
   }
 }
 
@@ -151,6 +156,7 @@ function* fetchDeleteAlgo(action) {
         life: 10,
       },
     });
+    yield put({ type: LOGOUT, payload: null });
   }
 }
 
@@ -167,6 +173,7 @@ function* fetchCreateAlgo(action) {
         life: 10,
       },
     });
+    yield put({ type: LOGOUT, payload: null });
   }
 }
 
@@ -183,6 +190,7 @@ function* fetchUpdateAlgo(action) {
         life: 10,
       },
     });
+    yield put({ type: LOGOUT, payload: null });
   }
 }
 
@@ -222,6 +230,7 @@ function* fetchTrials(action) {
         life: 10,
       },
     });
+    yield put({ type: LOGOUT, payload: null });
   }
 }
 
@@ -237,6 +246,7 @@ function* contact(action) {
         life: 10,
       },
     });
+    yield put({ type: LOGOUT, payload: null });
   }
 }
 

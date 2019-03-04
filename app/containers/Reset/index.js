@@ -41,14 +41,14 @@ const Form = ({ handleSubmit, submitting, mySubmit }) => (
       name="password1"
       type="password"
       component={Input}
-      placeholder="Just try to remeber it..."
+      placeholder="Type your new password"
     />
     <Label content="Again" />
     <Field
       name="password2"
       type="password"
       component={Input}
-      placeholder="Tell me you did not already forget..."
+      placeholder="Type it again"
     />
     <Button content="RESET" type="submit" disabled={submitting} />
   </form>

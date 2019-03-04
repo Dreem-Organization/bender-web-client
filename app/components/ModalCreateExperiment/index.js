@@ -99,14 +99,14 @@ const Form = ({ handleSubmit, submitting, onCreate }) => (
       name="name"
       type="text"
       component={Input}
-      placeholder="Be creative"
+      placeholder="The shorter the better"
     />
     <Label content="Description" type="simple" size="normal" />
     <Field
       name="description"
       type="text"
       component={Input}
-      placeholder="Make it short and usefull"
+      placeholder="Explain what it is about"
     />
     <Label content="Metrics" type="simple" size="normal" />
     <FieldArray name="metrics" component={renderMembers} />
@@ -115,7 +115,7 @@ const Form = ({ handleSubmit, submitting, onCreate }) => (
       name="dataset"
       type="text"
       component={Input}
-      placeholder="'test.csv' is ugly..."
+      placeholder="ex: test.csv"
     />
     <Button content="Create" type="submit" disabled={submitting} />
   </form>

@@ -36,4 +36,12 @@ export default class LocalStorageManager {
     }
     return ret;
   }
+
+  static setCookieUsage() {
+    localStorage.setItem('cookies-usage', 'true');
+  }
+
+  static getCookieUsage() {
+    return JSON.parse(localStorage.getItem('cookies-usage')) !== null;
+  }
 }

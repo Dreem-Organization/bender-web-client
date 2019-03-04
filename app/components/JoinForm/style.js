@@ -47,6 +47,22 @@ const LoginForm = styled.div`
         cursor: pointer;
       }
     }
+    .form-cgu-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      span {
+        margin: 0;
+      }
+      a {
+        color: ${props => props.theme.main};
+        text-decoration: underline;
+      }
+      .input {
+        margin-left: 10px;
+        cursor: pointer;
+      }
+    }
   }
 `;
 

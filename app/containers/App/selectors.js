@@ -22,6 +22,9 @@ const makeSelectTheme = () =>
 const makeSelectUserInfos = () =>
   createSelector(selectGlobal, globalState => globalState.get('user').toJS());
 
+const makeSelectCookiesUsage = () =>
+  createSelector(selectGlobal, globalState => globalState.get('cookiesUsage'));
+
 const makeSelectAnimator = () =>
   createSelector(selectGlobal, globalState =>
     globalState.get('animator').toJS(),
@@ -49,4 +52,5 @@ export {
   makeSelectLocation,
   makeSelectForm,
   makeSelectFirstViewLoaded,
+  makeSelectCookiesUsage,
 };

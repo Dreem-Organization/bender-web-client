@@ -16,7 +16,7 @@ const ModalProfile = styled.div`
     flex-direction: column;
     margin-bottom: 15px;
   }
-  button {
+  .switch {
     margin-top: 5px;
     position: relative;
     width: 60px;

@@ -56,6 +56,18 @@ const Form = ({ handleSubmit, submitting, onCreate }) => (
       component={Textarea}
       placeholder="Tell us about it."
     />
+    <span className="legal">
+      The personal data collected through this document shall be processed
+      automatically by Dreem for the processing of the service. Some of the
+      answers are not mandatory, except the identified mandatory data and are
+      intended for Dreem or its partners within the limits of the needs of the
+      service. Personal data will be stored for the duration of the business
+      relationship. You may request to access, rectify, or delete your data, as
+      well as set specific instructions regarding their fate after your death.
+      You also have the right to request the receipt of your personal data in a
+      structured, commonly used and machine-readable format. To exercise your
+      rights, please contact us at the following address: legal@dreem.com
+    </span>
     <Button content="Send" type="submit" disabled={submitting} />
   </form>
 );

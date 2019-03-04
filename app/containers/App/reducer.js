@@ -10,6 +10,8 @@ import {
   FIRST_VIEW_LOADED,
   TOGGLE_THEME,
   JOIN,
+  VALID_COOKIES_USAGE,
+  LOAD_COOKIES_PERMISSIONS,
 } from './constants';
 
 export const initialState = fromJS({
@@ -18,25 +20,26 @@ export const initialState = fromJS({
   firstViewLoaded: false,
   user: {
     email: '',
-    firstName: '',
-    lastName: '',
     username: '',
+    id: '',
   },
   theme: light,
   animator: {
     pageLoader: '',
   },
+  cookiesUsage: null,
   error: null,
 });
 
 function appReducer(state = initialState, action) {
   switch (action.type) {
+    case LOAD_COOKIES_PERMISSIONS:
+      return state.set('cookiesUsage', LocalStorageManager.getCookieUsage());
     case LOGIN:
       LocalStorageManager.setUser(action.payload.token, {
         email: action.payload.user.email,
-        firstName: action.payload.user.first_name,
-        lastName: action.payload.user.last_name,
         username: action.payload.user.username,
+        pk: action.payload.user.pk,
       });
       return state
         .set('status', 'in')
@@ -45,14 +48,15 @@ function appReducer(state = initialState, action) {
         .mergeDeep({
           user: {
             email: action.payload.user.email,
-            firstName: action.payload.user.first_name,
-            lastName: action.payload.user.last_name,
             username: action.payload.user.username,
+            pk: action.payload.user.pk,
           },
         });
     case LOGOUT:
       LocalStorageManager.removeUser();
-      return initialState.set('status', 'out');
+      return initialState
+        .set('status', 'out')
+        .set('cookiesUsage', state.get('cookiesUsage'));
     case JOIN:
       return state;
     case FETCH_ERROR:
@@ -65,6 +69,9 @@ function appReducer(state = initialState, action) {
       return state.mergeDeep({
         animator: action.payload,
       });
+    case VALID_COOKIES_USAGE:
+      LocalStorageManager.setCookieUsage();
+      return state.set('cookiesUsage', true);
     case TOGGLE_THEME:
       LocalStorageManager.setTheme(
         action.payload.name === 'light' ? dark : light,

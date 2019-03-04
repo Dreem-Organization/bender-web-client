@@ -36,11 +36,13 @@ const normal = css`
   height: 30px;
   margin: 0;
   padding: 0;
-  color: ${props => props.theme.main};
-  box-shadow: inset 0 -3px 0 0 ${props => props.theme.main};
+  color: ${props =>
+    props.color ? props.theme[props.color] : props.theme.main};
+  box-shadow: inset 0 -3px 0 0 ${props => (props.color ? props.theme[props.color] : props.theme.main)};
+  box-shadow: inset 0 -3px 0 0 ${props => (props.color ? props.theme[props.color] : props.theme.main)};
   transition: 0.2s;
   &:hover {
-    box-shadow: inset 0 -30px 0 0 ${props => props.theme.main};
+    box-shadow: inset 0 -30px 0 0 ${props => (props.color ? props.theme[props.color] : props.theme.main)};
     color: ${props => props.theme.inverted};
     cursor: pointer;
   }

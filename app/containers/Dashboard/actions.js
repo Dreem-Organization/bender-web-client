@@ -1,4 +1,7 @@
-import { LOGOUT_REQUEST } from 'containers/App/constants';
+import {
+  LOGOUT_REQUEST,
+  DELETE_ACCOUNT_REQUEST,
+} from 'containers/App/constants';
 import {
   LOAD_FRESH_CONTENT,
   TOGGLE_MENU,
@@ -27,6 +30,13 @@ export function logout() {
   return {
     type: LOGOUT_REQUEST,
     payload: null,
+  };
+}
+
+export function deleteAccount(jwt, id) {
+  return {
+    type: DELETE_ACCOUNT_REQUEST,
+    payload: { jwt, id },
   };
 }
 // ########### ----------------------------------------------------------------

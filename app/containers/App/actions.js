@@ -5,6 +5,8 @@ import {
   FIRST_VIEW_LOADED,
   SOCIAL_LOGIN,
   TOGGLE_THEME,
+  VALID_COOKIES_USAGE,
+  LOAD_COOKIES_PERMISSIONS,
 } from './constants';
 
 export function animatorUpdate(data) {
@@ -45,5 +47,19 @@ export function toggleTheme(theme) {
   return {
     type: TOGGLE_THEME,
     payload: theme,
+  };
+}
+
+export function validCookiesUsage() {
+  return {
+    type: VALID_COOKIES_USAGE,
+    payload: null,
+  };
+}
+
+export function loadCookiesPermissions() {
+  return {
+    type: LOAD_COOKIES_PERMISSIONS,
+    payload: null,
   };
 }

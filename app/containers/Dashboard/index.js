@@ -27,6 +27,7 @@ import { verifyUser, toggleTheme } from 'containers/App/actions';
 import {
   loadFreshContent,
   logout,
+  deleteAccount,
   toggleMenu,
   stageUpdate,
   fetchExperiments,
@@ -184,7 +185,7 @@ export class Dashboard extends React.PureComponent {
             </div>
           </div>
           <Modals
-            onClose={() => this.props.toggleModal('')}
+            toggleModal={this.props.toggleModal}
             modalStates={this.props.modalStates}
             onCreateExperiment={data =>
               this.props.onCreateExperiment(
@@ -214,6 +215,9 @@ export class Dashboard extends React.PureComponent {
             onConfirmChoice={this.props.onConfirmChoice}
             user={this.props.user}
             theme={this.props.theme}
+            onDeleteAccount={() =>
+              this.props.onDeleteAccount(this.props.jwt, this.props.user.pk)
+            }
           />
         </DashboardView>
       </WaitingWrapper>
@@ -230,6 +234,7 @@ Dashboard.propTypes = {
   experiments: PropTypes.object,
   verifyUser: PropTypes.func,
   onLogout: PropTypes.func,
+  onDeleteAccount: PropTypes.func,
   onToggleMenu: PropTypes.func,
   onStageUpdate: PropTypes.func,
   toggleModal: PropTypes.func,
@@ -262,6 +267,7 @@ export function mapDispatchToProps(dispatch) {
   return {
     loadFreshContent: () => dispatch(loadFreshContent()),
     onLogout: () => dispatch(logout()),
+    onDeleteAccount: (jwt, user) => dispatch(deleteAccount(jwt, user)),
     onToggleMenu: () => dispatch(toggleMenu()),
     onStageUpdate: stage => dispatch(stageUpdate(stage)),
     verifyUser: token => dispatch(verifyUser(token)),

@@ -15,12 +15,14 @@ import python from 'images/py.png';
 import screen from 'images/screen.png';
 import r from 'images/r.png';
 import FakeChart from 'components/FakeChart';
+import Cgu from 'components/Cgu';
 import LoginForm from 'components/LoginForm';
 import RetrieveForm from 'components/RetrieveForm';
 import JoinForm from 'components/JoinForm';
 import {
   makeSelectStatus,
   makeSelectFirstViewLoaded,
+  makeSelectCookiesUsage,
 } from 'containers/App/selectors';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -29,7 +31,12 @@ import injectSaga from 'utils/injectSaga';
 import sagaApp from 'containers/App/saga';
 import reducerApp from 'containers/App/reducer';
 import LocalStorageManager from 'utils/localStorageManager';
-import { verifyUser, firstViewLoaded } from 'containers/App/actions';
+import {
+  verifyUser,
+  firstViewLoaded,
+  validCookiesUsage,
+  loadCookiesPermissions,
+} from 'containers/App/actions';
 import { light as theme } from 'themeConfig';
 import ReactGA from 'react-ga';
 import reducer from './reducer';
@@ -43,15 +50,18 @@ export class Home extends React.PureComponent {
     super(props);
     this.state = {
       visibleScroll: true,
+      statusCGU: false,
     };
     const token = LocalStorageManager.getUser();
     this.props.verifyUser(token);
     this.handleScrollToElement = this.handleScrollToElement.bind(this);
+    this.handleToggleCgu = this.handleToggleCgu.bind(this);
     ReactGA.initialize('UA-130808639-1');
     ReactGA.pageview('homepage');
   }
 
   componentDidMount() {
+    this.props.loadCookiesPermissions();
     window.addEventListener('scroll', this.handleScrollToElement);
     setTimeout(() => {
       this.props.loaded();
@@ -62,15 +72,19 @@ export class Home extends React.PureComponent {
     window.removeEventListener('scroll', this.handleScrollToElement);
   }
 
+  handleToggleCgu() {
+    this.setState({ ...this.state, statusCGU: !this.state.statusCGU });
+  }
+
   handleScrollToElement() {
     const head = document.getElementById('head');
     if (
       this.props.status !== 'waiting' &&
       window.scrollY > head.clientHeight / 2
     ) {
-      this.setState({ visibleScroll: false });
+      this.setState({ ...this.state, visibleScroll: false });
     } else {
-      this.setState({ visibleScroll: true });
+      this.setState({ ...this.state, visibleScroll: true });
     }
   }
 
@@ -121,6 +135,7 @@ export class Home extends React.PureComponent {
               }
               onSocialLoginSucess={this.props.onSocialLoginSucess}
               onToggleForm={this.props.toggleForm}
+              openCGU={this.handleToggleCgu}
             />
           </div>
         );
@@ -143,6 +158,18 @@ export class Home extends React.PureComponent {
     }
     return (
       <HomeView theme={theme}>
+        {this.props.cookiesUsage === false ? (
+          <div className="cookies-header-container">
+            <div className="cookies-header">
+              We use cookies.<button onClick={this.props.validCookiesUsage}>
+                ACCEPT THE ABOVE MENTION
+              </button>
+            </div>
+          </div>
+        ) : (
+          ''
+        )}
+        <Cgu onToggleCgu={this.handleToggleCgu} isOpen={this.state.statusCGU} />
         <div className="home-head-container" id="head">
           <Title className="home-title" content="Welcome to Bender" size={1} />
           <Title
@@ -265,6 +292,9 @@ Home.propTypes = {
   onSocialLoginSucess: PropTypes.func,
   toggleForm: PropTypes.func,
   form: PropTypes.string,
+  validCookiesUsage: PropTypes.func,
+  loadCookiesPermissions: PropTypes.func,
+  cookiesUsage: PropTypes.bool,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -303,6 +333,8 @@ export function mapDispatchToProps(dispatch) {
     loaded: () => dispatch(firstViewLoaded()),
     verifyUser: token => dispatch(verifyUser(token)),
     toggleForm: data => dispatch(toggleForm(data)),
+    validCookiesUsage: () => dispatch(validCookiesUsage()),
+    loadCookiesPermissions: () => dispatch(loadCookiesPermissions()),
   };
 }
 
@@ -310,6 +342,7 @@ const mapStateToProps = createStructuredSelector({
   status: makeSelectStatus(),
   firstViewLoaded: makeSelectFirstViewLoaded(),
   form: makeSelectForm(),
+  cookiesUsage: makeSelectCookiesUsage(),
 });
 
 const withConnect = connect(

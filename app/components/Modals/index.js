@@ -20,6 +20,7 @@ function Modals(props) {
             onToggleTheme={props.onToggleTheme}
             user={props.user}
             theme={props.theme}
+            onDeleteAccount={props.onDeleteAccount}
           />
         );
         break;
@@ -78,11 +79,11 @@ function Modals(props) {
     <StyledModals
       className={`modals ${props.modalStates.open ? 'is-open' : ''}`}
       {...props}
-      onClick={props.onClose}
+      onClick={() => props.toggleModal('')}
     >
       <div className="modal-container" onClick={e => e.stopPropagation()}>
         <div className="modal">{toRender}</div>
-        <div onClick={props.onClose} className="modal-close">
+        <div onClick={() => props.toggleModal('')} className="modal-close">
           <Icon name="clear" theme={props.theme} />
         </div>
       </div>
@@ -96,11 +97,12 @@ Modals.propTypes = {
   onToggleTheme: PropTypes.func,
   onContact: PropTypes.func,
   modalStates: PropTypes.object.isRequired,
-  onClose: PropTypes.func,
+  toggleModal: PropTypes.func,
   onConfirmChoice: PropTypes.func,
   onCreateExperiment: PropTypes.func.isRequired,
   onCreateAlgo: PropTypes.func.isRequired,
   onUpdateAlgo: PropTypes.func.isRequired,
+  onDeleteAccount: PropTypes.func.isRequired,
 };
 
 Modals.defaultProps = {
