@@ -1,21 +1,21 @@
+ARG BUILD_MODE=build
 FROM dreem/bender-front-builder:latest as builder
+ARG BUILD_MODE
 
 WORKDIR /usr/src/app
 COPY . .
 
 RUN yarn install
-RUN yarn build:docker
+RUN yarn $BUILD_MODE
 
-FROM dreem/caddy-server:v0.11.0
+FROM nginx:1.15-alpine
 
 ENV NPM_CONFIG_LOGLEVEL warn
-ENV API_URL="NO_URL_PROVIDED"
 
-VOLUME ["/home/caddy"]
-WORKDIR /home/caddy
+VOLUME ["/var/www"]
+WORKDIR /var/www
 
-COPY Caddyfile /etc/caddy/Caddyfile
-COPY --from=builder /usr/src/app/build /home/caddy/
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY --from=builder /usr/src/app/build /var/www/
 
-ENTRYPOINT ["/sbin/tini", "--"]
-CMD sed -i 's/REPLACEMENT_API_URL/'"$API_URL"'/g' /home/caddy/* && caddy -agree --conf /etc/caddy/Caddyfile
+ENTRYPOINT ["nginx", "-c", "/etc/nginx/nginx.conf", "-g", "daemon off;"]
