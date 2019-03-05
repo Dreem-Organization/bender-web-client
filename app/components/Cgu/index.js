@@ -6,7 +6,7 @@ import StyledCgu from './style';
 function Cgu(props) {
   return (
     <StyledCgu className={props.isOpen ? 'cgu open' : 'cgu'} {...props}>
-      <div className="cgu-text-container">Lorem Ipsum Sin Dolor Amet</div>
+      <div className="cgu-text-container"></div>
       <Button onClick={props.onToggleCgu} content="CLOSE" />
     </StyledCgu>
   );

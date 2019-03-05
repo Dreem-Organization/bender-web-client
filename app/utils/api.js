@@ -22,6 +22,7 @@ export const api = {
       password1,
       password2,
       email,
+      tos_accepted: true,
     }).then(callBack);
   },
   reset({ email }, callBack) {

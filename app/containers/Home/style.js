@@ -20,12 +20,6 @@ const pc = css`
       position: relative;
       z-index: 1;
       color: ${props => props.theme.inverted};
-      &::after {
-        content: 'BETA';
-        position: absolute;
-        font-size: 1rem;
-        transform: rotate(10deg);
-      }
     }
     .home-sub-title {
       position: relative;
@@ -218,12 +212,6 @@ const phone = css`
       position: relative;
       z-index: 1;
       color: ${props => props.theme.inverted};
-      &::after {
-        content: 'BETA';
-        right: 0px;
-        position: absolute;
-        font-size: 0.5rem;
-      }
     }
     .home-sub-title {
       text-align: center;
