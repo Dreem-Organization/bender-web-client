@@ -44,8 +44,10 @@ export default class LineChart extends Component {
 
     this.state = {
       key: Math.floor(Math.random() * Math.floor(1000)),
+      toggleVariance: true,
     };
 
+    this.toggleVariance = this.toggleVariance.bind(this);
     this.getLineData = this.getLineData.bind(this);
     this.getChart = this.getChart.bind(this);
     this.lineCustomTooltip = this.lineCustomTooltip.bind(this);
@@ -56,9 +58,17 @@ export default class LineChart extends Component {
       JSON.stringify(this.props.trials) !== JSON.stringify(prevProps.trials)
     ) {
       this.setState({
+        ...this.state,
         key: Math.floor(Math.random() * Math.floor(1000)),
       });
     }
+  }
+
+  toggleVariance() {
+    this.setState({
+      ...this.state,
+      toggleVariance: !this.state.toggleVariance,
+    });
   }
 
   getLineData() {
@@ -238,20 +248,22 @@ export default class LineChart extends Component {
     } else {
       lineData.sort((a, b) => a[metric.metric_name] - b[metric.metric_name]);
     }
-    lineData = lineData.reverse();
-    lineData.forEach((pointA, iA) => {
-      lineData.forEach((pointB, iB) => {
-        if (
-          JSON.stringify(pointA.parameters) ===
-            JSON.stringify(pointB.parameters) &&
-          iA !== iB
-        ) {
-          pointA.replicas.push(pointB.results[metric.metric_name]);
-          lineData.splice(iB, 1);
-        }
+    if (this.state.toggleVariance) {
+      lineData = lineData.reverse();
+      lineData.forEach((pointA, iA) => {
+        lineData.forEach((pointB, iB) => {
+          if (
+            JSON.stringify(pointA.parameters) ===
+              JSON.stringify(pointB.parameters) &&
+            iA !== iB
+          ) {
+            pointA.replicas.push(pointB.results[metric.metric_name]);
+            lineData.splice(iB, 1);
+          }
+        });
       });
-    });
-    lineData = lineData.reverse();
+      lineData = lineData.reverse();
+    }
     lineData.forEach((point, i) => {
       if (point.replicas.length > 0) {
         point.replicas.push(point.results[metric.metric_name]);
@@ -459,6 +471,25 @@ export default class LineChart extends Component {
                   }
                 />
               ))}
+            </div>
+          </div>
+        </div>
+        <div className="chart-visualize-container">
+          <div className="chart-visualize-sub-container">
+            <Icon name="unfold_more" theme={this.props.theme} />
+            <Label
+              content="Display variance"
+              size="tiny"
+              type="important"
+              theme={this.props.theme}
+            />
+            <div className="chart-checkboxes">
+              <Checkbox
+                name="variance"
+                value="variance"
+                checked={this.state.toggleVariance}
+                onChange={this.toggleVariance}
+              />
             </div>
           </div>
         </div>
