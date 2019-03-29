@@ -270,8 +270,8 @@ export default class LineChart extends Component {
         const moy =
           point.replicas.reduce((a, b) => a + b, 0) / point.replicas.length;
         const std =
-          point.replicas.reduce((a, b) => a + (b - moy) ** 2, 0) /
-          point.replicas.length;
+          Math.sqrt(point.replicas.reduce((a, b) => a + (b - moy) ** 2, 0) /
+          point.replicas.length);
         // CONFIDENCE INTERVAL -> Nope
         // const cfd = 1.96 * (Math.sqrt(std) / Math.sqrt(point.replicas.length));
         lineData[i].cfdHigh = point.results[metric.metric_name] + std;
@@ -287,7 +287,7 @@ export default class LineChart extends Component {
     if (sm.length === 0) {
       return (
         <div className="chart-empty-container">
-          <Label content="Uh, oh — looks like you haven't selected any metric to visualize yet." />
+          <Label content="You haven't selected any metric to visualize yet." />
         </div>
       );
     }
