@@ -194,7 +194,7 @@ export default class MyScatterChart extends Component {
             typeof val === 'string' ? val : val.toExponential(2)
           }
         />
-        <YAxis padding={{ top: 10 }} dataKey="y" />
+        <YAxis padding={{ top: 10 }} dataKey="y" domain={['auto', 'auto']}/>
         <Tooltip content={this.lineCustomTooltip} offset={25} />
         <CartesianGrid strokeDasharray="3 3" style={{ opacity: 0.3 }} />
       </ScatterChart>
