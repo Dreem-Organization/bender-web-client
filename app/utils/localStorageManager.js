@@ -44,4 +44,9 @@ export default class LocalStorageManager {
   static getCookieUsage() {
     return JSON.parse(localStorage.getItem('cookies-usage')) !== null;
   }
+
+  static logout() {
+    LocalStorageManager.removeUser();
+    LocalStorageManager.removeStage();
+  }
 }

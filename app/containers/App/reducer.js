@@ -53,7 +53,7 @@ function appReducer(state = initialState, action) {
           },
         });
     case LOGOUT:
-      LocalStorageManager.removeUser();
+      LocalStorageManager.logout();
       return initialState
         .set('status', 'out')
         .set('cookiesUsage', state.get('cookiesUsage'));

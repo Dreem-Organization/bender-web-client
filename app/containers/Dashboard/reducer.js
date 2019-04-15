@@ -24,6 +24,9 @@ import {
   SET_IS_FETCHING,
   CONTACT_SENT,
 } from './constants';
+// FIXME: action from other container had to be imported,
+// the structure should probably be reviewed
+import { LOGOUT } from '../App/constants';
 
 export const initialState = fromJS({
   experiments: {
@@ -51,6 +54,8 @@ export const initialState = fromJS({
 
 function dashboardReducer(state = initialState, action) {
   switch (action.type) {
+    case LOGOUT:
+      return initialState;
     case LOAD_FRESH_CONTENT:
       return state.setIn(['experiments', 'loaded'], false);
     case TOGGLE_MENU:
