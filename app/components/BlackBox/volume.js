@@ -1,10 +1,14 @@
 /* eslint-disable no-restricted-properties */
 import React from 'react';
 
-export default class BlackBox extends React.PureComponent {
+function getRndInteger(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
+export default class Volume extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.volume = {
       centerX: 25.749,
       centerY: 34.249,
       ray: 16,
@@ -12,51 +16,54 @@ export default class BlackBox extends React.PureComponent {
       objective: 25.749 - 16,
       speed: 0.5,
     };
-    this.animate = this.animate.bind(this);
-    this.rand = this.rand.bind(this);
-    window.requestAnimationFrame(this.animate);
+    this.circle = null;
+    this.line = null;
+    this.animationID = null;
   }
-  getRndInteger(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
+
+  componentDidMount() {
+    this.animationID = requestAnimationFrame(this.animate);
   }
-  rand() {
-    return this.getRndInteger(
-      this.state.centerX - this.state.ray + 1,
-      this.state.centerX + this.state.ray - 1,
-    );
+
+  componentWillUnmount() {
+    cancelAnimationFrame(this.animationID);
   }
+
+  rand = () => {
+    const v = this.volume;
+    return getRndInteger(v.centerX - v.ray + 1, v.centerX + v.ray - 1);
+  };
 
   calc(x) {
+    const v = this.volume;
     const y =
-      Math.sqrt(
-        Math.pow(this.state.ray, 2) -
-          Math.pow(this.state.centerX - x.toFixed(3), 2),
-      ) + this.state.centerY;
-    return this.state.centerY - (y - this.state.centerY);
+      Math.sqrt(Math.pow(v.ray, 2) - Math.pow(v.centerX - x.toFixed(3), 2)) +
+      v.centerY;
+    return v.centerY - (y - v.centerY);
   }
 
-  animate() {
-    if (this.state.pos < this.state.objective) {
-      this.setState({
-        pos:
-          this.state.pos + this.state.speed > this.state.objective
-            ? this.state.objective
-            : this.state.pos + this.state.speed,
-      });
-    } else if (this.state.pos > this.state.objective) {
-      this.setState({
-        pos:
-          this.state.pos - this.state.speed < this.state.objective
-            ? this.state.objective
-            : this.state.pos - this.state.speed,
-      });
+  animate = () => {
+    const v = this.volume;
+    if (v.pos < v.objective) {
+      v.pos = v.pos + v.speed > v.objective ? v.objective : v.pos + v.speed;
+    } else if (v.pos > v.objective) {
+      v.pos = v.pos - v.speed < v.objective ? v.objective : v.pos - v.speed;
     } else {
-      this.setState({
-        objective: this.rand(),
-      });
+      v.objective = this.rand();
     }
-    window.requestAnimationFrame(this.animate);
-  }
+    if (this.circle) {
+      this.circle.setAttribute('cx', v.centerX);
+      this.circle.setAttribute('cy', v.centerY);
+      this.circle.setAttribute('r', v.ray);
+    }
+    if (this.line) {
+      this.line.setAttribute('x1', v.pos);
+      this.line.setAttribute('y1', this.calc(v.pos));
+      this.line.setAttribute('x2', v.centerX);
+      this.line.setAttribute('y2', v.centerY);
+    }
+    this.animationID = requestAnimationFrame(this.animate);
+  };
 
   render() {
     return (
@@ -70,24 +77,19 @@ export default class BlackBox extends React.PureComponent {
           viewBox="0 0 51.497 51.497"
         >
           <circle
+            ref={e => (this.circle = e)}
             fill="#C7CAC7"
             stroke="#949493"
             strokeWidth="2"
             strokeMiterlimit="10"
-            cx={this.state.centerX}
-            cy={this.state.centerY}
-            r={this.state.ray}
           />
           <line
+            ref={e => (this.line = e)}
             fill="none"
             stroke="#949493"
             strokeWidth="2"
             strokeLinecap="round"
             strokeMiterlimit="10"
-            x1={this.state.pos}
-            y1={this.calc(this.state.pos)}
-            x2={this.state.centerX}
-            y2={this.state.centerY}
           />
           <line
             fill="none"

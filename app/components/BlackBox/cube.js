@@ -1,4 +1,6 @@
-/* eslint-disable */
+import React from 'react';
+import PropTypes from 'prop-types';
+
 class Point2 {
   constructor(x, y) {
     this.x = typeof x === 'number' ? x : 0;
@@ -38,93 +40,183 @@ class Cube {
     ];
   }
 
-  render(container, dx, dy, Project) {
-    container.innerHTML = '';
-
-    for (let i = 0, ii = this.faces.length; i < ii; i++) {
-      let face = this.faces[i];
-      let point = Project(face[0]);
-      var str = `<path d="M${point.x + dx} ${-point.y + dy}`;
-      for (let o = 1, oo = face.length; o < oo; o++) {
-        point = Project(face[o]);
-        str += ` L ${point.x + dx} ${-point.y + dy}`;
-      }
-      str += ` Z" fill="rgba(0, 0, 0, .9)" stroke="rgba(200, 200, 200, .1)">`;
-      container.innerHTML += str;
+  renderPath(index, dx, dy) {
+    const face = this.faces[index];
+    const d = [];
+    let point = proj(face[0]);
+    d.push(`M${point.x + dx} ${-point.y + dy}`);
+    for (let i = 1; i < face.length; i++) {
+      point = proj(face[i]);
+      d.push(`L ${point.x + dx} ${-point.y + dy}`);
     }
+    d.push('Z');
+    return d.join(' ');
   }
 }
 
-export default class CubeWrapper {
-  create() {
-    const Project = vertice => new Point2(vertice.x, vertice.z);
+function proj(vertice) {
+  return new Point2(vertice.x, vertice.z);
+}
 
-    const Rotate = (vertice, center, theta, phi) => {
-      var ct = Math.cos(theta),
-        st = Math.sin(theta),
-        cp = Math.cos(phi),
-        sp = Math.sin(phi),
-        x = vertice.x - center.x,
-        y = vertice.y - center.y,
-        z = vertice.z - center.z;
+function rot(vertice, center, theta, phi) {
+  const ct = Math.cos(theta),
+    st = Math.sin(theta),
+    cp = Math.cos(phi),
+    sp = Math.sin(phi),
+    x = vertice.x - center.x,
+    y = vertice.y - center.y,
+    z = vertice.z - center.z;
+  vertice.x = ct * x - st * cp * y + st * sp * z + center.x;
+  vertice.y = st * x + ct * cp * y - ct * sp * z + center.y;
+  vertice.z = sp * y + cp * z + center.z;
+}
 
-      vertice.x = ct * x - st * cp * y + st * sp * z + center.x;
-      vertice.y = st * x + ct * cp * y - ct * sp * z + center.y;
-      vertice.z = sp * y + cp * z + center.z;
-    };
-
-    const container = document.getElementById('cube');
-    const width = container.attributes.width.value;
-    const height = container.attributes.height.value;
-    const dx = width / 2;
-    const dy = height / 2;
-    const center = new Point3(0, dy, 0);
-    const cube = new Cube(center, dy);
-    const mouse = {
+export default class CubeComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    const dy = props.height / 2;
+    this.center = new Point3(0, dy, 0);
+    this.cube = new Cube(this.center, dy);
+    this.mouse = {
       down: false,
       x: 0,
       y: 0,
     };
+    this.paths = [];
+    this.renderScheduled = false;
+    this.tickID = null;
+  }
 
-    const Tick = () => {
-      for (var i = 0, ii = 8; i < ii; i++) {
-        Rotate(cube.vertices[i], center, Math.PI / 270, Math.PI / 450);
+  componentDidMount() {
+    this.tickID = requestAnimationFrame(this.tick);
+  }
+
+  componentWillUnmount() {
+    cancelAnimationFrame(this.tickID);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.height !== this.props.height ||
+      prevProps.width !== this.props.width
+    ) {
+      const dy = this.props.height / 2;
+      this.center = new Point3(0, dy, 0);
+      this.cube = new Cube(this.center, dy);
+      this.renderPaths();
+    }
+  }
+
+  onMouseDown = e => {
+    this.mouse.down = true;
+    this.mouse.x = e.clientX;
+    this.mouse.y = e.clientY;
+  };
+
+  onMouseMove = e => {
+    if (!this.mouse.down) {
+      return;
+    }
+    const theta = ((e.clientX - this.mouse.x) * Math.PI) / 360;
+    const phi = ((e.clientY - this.mouse.y) * Math.PI) / 180;
+
+    for (let i = 0; i < 8; i++) {
+      rot(this.cube.vertices[i], this.center, theta, phi);
+    }
+
+    this.mouse.x = e.clientX;
+    this.mouse.y = e.clientY;
+    this.renderPaths();
+  };
+
+  onMouseUp = () => {
+    setTimeout(() => {
+      this.mouse.down = false;
+      this.tickID = requestAnimationFrame(this.tick);
+    }, 200);
+  };
+
+  tick = () => {
+    for (let i = 0; i < 8; i++) {
+      rot(this.cube.vertices[i], this.center, Math.PI / 270, Math.PI / 450);
+    }
+    this.doRenderPaths();
+    if (!this.mouse.down) {
+      this.tickID = requestAnimationFrame(this.tick);
+    }
+  };
+
+  doRenderPaths = () => {
+    const dx = this.props.width / 2;
+    const dy = this.props.height / 2;
+    for (let i = 0; i < this.paths.length; i++) {
+      const path = this.paths[i];
+      if (!path) {
+        break;
       }
+      path.setAttribute('d', this.cube.renderPath(i, dx, dy));
+    }
+  };
 
-      cube.render(container, dx, dy, Project);
+  renderPaths = () => {
+    if (!this.renderScheduled) {
+      requestAnimationFrame(() => {
+        this.doRenderPaths();
+        this.renderScheduled = false;
+      });
+      this.renderScheduled = true;
+    }
+  };
 
-      !mouse.down ? requestAnimationFrame(Tick) : null;
-    };
-
-    cube.render(container, dx, dy, Project);
-
-    container.addEventListener('mousedown', e => {
-      mouse.down = true;
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-    });
-    container.addEventListener('mousemove', e => {
-      if (mouse.down) {
-        var theta = ((e.clientX - mouse.x) * Math.PI) / 360;
-        var phi = ((e.clientY - mouse.y) * Math.PI) / 180;
-
-        for (var i = 0, ii = 8; i < ii; i++) {
-          Rotate(cube.vertices[i], center, theta, phi);
-        }
-
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
-
-        cube.render(container, dx, dy, Project);
-      }
-    });
-    container.addEventListener('mouseup', e => {
-      setTimeout(() => {
-        mouse.down = false;
-        requestAnimationFrame(Tick);
-      }, 200);
-    });
-
-    requestAnimationFrame(Tick);
+  render() {
+    const pathFill = 'rgba(0, 0, 0, .9)';
+    const pathStroke = 'rgba(200, 200, 200, .1)';
+    return (
+      <svg
+        id="cube"
+        view-box="0 0 800 600"
+        width={this.props.width}
+        height={this.props.height}
+        onMouseDown={this.onMouseDown}
+        onMouseMove={this.onMouseMove}
+        onMouseUp={this.onMouseUp}
+      >
+        <path
+          ref={e => (this.paths[0] = e)}
+          fill={pathFill}
+          stroke={pathStroke}
+        />
+        <path
+          ref={e => (this.paths[1] = e)}
+          fill={pathFill}
+          stroke={pathStroke}
+        />
+        <path
+          ref={e => (this.paths[2] = e)}
+          fill={pathFill}
+          stroke={pathStroke}
+        />
+        <path
+          ref={e => (this.paths[3] = e)}
+          fill={pathFill}
+          stroke={pathStroke}
+        />
+        <path
+          ref={e => (this.paths[4] = e)}
+          fill={pathFill}
+          stroke={pathStroke}
+        />
+        <path
+          ref={e => (this.paths[5] = e)}
+          fill={pathFill}
+          stroke={pathStroke}
+        />
+      </svg>
+    );
   }
 }
+
+CubeComponent.propTypes = {
+  width: PropTypes.number,
+  height: PropTypes.number,
+};

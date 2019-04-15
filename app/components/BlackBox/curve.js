@@ -1,9 +1,13 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+
 function getRndInteger(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
+// FIXME: Should use d3-shape
 class Line {
-  constructor(centerY, centerX) {
+  constructor(centerX, centerY) {
     this.points = [
       centerY,
       centerY,
@@ -57,36 +61,65 @@ class Line {
 
   render() {
     this.move();
-    let str = '<path d="';
-    this.points.forEach((p, i) => {
-      if (i === 0) {
-        str += 'M';
-      } else if (i === 1) {
-        str += ' ';
-      } else {
-        str += ' ';
-      }
-      str += `${i * 10} ${p}`;
-    });
-    str += '" fill="none" stroke="#108ee9" stroke-width="2px">';
-    return str;
+    return this.points
+      .map((p, i) => (i === 0 ? `M${i * 10} ${p}` : `${i * 10} ${p}`))
+      .join(' ');
   }
 }
 
-export default class CubeWrapper {
-  create() {
-    const container = document.getElementById('line');
-    const width = container.attributes.width.value;
-    const height = container.attributes.height.value;
-    const dx = width / 2;
-    const dy = height / 2;
-    const line = new Line(dy, dx);
-    function loop() {
-      container.innerHTML = line.render();
-      setTimeout(() => {
-        window.requestAnimationFrame(loop);
-      }, 1000 / 40);
+export default class CurveComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    const dx = props.width / 2;
+    const dy = props.height / 2;
+    this.line = new Line(dx, dy);
+    this.tickID = null;
+    this.path = null;
+  }
+
+  componentDidMount() {
+    this.tickID = requestAnimationFrame(this.tick);
+  }
+
+  componentWillUnmount() {
+    cancelAnimationFrame(this.tickID);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.height !== this.props.height ||
+      prevProps.width !== this.props.width
+    ) {
+      const dx = this.props.width / 2;
+      const dy = this.props.height / 2;
+      this.line = new Line(dx, dy);
     }
-    window.requestAnimationFrame(loop);
+  }
+
+  tick = () => {
+    if (this.path) {
+      this.path.setAttribute('d', this.line.render());
+    }
+    setTimeout(() => {
+      this.tickID = requestAnimationFrame(this.tick);
+    }, 1000 / 40);
+  };
+
+  render() {
+    return (
+      <svg id="line" width={this.props.width} height={this.props.height}>
+        <path
+          ref={e => (this.path = e)}
+          fill="none"
+          stroke="#108ee9"
+          strokeWidth="2px"
+        />
+      </svg>
+    );
   }
 }
+
+CurveComponent.propTypes = {
+  width: PropTypes.number,
+  height: PropTypes.number,
+};

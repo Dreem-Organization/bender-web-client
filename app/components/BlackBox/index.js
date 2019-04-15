@@ -4,18 +4,25 @@ import { light as theme } from 'themeConfig';
 import Label from 'components/Label';
 import Volume from './volume';
 import StyledBlackBox from './style';
-import CubeWrapper from './cube';
+import CubeComponent from './cube';
 import ParticlesWrapper from './particles';
-import LineWrapper from './curve';
+import CurveComponent from './curve';
 
 export default class BlackBox extends Component {
+  constructor(props) {
+    super(props);
+    this.pw = null;
+  }
   componentDidMount() {
-    const c = new CubeWrapper();
-    const p = new ParticlesWrapper();
-    const l = new LineWrapper();
-    c.create();
-    p.create();
-    l.create();
+    this.canvas.width = 150;
+    this.canvas.height = 150;
+    this.pw = new ParticlesWrapper(this.canvas);
+    this.pw.loop();
+  }
+
+  componentWillUnmount() {
+    this.pw.stop();
+    this.pw = null;
   }
 
   render() {
@@ -26,9 +33,9 @@ export default class BlackBox extends Component {
         </div>
         <div className="black-box-anim">
           <div className="black-box-anim-sub">
-            <canvas id="particles" />
-            <svg id="cube" view-box="0 0 800 600" width="150" height="150" />
-            <svg id="line" width="150" height="150" />
+            <canvas ref={e => (this.canvas = e)} id="particles" />
+            <CubeComponent width={150} height={150} />
+            <CurveComponent width={150} height={150} />
           </div>
           <div className="black-box-anim-sub">
             <Label content="INPUT DATA" size="mini" />
