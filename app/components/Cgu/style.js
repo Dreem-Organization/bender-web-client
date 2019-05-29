@@ -5,6 +5,7 @@ const Menu = styled.div`
   flex-direction: column;
   visibility: hidden;
   position: fixed;
+  overflow-y: scroll;
   z-index: 1000;
   width: 100vw;
   height: 100vh;
