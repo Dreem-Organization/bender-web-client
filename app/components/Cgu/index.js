@@ -9,7 +9,7 @@ function Cgu(props) {
       <div className="cgu-text-container">
         <p>GENERAL CONDITIONS OF USE FOR DREEM SITES</p>
         <p>
-          Applicable with effect from: XX/XX/2019<br />The Terms &amp;amp;
+          Applicable with effect from: 29/05/2019<br />The Terms &amp;amp;
           Conditions of Use set out herein are entered into between, firstly,
           the French<br />simplified joint-stock company (SAS) Dreem, which has
           share capital of &euro;65&nbsp;910,59, and<br />which is registered in
